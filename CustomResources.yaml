@@ -1,0 +1,21 @@
+Resources:
+  VenafiCustomAppResource:
+    Type: Custom::VenafiApp
+    DependsOn: VenafiAppLambda
+    Properties:
+      ServiceToken: !GetAtt VenafiAppLambda.Arn
+      TLSPCAPIKey: !Ref TLSPCAPIKey
+      AppName: !Ref AppName
+      CAName: !Ref CAName
+      TemplateName: !Ref TemplateName
+
+  VenafiCustomCertResource:
+    Type: Custom::VenafiCert
+    DependsOn: VenafiCertLambda
+    Properties:
+      ServiceToken: !GetAtt VenafiCertLambda.Arn
+      TLSPCAPIKey: !Ref TLSPCAPIKey
+      AppName: !Ref AppName
+      CAName: !Ref CAName
+      TemplateName: !Ref TemplateName
+      CommonName: !Ref CommonName
