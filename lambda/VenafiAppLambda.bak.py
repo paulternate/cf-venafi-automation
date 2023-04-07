@@ -99,8 +99,7 @@ def lambda_handler(event, context):
                 'accept': 'application/json',
                 'content-type': 'application/json',
                 'tppl-api-key': api_key
-            },
-            body=json.dumps(data).encode('utf-8')
+            }
         )
       
         responseData = {}

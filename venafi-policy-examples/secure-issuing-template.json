@@ -1,0 +1,46 @@
+{
+  "certificateAuthority": "BUILTIN",
+  "name": "Internal PKI - 90 Day",
+  "certificateAuthorityProductOptionId": "adc0dce1-b6bf-11ed-ac9a-e778f37b75b0",
+  "product": {
+    "certificateAuthority": "BUILTIN",
+    "productName": "Default Product",
+    "validityPeriod": "P90D"
+  },
+  "subjectCNRegexes": [
+    "^www\\.(?:doorwaycave|venafidemo)\\.com$|^(?:doorwaycave|venafidemo)\\.com$"
+  ],
+  "subjectORegexes": ["Doorway Cave(?:, Inc\\.)?"],
+  "subjectOURegexes": ["Research Services"],
+  "subjectSTRegexes": ["^(?:WA|\\s*)$"],
+  "subjectLRegexes": ["Vancouver|London"],
+  "subjectCValues": [".*"],
+  "sanRegexes": [
+    "^www\\.(?:doorwaycave|venafidemo)\\.com$|^(?:doorwaycave|venafidemo)\\.com$"
+  ],
+  "keyTypes": [
+    {
+      "keyType": "EC",
+      "keyCurves": ["P256", "P384", "P521"]
+    }
+  ],
+  "keyReuse": true,
+  "extendedKeyUsageValues": [],
+  "csrUploadAllowed": true,
+  "keyGeneratedByVenafiAllowed": true,
+  "resourceConsumerUserIds": [],
+  "resourceConsumerTeamIds": ["c9b2bc00-bdce-11ed-bdff-8d873671b5c3"],
+  "everyoneIsConsumer": false,
+  "recommendedSettings": {
+    "subjectOValue": "Doorway Cave, Inc.",
+    "subjectOUValue": "Research Services",
+    "subjectSTValue": "WA",
+    "subjectLValue": "Vancouver",
+    "subjectCValue": "US",
+    "key": {
+      "type": "EC",
+      "curve": "P256"
+    },
+    "keyGeneratedBy": "venafi"
+  }
+}

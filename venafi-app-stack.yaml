@@ -1,0 +1,168 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: Main template for managing resources in Venafi TLS Protect Cloud
+
+Parameters:
+  ExistingIssuingTemplate:
+    Type: String
+    Default: ""
+    Description: "Specify the existing Issuing Template to use, if any."
+  ExistingApplication:
+    Type: String
+    Default: ""
+    Description: "Specify the existing Application to use, if any."
+  AppName:
+    Type: String
+    Description: Name used to identify the application
+    Default: test-container
+  TLSPCAPIKey:
+    Type: String
+    Description: From https://ui.venafi.cloud/platform-settings/user-preferences?key=api-keys
+    NoEcho: true
+  CAName:
+    Type: String
+    Description: The name of the Certificate Authority you want to use in TLS Protect Cloud
+    Default: BUILTIN
+  TemplateName:
+    Type: String``
+    Description: The name of the Issuing Template you want to use in TLS Protect Cloud
+    Default: Built-In CA Template
+  CommonName:
+    Type: String
+    Description: The Common Name of the certificate
+    Default: "example.com"
+  # LatestAmiId:
+  #   Type: AWS::SSM::Parameter::Value<AWS::EC2::Image::Id>
+  #   Default: /aws/service/ami-amazon-linux-latest/amzn2-ami-hvm-x86_64-gp2
+  # ContainerImage:
+  #   Type: String
+  #   Description: OCI Image of application to be hosted on VM
+  #   Default: amcginlay/test-container:1.0.0
+  # ContainerPort:
+  #   Type: String
+  #   Description: Internal port of the containerized app
+  #   Default: 80
+  # TLSPKSAUserID:
+  #   Type: String
+  #   Description: e.g. discovery_demo0123456789@gallant-wright.platform.jetstack.io
+  # TLSPKSAUserSecret:
+  #   Type: String
+  #   Description: Matched secret for SA User ID
+
+  Conditions:
+    CreateIssuingTemplate: !Equals [!Ref ExistingIssuingTemplate, ""]
+    CreateApplication: !Equals [!Ref ExistingApplication, ""]
+
+Resources:
+  LambdaRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: sts:AssumeRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+
+  VenafiTemplateLambda:
+    Type: AWS::Lambda::Function
+    Condition: CreateIssuingTemplate
+    Properties:
+      Runtime: python3.9
+      Role: !GetAtt LambdaRole.Arn
+      Handler: VenafiTemplateLambda.lambda_handler
+      Timeout: 90
+      Code:
+        S3Bucket: arn:aws:s3:::venafi-ecosystem/templates/
+        S3Key: VenafiTemplateLambda.zip
+      Environment:
+        Variables:
+          TLSPCAPIKey: !Ref TLSPCAPIKey
+          TemplatePolicyUrl: !Ref TemplatePolicyUrl
+
+  VenafiAppLambda:
+    Type: AWS::Lambda::Function
+    Condition: CreateApplication
+    Properties:
+      Runtime: python3.9
+      Role: !GetAtt LambdaRole.Arn
+      Handler: VenafiAppLambda.lambda_handler
+      Timeout: 90
+      Code:
+        S3Bucket: arn:aws:s3:::venafi-ecosystem/templates/
+        S3Key: VenafiAppLambda.zip
+      Environment:
+        Variables:
+          TLSPCAPIKey: !Ref TLSPCAPIKey
+          AppName: !Ref AppName
+          CAName: !Ref CAName
+          TemplateName: !Ref TemplateName
+
+  VenafiCertLambda:
+    Type: AWS::Lambda::Function
+    Properties:
+      Runtime: python3.9
+      Role: !GetAtt LambdaRole.Arn
+      Handler: VenafiCertLambda.lambda_handler
+      Timeout: 90
+      Code:
+        S3Bucket: arn:aws:s3:::venafi-ecosystem/templates/
+        S3Key: VenafiCertLambda.zip
+      Environment:
+        Variables:
+          TLSPCAPIKey: !Ref TLSPCAPIKey
+          AppName: !Ref AppName
+          CAName: !Ref CAName
+          TemplateName: !Ref TemplateName
+
+  IssuingTemplate:
+    Type: "Custom::VenafiIssuingTemplate"
+    Condition: CreateIssuingTemplate
+    Properties:
+      ServiceToken: !GetAtt VenafiLambdaFunction.Arn
+      TemplateName: !Ref TemplateName
+      # Additional properties required for Issuing Template
+
+  Application:
+    Type: "Custom::VenafiApplication"
+    Condition: CreateApplication
+    Properties:
+      ServiceToken: !GetAtt VenafiAppLambda.Arn
+      AppName: !Ref AppName
+      IssuingTemplate: !If [CreateIssuingTemplate, !Ref IssuingTemplate, !Ref ExistingIssuingTemplate]
+      # Additional properties required for Application
+
+  Certificate:
+    Type: "Custom::VenafiCertificate"
+    Properties:
+      ServiceToken: !GetAtt VenafiCertLambda.Arn
+      Application: !If [CreateApplication, !Ref Application, !Ref ExistingApplication]
+      CommonName: !Ref CommonName
+      # Additional properties required for Request Certificate
+
+Outputs:
+  IssuingTemplateName:
+    Description: "Issuing Template Name"
+    Value: !If [CreateIssuingTemplate, !Ref IssuingTemplate, !Ref ExistingIssuingTemplate]
+
+  ApplicationName:
+    Description: "Application Name"
+    Value: !If [CreateApplication, !Ref Application, !Ref ExistingApplication]
+
+  CertificateName:
+    Description: "Certificate Name"
+    Value: !Ref Certificate
+
+  # PublicIP:
+  #   Value: !GetAtt AppVM.PublicIp
+  #   Description: Public IP address of the VM
+
+  # DomainName:
+  #   Value: !Join ["", [!Ref AppName, ".com"]]
+  #   Description: The URL associated with the certificate
+
+  # URL:
+  #   Value: !Join ["", ["https://", !Ref AppName, ".com"]]
+  #   Description: The URL associated with the certificate

@@ -14,7 +14,7 @@ def lambda_handler(event, context):
     api_key=(str(event['ResourceProperties']['TLSPCAPIKey']))
     application_name=(str(event['ResourceProperties']['AppName']))
     certificate_authority=(str(event['ResourceProperties']['CAName']))
-    template_name=(str(event['ResourceProperties']['TemplateName']))
+    issuing_template_name=(str(event['ResourceProperties']['TemplateName']))
     if event.get('RequestType') == 'Create':
         # get certificate authority id
         response = http.request(
@@ -24,7 +24,7 @@ def lambda_handler(event, context):
                 'accept': 'application/json',
                 'tppl-api-key': api_key
             })
-        certificate_authority_id = json.loads(response.data.decode('utf-8'))['accounts'][0['account']    ['id']
+        certificate_authority_id = json.loads(response.data.decode('utf-8'))['accounts'][0['account']['id']
         # get template id
         response = http.request(
             'GET',
@@ -54,7 +54,7 @@ def lambda_handler(event, context):
                 }
             ],
             "certificateIssuingTemplateAliasIdMap": {
-                template_name: template_id
+                issuing_template_name: template_id
             }
         }
         response = http.request(
@@ -99,8 +99,7 @@ def lambda_handler(event, context):
                 'accept': 'application/json',
                 'content-type': 'application/json',
                 'tppl-api-key': api_key
-            },
-            body=json.dumps(data).encode('utf-8')
+            }
         )
       
         responseData = {}
