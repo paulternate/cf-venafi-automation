@@ -4,6 +4,7 @@ on:
   push:
     paths:
       - 'lambda/**/*.py'
+  workflow_dispatch:
 
 jobs:
   upload:
