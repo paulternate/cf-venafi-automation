@@ -3,7 +3,7 @@ name: Zip and Upload Python to S3
 on:
   push:
     paths:
-      - 'lambda/**/*.py'
+      - 'lambda/*.py'
   workflow_dispatch:
 
 jobs:

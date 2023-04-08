@@ -3,7 +3,7 @@ name: Zip and Upload Python to S3
 on:
   push:
     paths:
-      - 'lambda/**/*.py'
+      - 'templates/*.yaml'
   workflow_dispatch:
 
 jobs:
@@ -33,7 +33,7 @@ jobs:
 
     - name: Upload Python files
       run: |
-        for file in lambda/*.py; do
+        for file in templates/*.yaml; do
           aws s3 cp "$file" s3://venafi-ecosystem/templates/
         done
 
