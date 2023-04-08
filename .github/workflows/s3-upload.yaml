@@ -33,7 +33,7 @@ jobs:
 
     - name: Zip and upload Python files
       run: |
-        for file in your_folder/*.py; do
+        for file in lambda/*.py; do
           zip "${file%.*}.zip" "$file"
           aws s3 cp "${file%.*}.zip" s3://venafi-ecosystem/templates/
         done
