@@ -12,7 +12,7 @@ jobs:
 
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v2.4.3
+      uses: actions/checkout@v2
       
     - name: Set up AWS CLI
       uses: aws-actions/configure-aws-credentials@v2
