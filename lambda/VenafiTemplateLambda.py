@@ -11,7 +11,6 @@ http = urllib3.PoolManager()
 def lambda_handler(event, context):
     logger.info('Received event: ' + str(event))
     api_key=(str(event['ResourceProperties']['TLSPCAPIKey']))
-    issuing_template_name=(str(event['ResourceProperties']['TemplateName']))
     template_policy_url=(str(event['ResourceProperties']['TemplatePolicyUrl']))
 
     if event.get('RequestType') == 'Create':
@@ -22,6 +21,8 @@ def lambda_handler(event, context):
             request_body = json.loads(response.data)
         else:
             print(f"Error fetching JSON from {template_policy_url}: {response.status_code}")
+        
+        issuing_template_name = request_body['name']
 
         # Create Issuing Template in TLS Protect Cloud
         print(f'Creating {issuing_template_name} in TLS Protect Cloud')
@@ -40,6 +41,7 @@ def lambda_handler(event, context):
         responseData = {}
         responseData['message'] = "Template created successfully"
         responseData['issuing_template_id'] = issuing_template_id
+        responseData['issuing_template_name'] = issuing_template_name
         cfnresponse.send(event, context, cfnresponse.SUCCESS, responseData)
 
     elif event.get('RequestType') == 'Delete':

@@ -5,31 +5,38 @@ Parameters:
   ExistingIssuingTemplate:
     Type: String
     Default: ""
-    Description: "Specify the existing Issuing Template to use, if any."
+    Description: Specify the existing Issuing Template to use, if any.
   ExistingApplication:
     Type: String
     Default: ""
-    Description: "Specify the existing Application to use, if any."
+    Description: Specify the existing Application to use, if any.
   AppName:
     Type: String
-    Description: Name used to identify the application
-    Default: test-container
+    Description: Name of the application to be created in TLS Protect Cloud
+    Default: Test App
   TLSPCAPIKey:
     Type: String
     Description: From https://ui.venafi.cloud/platform-settings/user-preferences?key=api-keys
     NoEcho: true
-  CAName:
+  AppOwnerType:
     Type: String
-    Description: The name of the Certificate Authority you want to use in TLS Protect Cloud
-    Default: BUILTIN
-  TemplateName:
-    Type: String``
-    Description: The name of the Issuing Template you want to use in TLS Protect Cloud
-    Default: Built-In CA Template
+    Description: Either `USER` or `TEAM` to designate the type of the AppOwner parameter
+    Default: USER
+    AllowedValues:
+      - USER
+      - TEAM
+  AppOwner:
+    Type: String
+    Description: The name of the User or Team that should own the Application in TLS Protect Cloud 
+    Default: John Doe
+  TemplateUrl:
+    Type: String
+    Description: The URL of the Issuing Template policy JSON to be created in TLS Protect Cloud
+    Default: https://raw.githubusercontent.com/paulternate/cf-venafi-automation/main/venafi-policy-examples/open-issuing-template.json
   CommonName:
     Type: String
-    Description: The Common Name of the certificate
-    Default: "example.com"
+    Description: The Common Name of the certificate to be issued
+    Default: test.example.com
   # LatestAmiId:
   #   Type: AWS::SSM::Parameter::Value<AWS::EC2::Image::Id>
   #   Default: /aws/service/ami-amazon-linux-latest/amzn2-ami-hvm-x86_64-gp2
@@ -47,6 +54,10 @@ Parameters:
   # TLSPKSAUserSecret:
   #   Type: String
   #   Description: Matched secret for SA User ID
+  # CAName:
+  #   Type: String
+  #   Description: The name of the Certificate Authority you want to use in TLS Protect Cloud
+  #   Default: BUILTIN
 
   Conditions:
     CreateIssuingTemplate: !Equals [!Ref ExistingIssuingTemplate, ""]
@@ -98,7 +109,7 @@ Resources:
           TLSPCAPIKey: !Ref TLSPCAPIKey
           AppName: !Ref AppName
           CAName: !Ref CAName
-          TemplateName: !Ref TemplateName
+          TemplateUrl: !Ref TemplateUrl
 
   VenafiCertLambda:
     Type: AWS::Lambda::Function
@@ -115,15 +126,14 @@ Resources:
           TLSPCAPIKey: !Ref TLSPCAPIKey
           AppName: !Ref AppName
           CAName: !Ref CAName
-          TemplateName: !Ref TemplateName
+          TemplateUrl: !Ref TemplateUrl
 
   IssuingTemplate:
     Type: "Custom::VenafiIssuingTemplate"
     Condition: CreateIssuingTemplate
     Properties:
       ServiceToken: !GetAtt VenafiLambdaFunction.Arn
-      TemplateName: !Ref TemplateName
-      # Additional properties required for Issuing Template
+      TemplateUrl: !Ref TemplateUrl
 
   Application:
     Type: "Custom::VenafiApplication"
@@ -132,7 +142,6 @@ Resources:
       ServiceToken: !GetAtt VenafiAppLambda.Arn
       AppName: !Ref AppName
       IssuingTemplate: !If [CreateIssuingTemplate, !Ref IssuingTemplate, !Ref ExistingIssuingTemplate]
-      # Additional properties required for Application
 
   Certificate:
     Type: "Custom::VenafiCertificate"
@@ -140,16 +149,19 @@ Resources:
       ServiceToken: !GetAtt VenafiCertLambda.Arn
       Application: !If [CreateApplication, !Ref Application, !Ref ExistingApplication]
       CommonName: !Ref CommonName
-      # Additional properties required for Request Certificate
 
 Outputs:
-  IssuingTemplateName:
-    Description: "Issuing Template Name"
-    Value: !If [CreateIssuingTemplate, !Ref IssuingTemplate, !Ref ExistingIssuingTemplate]
+  IssuingTemplateId:
+    Description: "Issuing Template UUID"
+    Value: !GetAtt Certificate.issuing_template_id
 
   ApplicationName:
     Description: "Application Name"
     Value: !If [CreateApplication, !Ref Application, !Ref ExistingApplication]
+
+  AppId:
+    Description: "Application UUID"
+    Value: !Ref AppId
 
   CertificateName:
     Description: "Certificate Name"

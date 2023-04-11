@@ -12,10 +12,74 @@ http = urllib3.PoolManager()
 def lambda_handler(event, context):
     logger.info('Received event: ' + str(event))
     api_key=(str(event['ResourceProperties']['TLSPCAPIKey']))
+    template_policy_url=(str(event['ResourceProperties']['TemplatePolicyUrl']))
     application_name=(str(event['ResourceProperties']['AppName']))
-    certificate_authority=(str(event['ResourceProperties']['CAName']))
-    template_name=(str(event['ResourceProperties']['TemplateName']))
     if event.get('RequestType') == 'Create':
+        try:
+            issuing_template_name = str(event['ResourceProperties']['ExistingIssuingTemplate'])
+        except KeyError:
+        # If ExistingIssuingTemplate is missing, fetch from a URL
+            template_policy_url=(str(event['ResourceProperties']['TemplatePolicyUrl']))
+            response = requests.get(template_policy_url)
+            if response.status_code == 200:
+                policy_data = json.loads(response.data)
+                # Store the Issuing Template Name to search for UUID
+                issuing_template_name = policy_data['name']
+            else:
+                print(f"Error fetching JSON from {template_policy_url}: {response.status_code}")
+
+        # Get the certificateIssuingTemplateId
+        response = http.request(
+            'GET',
+            f'https://api.venafi.cloud/v1/certificateissuingtemplates',
+            headers={
+                'accept': 'application/json',
+                'tppl-api-key': api_key
+            })
+        template_id = next((t['id'] for t in json.loads(response.data.decode('utf-8'))['certificateIssuingTemplates'] if t['name'] == issuing_template_name), None)
+
+        # Get the applicationServerTypeId and Create it if it doesn't exist
+        # If applicationServerType is found, get the id
+        
+        response = http.request(
+            'GET',
+            f'https://api.venafi.cloud/outagedetection/v1/applicationservertypes',
+            headers={
+                'accept': 'application/json',
+                'tppl-api-key': api_key
+            })
+        application_server_type_id = next((t['id'] for t in json.loads(response.data.decode('utf-8'))['applicationServerTypes'] if t['AWS CFN'] == issuing_template_name), None)
+
+        # If applicationServerType is not found, create it
+        if application_server_type_id is None:
+            data = {
+                "platformName": "AWS CFN",
+                "applicationServerType": "OTHER",
+                "keyStoreType": "PEM"
+            }
+            response = http.request(
+            'POST',
+            'https://api.venafi.cloud/outagedetection/v1/applicationservertypes',
+            headers={
+                'accept': 'application/json',
+                'content-type': 'application/json',
+                'tppl-api-key': api_key
+            },
+            body=json.dumps(data).encode('utf-8')
+        )
+            # Issue the certificate
+
+        # Get the applicationId
+        response = http.request(
+            'GET',
+            f'https://api.venafi.cloud/v1/certificateissuingtemplates',
+            headers={
+                'accept': 'application/json',
+                'tppl-api-key': api_key
+            })
+        template_id = next((t['id'] for t in json.loads(response.data.decode('utf-8'))['certificateIssuingTemplates'] if t['name'] == issuing_template_name), None)
+        
+
         # get certificate authority id
         response = http.request(
             'GET',
