@@ -3,7 +3,7 @@
 CloudFormation templates and accompanying files necessary for machine identity automation using the Venafi Control Plane.
 
 ## Tech Training - Venafi Ecosystem Session
-The Venafi Ecosystem Session is accessible [here](docs/README.md)
+The Venafi Ecosystem Session for 2023 Tech Training is accessible [here](docs/README.md)
 
 ## Parameters & Options
 
