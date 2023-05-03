@@ -2,6 +2,9 @@
 
 CloudFormation templates and accompanying files necessary for machine identity automation using the Venafi Control Plane.
 
+## Tech Training - Venafi Ecosystem Session
+The Venafi Ecosystem Session is accessible [here](docs/README.md)
+
 ## Parameters & Options
 
 This is a flexible template that allows you to choose your desired level of automation, from creating everything in TLS Protect Cloud (Issuing Template, Application, and Certificate) to just requesting the certificate for your existing application.
