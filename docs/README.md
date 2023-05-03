@@ -1,4 +1,4 @@
-# Tech Training Ecosystem Session
+# Tech Training 2023 - Venafi Ecosystem Workshop
 
 ## Exercises
 * [01. CloudFormation Creates Certificate in TLSPC](01/README.md)
