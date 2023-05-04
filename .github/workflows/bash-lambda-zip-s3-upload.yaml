@@ -28,11 +28,6 @@ jobs:
         for dir in lambda/*; do
           if [ -d ${dir} ]; then
             zip -jr ${dir}.zip ${dir}/app/
+            aws s3 cp ${dir}.zip s3://venafi-ecosystem/lambdas/
           fi
         done
-        find . | grep zip
-        
-        # for file in lambda/*.py; do
-        #   zip "${file%.*}.zip" "$file"
-        #   aws s3 cp "${file%.*}.zip" s3://venafi-ecosystem/templates/
-        # done
