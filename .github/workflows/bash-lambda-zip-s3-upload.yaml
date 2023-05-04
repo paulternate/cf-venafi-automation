@@ -28,6 +28,6 @@ jobs:
         for dir in tlspc/lambda/*; do
           if [ -d ${dir} ]; then
             zip -jr ${dir}.zip ${dir}/app/
-            aws s3 cp ${dir}.zip s3://venafi-ecosystem/lambdas/
+            aws s3 cp ${dir}.zip s3://venafi-ecosystem/tlspc/lambda/
           fi
         done
