@@ -1,11 +1,11 @@
-name: Zip and Upload Bash Lambdas to S3
+name: Zip and Upload TLSPK Lambda Functions to S3
 
 on:
   push:
     branches:
       - main
     paths:
-      - 'tlspc/lambda/*'
+      - 'tlspc/functions/*'
   workflow_dispatch:
 
 jobs:
@@ -25,9 +25,9 @@ jobs:
 
     - name: Zip and upload Bash Lambdas
       run: |
-        for dir in tlspc/lambda/*; do
+        for dir in tlspc/functions/*; do
           if [ -d ${dir} ]; then
             zip -jr ${dir}.zip ${dir}/app/
-            aws s3 cp ${dir}.zip s3://venafi-ecosystem/tlspc/lambda/
+            aws s3 cp ${dir}.zip s3://venafi-ecosystem/tlspc/functions/
           fi
         done
