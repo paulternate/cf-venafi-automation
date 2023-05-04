@@ -1,4 +1,4 @@
-name: Zip and Upload TLSPK Lambda Functions to S3
+name: Zip and Upload TLSPC Lambda Functions to S3
 
 on:
   push:
