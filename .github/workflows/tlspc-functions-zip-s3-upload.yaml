@@ -5,7 +5,7 @@ on:
     branches:
       - main
     paths:
-      - 'tlspc/functions/*'
+      - 'tlspc/functions/**'
   workflow_dispatch:
 
 jobs:
