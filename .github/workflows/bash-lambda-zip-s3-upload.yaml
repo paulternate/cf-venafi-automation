@@ -1,4 +1,4 @@
-name: Zip and Upload Python to S3
+name: Zip and Upload Bash Lambdas to S3
 
 on:
   push:
