@@ -1,13 +1,13 @@
 AWSTemplateFormatVersion: '2010-09-09'
-Description: ...
+Description: https://venafi-ecosystem.s3.amazonaws.com/tlspc/templates/bash-hello.yaml
 Resources:
-  bash-hello:
+  BashHello:
     Type: 'AWS::Lambda::Function'
     Properties:
       Code:
-        S3Bucket: venafi-ecosystem-${Region}
+        S3Bucket: !Sub venafi-ecosystem-${AWS::Region}
         S3Key: tlspc/functions/bash-hello.zip
       FunctionName: bash-hello
-      Handler: index.handler
-      Role: AWSLambdaBasicExecutionRole
+      Handler: app.handler
+      Role: !Sub arn:aws:iam::${AWS::AccountId}:role/AWSLambdaBasicExecutionRole
       Runtime: provided
