@@ -5,7 +5,7 @@ on:
     branches:
       - main
     paths:
-      - 'lambda/bash-hello/*'
+      - 'lambda/*'
   workflow_dispatch:
 
 jobs:
@@ -35,7 +35,7 @@ jobs:
 
     - name: Zip and upload Python files
       run: |
-        for dir in *; do
+        for dir in lambda/*; do
           if [ -d "$dir" ]; then
             echo "$dir"
           fi
