@@ -1,7 +1,7 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Description: https://venafi-ecosystem.s3.amazonaws.com/tlspc/templates/bash-hello.yaml
 Resources:
-  BashHello:
+  BashHelloFunction:
     Type: 'AWS::Lambda::Function'
     Properties:
       Code:
@@ -11,3 +11,7 @@ Resources:
       Handler: app.handler
       Role: !Sub arn:aws:iam::${AWS::AccountId}:role/AWSLambdaBasicExecutionRole
       Runtime: provided
+  BashHelloResource:
+    Type: "Custom::BashHello"
+    Properties:
+      ServiceToken: !GetAtt BashHelloFunction.Arn
