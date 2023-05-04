@@ -23,23 +23,15 @@ jobs:
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: us-east-1
 
-#     - name: Setup Node.js
-#       uses: actions/setup-node@v2
-#       with:
-#         node-version: '16.x'
-        
-#     - name: Install dependencies
-#       run: |
-#           sudo apt-get update
-#           sudo apt-get install -y zip
-
-    - name: Zip and upload Python files
+    - name: Zip and upload Bash Lambdas
       run: |
         for dir in lambda/*; do
-          if [ -d "$dir" ]; then
-            echo "$dir"
+          if [ -d ${dir} ]; then
+            zip -jr ${dir}.zip ${dir}/app/
           fi
         done
+        find . | grep zip
+        
         # for file in lambda/*.py; do
         #   zip "${file%.*}.zip" "$file"
         #   aws s3 cp "${file%.*}.zip" s3://venafi-ecosystem/templates/
