@@ -1,0 +1,13 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: ...
+Resources:
+  bash-hello:
+    Type: 'AWS::Lambda::Function'
+    Properties:
+      Code:
+        S3Bucket: venafi-ecosystem-${Region}
+        S3Key: tlspc/functions/bash-hello.zip
+      FunctionName: bash-hello
+      Handler: index.handler
+      Role: AWSLambdaBasicExecutionRole
+      Runtime: provided
