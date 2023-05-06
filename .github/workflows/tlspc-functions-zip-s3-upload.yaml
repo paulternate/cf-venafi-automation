@@ -16,6 +16,11 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v3.2.0
       
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.7'
+
     - name: Set up AWS CLI
       uses: aws-actions/configure-aws-credentials@v2
       with:
@@ -23,10 +28,13 @@ jobs:
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: us-east-1
 
-    - name: Zip and upload Bash Lambdas
+    - name: Zip and upload Lambdas
       run: |
         for dir in tlspc/functions/*; do
           if [ -d ${dir} ]; then
+            if [ -f ${dir}/app/requirements.txt ]; then
+              pip install -r ${dir}/app/requirements.txt
+            fi
             zip -jr ${dir}.zip ${dir}/app/
             aws s3 cp ${dir}.zip s3://venafi-ecosystem/tlspc/functions/
           fi

@@ -40,29 +40,23 @@ def delete_handler(event, context):
         responseData['message'] = requestInfo
         cfnresponse.send(event, context, cfnresponse.SUCCESS, responseData)
 
-def default_handler(event, context):
-    try:
-        requestInfo = 'RequestType: UNKNOWN'
-        logger.info(requestInfo)
-        ###########
-        # code here
-        ###########
-    finally:
-        responseData = {}
-        responseData['message'] = requestInfo
-        cfnresponse.send(event, context, cfnresponse.FAILED, responseData)
-
 ######
 # main
 ######
 def lambda_handler(event, context):
-    logger.info('Received event: ' + str(event))
-
-    requestTypeHandlers = {
-        'Create': create_handler,
-        'Update': update_handler,
-        'Delete': delete_handler
-    }
-    
-    requestTypeHandler = requestTypeHandlers.get(event.get('RequestType'), default_handler)
-    requestTypeHandler(event, context)
+    try:
+        logger.info('Received event: ' + str(event))
+        requestTypeHandlers = {
+            'Create': create_handler,
+            'Update': update_handler,
+            'Delete': delete_handler
+        }
+        requestTypeHandler = requestTypeHandlers.get(event.get('RequestType'))
+        requestTypeHandler(event, context)
+    except Exception as e:
+        responseData = {}
+        responseData['message'] = e
+        cfnresponse.send(event, context, cfnresponse.FAILED, responseData)
+    finally:
+        logger.info('Completing lambda_handler')
+        
