@@ -1,1 +1,1 @@
-requests
+cfnresponse==1.0.2
