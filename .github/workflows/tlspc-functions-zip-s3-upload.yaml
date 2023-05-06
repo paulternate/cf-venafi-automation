@@ -33,7 +33,7 @@ jobs:
         for dir in tlspc/functions/*; do
           if [ -d ${dir} ]; then
             if [ -f ${dir}/app/requirements.txt ]; then
-              pip install -r ${dir}/app/requirements.txt
+              pip install --requirement ${dir}/app/requirements.txt --target ${dir}/app/package/
             fi
             zip -jr ${dir}.zip ${dir}/app/
             aws s3 cp ${dir}.zip s3://venafi-ecosystem/tlspc/functions/
