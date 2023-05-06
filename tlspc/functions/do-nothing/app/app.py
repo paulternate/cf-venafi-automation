@@ -5,44 +5,52 @@ logger = logging.getLogger()
 logger.setLevel(logging.INFO)
 
 def create_handler(event, context):
-    requestInfo = 'RequestType: Create'
-    logger.info(requestInfo)
-    ###########
-    # code here
-    ###########
-    responseData = {}
-    responseData['message'] = requestInfo
-    cfnresponse.send(event, context, cfnresponse.SUCCESS, responseData)
+    try:
+        requestInfo = 'RequestType: Create'
+        logger.info(requestInfo)
+        ###########
+        # code here
+        ###########
+    finally:
+        responseData = {}
+        responseData['message'] = requestInfo
+        cfnresponse.send(event, context, cfnresponse.SUCCESS, responseData)
 
 def update_handler(event, context):
-    requestInfo = 'RequestType: Update'
-    logger.info(requestInfo)
-    ###########
-    # code here
-    ###########
-    responseData = {}
-    responseData['message'] = requestInfo
-    cfnresponse.send(event, context, cfnresponse.SUCCESS, responseData)
+    try:
+        requestInfo = 'RequestType: Update'
+        logger.info(requestInfo)
+        ###########
+        # code here
+        ###########
+    finally:
+        responseData = {}
+        responseData['message'] = requestInfo
+        cfnresponse.send(event, context, cfnresponse.SUCCESS, responseData)
 
 def delete_handler(event, context):
-    requestInfo = 'RequestType: Delete'
-    logger.info(requestInfo)
-    ###########
-    # code here
-    ###########
-    responseData = {}
-    responseData['message'] = requestInfo
-    cfnresponse.send(event, context, cfnresponse.SUCCESS, responseData)
+    try:
+        requestInfo = 'RequestType: Delete'
+        logger.info(requestInfo)
+        ###########
+        # code here
+        ###########
+    finally:
+        responseData = {}
+        responseData['message'] = requestInfo
+        cfnresponse.send(event, context, cfnresponse.SUCCESS, responseData)
 
 def default_handler(event, context):
-    requestInfo = 'RequestType: UNKNOWN'
-    logger.info(requestInfo)
-    ###########
-    # code here
-    ###########
-    responseData = {}
-    responseData['message'] = requestInfo
-    cfnresponse.send(event, context, cfnresponse.FAILED, responseData)
+    try:
+        requestInfo = 'RequestType: UNKNOWN'
+        logger.info(requestInfo)
+        ###########
+        # code here
+        ###########
+    finally:
+        responseData = {}
+        responseData['message'] = requestInfo
+        cfnresponse.send(event, context, cfnresponse.FAILED, responseData)
 
 ######
 # main
