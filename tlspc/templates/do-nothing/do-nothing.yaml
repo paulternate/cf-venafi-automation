@@ -1,0 +1,17 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: https://venafi-ecosystem.s3.amazonaws.com/tlspc/templates/do-nothing.yaml
+Resources:
+  DoNothingFunction:
+    Type: 'AWS::Lambda::Function'
+    Properties:
+      Code:
+        S3Bucket: !Sub venafi-ecosystem-${AWS::Region}
+        S3Key: tlspc/functions/do-nothing.zip
+      FunctionName: do-nothing
+      Handler: app.lambda_handler
+      Role: !Sub arn:aws:iam::${AWS::AccountId}:role/AWSLambdaBasicExecutionRole
+      Runtime: python3.7
+  BashHelloResource:
+    Type: "Custom::DoNothing"
+    Properties:
+      ServiceToken: !GetAtt DoNothingFunction.Arn
