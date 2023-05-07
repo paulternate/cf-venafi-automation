@@ -4,6 +4,7 @@ Resources:
   VenafiEcosystemLambdaBasicExecutionRole:
     Type: AWS::IAM::Role
     Properties:
+      RoleName: VenafiEcosystemLambdaBasicExecutionRole
       AssumeRolePolicyDocument:
         Version: "2012-10-17"
         Statement:
