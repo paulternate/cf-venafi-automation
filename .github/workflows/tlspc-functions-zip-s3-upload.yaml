@@ -30,12 +30,17 @@ jobs:
 
     - name: Zip and upload Lambdas
       run: |
-        for dir in tlspc/functions/*; do
-          if [ -d ${dir} ]; then
-            if [ -f ${dir}/app/requirements.txt ]; then
-              pip install --requirement ${dir}/app/requirements.txt --target ${dir}/app/package/
+        pushd .
+        cd tlspc/functions/
+        for dir in *; do
+          if [ -d "${dir}" ]; then
+            if [ -f "${dir}/app/requirements.txt" ]; then
+              pip3 install --requirement "${dir}/app/requirements.txt" --target "${dir}/app"
             fi
-            zip -jr ${dir}.zip ${dir}/app/
-            aws s3 cp ${dir}.zip s3://venafi-ecosystem/tlspc/functions/
+            pushd .
+            cd "${dir}/app" && zip -r "../../${dir}.zip" *
+            aws s3 cp "../../${dir}.zip" s3://venafi-ecosystem/tlspc/functions/
+            popd
           fi
         done
+        popd
