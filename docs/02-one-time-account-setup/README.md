@@ -20,4 +20,4 @@ Since users may not themselves may not have the rights to create IAM Roles
 
 It is included here for completeness but, in the case of the `venafi-se` and `venafi-ps` accounts you can assume this has been done already and move on to the [next chapter](../01/README.md)
 
-Next: [Main Menu](/README.md) | [03. CloudFormation Creates Application in TLSPC](../03-tlspc-create-application/README.md)
+Next: [Main Menu](../README.md) | [03. CloudFormation Creates Application in TLSPC](../03-tlspc-create-application/README.md)
