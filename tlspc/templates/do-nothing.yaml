@@ -9,7 +9,7 @@ Resources:
         S3Key: tlspc/functions/do-nothing.zip
       FunctionName: do-nothing
       Handler: app.lambda_handler
-      Role: !Sub arn:aws:iam::${AWS::AccountId}:role/AWSLambdaBasicExecutionRole
+      Role: !Sub arn:aws:iam::${AWS::AccountId}:role/VenafiEcosystemLambdaBasicExecutionRole
       Runtime: python3.7
   DoNothingResource:
     Type: "Custom::DoNothing"

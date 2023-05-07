@@ -9,7 +9,7 @@ Resources:
         S3Key: tlspc/functions/bash-hello.zip
       FunctionName: bash-hello
       Handler: app.handler
-      Role: !Sub arn:aws:iam::${AWS::AccountId}:role/AWSLambdaBasicExecutionRole
+      Role: !Sub arn:aws:iam::${AWS::AccountId}:role/VenafiEcosystemLambdaBasicExecutionRole
       Runtime: provided
   BashHelloResource:
     Type: "Custom::BashHello"
