@@ -2,7 +2,7 @@
 
 ## AWS Orientation
 * [01. Venafi Okta, AWS Single Sign-On and navigation](01-venafi-okta-aws-sso/README.md)
-* [02. One-Time Account Setup](02-one-time-account-setup/READMEmd)
+* [02. One-Time Account Setup](02-one-time-account-setup/README.md)
 
 ## Exercises
 * [03. CloudFormation Creates Application in TLSPC](03-tlspc-create-application/README.md)
