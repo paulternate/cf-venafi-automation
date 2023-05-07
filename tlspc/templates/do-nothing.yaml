@@ -11,7 +11,7 @@ Resources:
       Handler: app.lambda_handler
       Role: !Sub arn:aws:iam::${AWS::AccountId}:role/AWSLambdaBasicExecutionRole
       Runtime: python3.7
-  BashHelloResource:
+  DoNothingResource:
     Type: "Custom::DoNothing"
     Properties:
       ServiceToken: !GetAtt DoNothingFunction.Arn
