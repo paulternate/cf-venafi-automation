@@ -1,5 +1,12 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Description: https://venafi-ecosystem.s3.amazonaws.com/tlspc/templates/do-nothing.yaml
+
+Parameters:
+  TLSPCAPIKey:
+    Type: String
+    Description: From https://ui.venafi.cloud/platform-settings/user-preferences?key=api-keys
+    NoEcho: true
+
 Resources:
   DoNothingFunction:
     Type: 'AWS::Lambda::Function'
@@ -10,6 +17,9 @@ Resources:
       Handler: app.lambda_handler
       Role: !Sub arn:aws:iam::${AWS::AccountId}:role/VenafiEcosystemLambdaBasicExecutionRole
       Runtime: python3.10
+      Environment:
+        Variables:
+          TLSPCAPIKey: !Ref TLSPCAPIKey
   DoNothingResource:
     Type: "Custom::DoNothing"
     Properties:
