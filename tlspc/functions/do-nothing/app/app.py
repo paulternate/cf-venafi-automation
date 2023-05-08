@@ -5,58 +5,52 @@ logger = logging.getLogger()
 logger.setLevel(logging.INFO)
 
 def create_handler(event, context):
-    try:
-        requestInfo = 'RequestType: Create'
-        logger.info(requestInfo)
-        ###########
-        # code here
-        ###########
-    finally:
-        responseData = {}
-        responseData['message'] = requestInfo
-        cfnresponse.send(event, context, cfnresponse.SUCCESS, responseData)
+    responseData = {}
+    requestInfo = 'RequestType: Create'
+    logger.info(requestInfo)
+    ###########
+    # code here
+    ###########
+    responseData['message'] = requestInfo
+    return responseData
 
 def update_handler(event, context):
-    try:
-        requestInfo = 'RequestType: Update'
-        logger.info(requestInfo)
-        ###########
-        # code here
-        ###########
-    finally:
-        responseData = {}
-        responseData['message'] = requestInfo
-        cfnresponse.send(event, context, cfnresponse.SUCCESS, responseData)
+    responseData = {}
+    requestInfo = 'RequestType: Update'
+    logger.info(requestInfo)
+    ###########
+    # code here
+    ###########
+    responseData['message'] = requestInfo
+    return responseData
 
 def delete_handler(event, context):
-    try:
-        requestInfo = 'RequestType: Delete'
-        logger.info(requestInfo)
-        ###########
-        # code here
-        ###########
-    finally:
-        responseData = {}
-        responseData['message'] = requestInfo
-        cfnresponse.send(event, context, cfnresponse.SUCCESS, responseData)
+    responseData = {}
+    requestInfo = 'RequestType: Delete'
+    logger.info(requestInfo)
+    ###########
+    # code here
+    ###########
+    responseData['message'] = requestInfo
+    return responseData
 
-######
-# main
-######
+def lambda_handler_ex_cfn(event, context):
+    logger.info('Received event: ' + str(event))
+    requestTypeHandlers = {
+        'Create': create_handler,
+        'Update': update_handler,
+        'Delete': delete_handler
+    }
+    requestTypeHandler = requestTypeHandlers.get(event.get('RequestType'))
+    return requestTypeHandler(event, context)
+
 def lambda_handler(event, context):
+    responseData = {}
+    responseStatus = cfnresponse.SUCCESS
     try:
-        logger.info('Received event: ' + str(event))
-        requestTypeHandlers = {
-            'Create': create_handler,
-            'Update': update_handler,
-            'Delete': delete_handler
-        }
-        requestTypeHandler = requestTypeHandlers.get(event.get('RequestType'))
-        requestTypeHandler(event, context)
+        responseData = lambda_handler_ex_cfn(event, context)
     except Exception as e:
-        responseData = {}
-        responseData['message'] = e
-        cfnresponse.send(event, context, cfnresponse.FAILED, responseData)
+        responseStatus = cfnresponse.FAILED
+        responseData['message'] = str(e)
     finally:
-        logger.info('Completing lambda_handler')
-        
+        cfnresponse.send(event, context, responseStatus, responseData)
