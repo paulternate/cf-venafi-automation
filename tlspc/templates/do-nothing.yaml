@@ -10,7 +10,7 @@ Resources:
       FunctionName: do-nothing
       Handler: app.lambda_handler
       Role: !Sub arn:aws:iam::${AWS::AccountId}:role/VenafiEcosystemLambdaBasicExecutionRole
-      Runtime: python3.7
+      Runtime: python3.10
   DoNothingResource:
     Type: "Custom::DoNothing"
     Properties:
