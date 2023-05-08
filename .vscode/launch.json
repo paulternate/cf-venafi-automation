@@ -3,6 +3,22 @@
         {
             "type": "aws-sam",
             "request": "direct-invoke",
+            "name": "tlspc-application:Function",
+            "invokeTarget": {
+                "target": "template",
+                "templatePath": "${workspaceFolder}/tlspc/functions/tlspc-application/template.yaml",
+                "logicalId": "Function"
+            },
+            "lambda": {
+                "payload": {
+                    "path": "${workspaceFolder}/tlspc/functions/tlspc-application/events/event.json"
+                },
+                "environmentVariables": {}
+            }
+        },
+        {
+            "type": "aws-sam",
+            "request": "direct-invoke",
             "name": "do-nothing:Function",
             "invokeTarget": {
                 "target": "template",
