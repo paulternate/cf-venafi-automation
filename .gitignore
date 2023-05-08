@@ -129,5 +129,7 @@ dmypy.json
 .pyre/
 
 # Environment settings
-/.vscode/
+/.vscode/*
+!/.vscode/launch.json
+
 .pauls-parameters.json
