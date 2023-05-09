@@ -1,0 +1,49 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: https://venafi-ecosystem.s3.amazonaws.com/tlspc/templates/tlspc-application.yaml
+
+Parameters:
+  TLSPCAPIKey:
+    Type: String
+    Description: From https://ui.venafi.cloud/platform-settings/user-preferences?key=api-keys
+    NoEcho: true
+  AppName:
+    Type: String
+  CertificateIssuingTemplateName:
+    Type: String
+    Default: Default
+  CertificateAuthority:
+    Type: String
+    Default: BUILTIN
+    AllowedValues:
+      - ACME
+      - BUILTIN
+      - DIGICERT
+      - ENTRUST
+      - GLOBALSIGN
+      - GLOBALSIGNMSSL
+      - MICROSOFT
+      - TPP
+      - ZTPKI
+
+Resources:
+  TLSPCApplicationFunction:
+    Type: 'AWS::Lambda::Function'
+    Properties:
+      Code:
+        S3Bucket: !Sub venafi-ecosystem-${AWS::Region}
+        S3Key: tlspc/functions/do-nothing.zip
+      Handler: app.lambda_handler
+      Role: !Sub arn:aws:iam::${AWS::AccountId}:role/VenafiEcosystemLambdaBasicExecutionRole
+      Runtime: python3.10
+  TLSPCApplicationResource:
+    Type: "Custom::TLSPCApplication"
+    Properties:
+      ServiceToken: !GetAtt TLSPCApplicationFunction.Arn
+      TLSPCAPIKey: !Ref TLSPCAPIKey
+      AppName: !Ref AppName
+      CertificateIssuingTemplateName: !Ref CertificateIssuingTemplateName
+      CertificateAuthority: !Ref CertificateAuthority
+
+Outputs:
+  AppGUID: 
+    Value: !GetAtt TLSPCApplicationResource.appGUID
