@@ -31,7 +31,7 @@ Resources:
     Properties:
       Code:
         S3Bucket: !Sub venafi-ecosystem-${AWS::Region}
-        S3Key: tlspc/functions/do-nothing.zip
+        S3Key: tlspc/functions/application-create.zip
       Handler: app.lambda_handler
       Role: !Sub arn:aws:iam::${AWS::AccountId}:role/VenafiEcosystemLambdaBasicExecutionRole
       Runtime: python3.10
