@@ -74,6 +74,19 @@ def update_handler(event, context):
     ###########
     # code here
     ###########
+    api_key=(str(event['ResourceProperties']['TLSPCAPIKey']))
+    app_guid=(str(event['Outputs']['AppGUID']))
+    response = http.request(
+        'PUT',
+        'https://api.venafi.cloud/outagedetection/v1/applications/' + app_guid,
+        headers={
+            'accept': 'application/json',
+            'content-type': 'application/json',
+            'tppl-api-key': api_key
+        },
+        body=json.dumps(data).encode('utf-8')
+    )
+    ###########
     responseData['message'] = requestInfo
     return responseData
 
