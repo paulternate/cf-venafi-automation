@@ -17,10 +17,12 @@ Resources:
       Handler: app.lambda_handler
       Role: !Sub arn:aws:iam::${AWS::AccountId}:role/VenafiEcosystemLambdaBasicExecutionRole
       Runtime: python3.10
-      Environment:
-        Variables:
-          TLSPCAPIKey: !Ref TLSPCAPIKey
   DoNothingResource:
     Type: "Custom::DoNothing"
     Properties:
       ServiceToken: !GetAtt DoNothingFunction.Arn
+      TLSPCAPIKey: !Ref TLSPCAPIKey
+
+Outputs:
+  Message: 
+    Value: !GetAtt DoNothingResource.message
