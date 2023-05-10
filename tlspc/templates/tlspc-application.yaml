@@ -51,4 +51,4 @@ Resources:
 
 Outputs:
   AppGUID: 
-    Value: !GetAtt TLSPCApplicationResource.appGUID
+    Value: !GetAtt TLSPCApplicationResource.AppGUID
