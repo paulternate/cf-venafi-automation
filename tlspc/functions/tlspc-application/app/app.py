@@ -2,6 +2,7 @@ import logging
 import json
 import urllib3
 import cfnresponse
+import boto3
 
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
@@ -52,7 +53,7 @@ def create_handler(event, context):
             issuing_template_name: template_id
         }
     }
-    logger.info("creating application: data=" + str(data))
+    logger.info("api payload created: data=" + str(data))
     response = http.request(
         'POST',
         'https://api.venafi.cloud/outagedetection/v1/applications',
@@ -88,17 +89,20 @@ def delete_handler(event, context):
     ###########
     # code here
     ###########
-    # client = boto3.client('cloudformation')
-    # response = client.describe_stacks(StackName=context.invoked_function_arn.split(':')[6])
-    # appGUID = next((output['OutputValue'] for output in response['Stacks'][0]['Outputs'] if output['OutputKey'] == 'appGUID'), None)
-    # response = http.request(
-    #     'DELETE',
-    #     'https://api.venafi.cloud/outagedetection/v1/applications/' + appGUID,
-    #     headers={
-    #         'accept': '*/*',
-    #         'tppl-api-key': api_key
-    #     }
-    # )
+    client = boto3.client('cloudformation')
+    stackName = context.invoked_function_arn.split(':')[6]
+    logger.info('stackName=' + stackName)
+    response = client.describe_stacks(StackName = stackName)
+    appGUID = next((output['OutputValue'] for output in response['Stacks'][0]['Outputs'] if output['OutputKey'] == 'appGUID'), None)
+    logger.info('appGUID=' + appGUID)
+    response = http.request(
+        'DELETE',
+        'https://api.venafi.cloud/outagedetection/v1/applications/' + appGUID,
+        headers={
+            'accept': '*/*',
+            'tppl-api-key': api_key
+        }
+    )
     ###########
     responseData['message'] = requestInfo
     return responseData

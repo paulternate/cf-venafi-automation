@@ -48,7 +48,6 @@ Resources:
       AppName: !Ref AppName
       IssuingTemplateName: !Ref IssuingTemplateName
       CertificateAuthority: !Ref CertificateAuthority
-      AppGUID: !GetAtt TLSPCApplicationResource.appGUID
 
 Outputs:
   AppGUID: 
