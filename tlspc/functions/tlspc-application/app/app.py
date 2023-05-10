@@ -90,9 +90,9 @@ def delete_handler(event, context):
     # code here
     ###########
     client = boto3.client('cloudformation')
-    stackName = context.invoked_function_arn.split(':')[6]
+    stackId = event.get('StackId')
     logger.info('stackName=' + stackName)
-    response = client.describe_stacks(StackName = stackName)
+    response = client.describe_stacks(StackName = stackId)
     appGUID = next((output['OutputValue'] for output in response['Stacks'][0]['Outputs'] if output['OutputKey'] == 'appGUID'), None)
     logger.info('appGUID=' + appGUID)
     response = http.request(
