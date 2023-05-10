@@ -16,8 +16,9 @@ def create_handler(event, context):
     ###########
     api_key=(str(event['ResourceProperties']['TLSPCAPIKey']))
     app_name=(str(event['ResourceProperties']['AppName']))
-    cert_issuing_template_name=(str(event['ResourceProperties']['CertificateIssuingTemplateName']))
+    issuing_template_name=(str(event['ResourceProperties']['IssuingTemplateName']))
     cert_authority=(str(event['ResourceProperties']['CertificateAuthority']))    
+    logger.info("getting owner_id")
     response = http.request(
         'GET',
         'https://api.venafi.cloud/v1/useraccounts',
@@ -26,6 +27,7 @@ def create_handler(event, context):
             'tppl-api-key': api_key
         })
     owner_id = json.loads(response.data.decode('utf-8'))['user']['id']
+    logger.info("getting template_id")
     response = http.request(
         'GET',
         'https://api.venafi.cloud/v1/certificateissuingtemplates',
@@ -35,7 +37,7 @@ def create_handler(event, context):
         })
     template_id = next(
         (t['id'] for t in json.loads(response.data.decode('utf-8'))['certificateIssuingTemplates']
-            if t['name'] == cert_issuing_template_name and t['certificateAuthority'] == cert_authority),
+            if t['name'] == issuing_template_name and t['certificateAuthority'] == cert_authority),
         None
     )
     data = {
@@ -47,10 +49,10 @@ def create_handler(event, context):
             }
         ],
         "certificateIssuingTemplateAliasIdMap": {
-            cert_issuing_template_name: template_id
+            issuing_template_name: template_id
         }
     }
-    logger.info("Create: payload data=" + str(data))
+    logger.info("creating application: data=" + str(data))
     response = http.request(
         'POST',
         'https://api.venafi.cloud/outagedetection/v1/applications',
@@ -85,6 +87,18 @@ def delete_handler(event, context):
     logger.info(requestInfo)
     ###########
     # code here
+    ###########
+    # client = boto3.client('cloudformation')
+    # response = client.describe_stacks(StackName=context.invoked_function_arn.split(':')[6])
+    # appGUID = next((output['OutputValue'] for output in response['Stacks'][0]['Outputs'] if output['OutputKey'] == 'appGUID'), None)
+    # response = http.request(
+    #     'DELETE',
+    #     'https://api.venafi.cloud/outagedetection/v1/applications/' + appGUID,
+    #     headers={
+    #         'accept': '*/*',
+    #         'tppl-api-key': api_key
+    #     }
+    # )
     ###########
     responseData['message'] = requestInfo
     return responseData

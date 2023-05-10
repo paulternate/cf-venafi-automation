@@ -4,15 +4,20 @@ Description: https://venafi-ecosystem.s3.amazonaws.com/tlspc/templates/tlspc-app
 Parameters:
   TLSPCAPIKey:
     Type: String
-    Description: From https://ui.venafi.cloud/platform-settings/user-preferences?key=api-keys
+    Description: Obtained from https://ui.venafi.cloud/platform-settings/user-preferences?key=api-keys
+    ConstraintDescription: VaaS API key must only lowercase letters and numbers
+    AllowedPattern: "[a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12}"
     NoEcho: true
   AppName:
     Type: String
-  CertificateIssuingTemplateName:
+    Description: As shown at https://ui.venafi.cloud/certificate-issuance/applications
+  IssuingTemplateName:
     Type: String
+    Description: As shown at https://ui.venafi.cloud/certificate-issuance/issuing-templates
     Default: Default
   CertificateAuthority:
     Type: String
+    Description: As shown at https://ui.venafi.cloud/certificate-issuance/issuing-templates
     Default: BUILTIN
     AllowedValues:
       - ACME
@@ -33,7 +38,7 @@ Resources:
         S3Bucket: !Sub venafi-ecosystem-${AWS::Region}
         S3Key: tlspc/functions/tlspc-application.zip
       Handler: app.lambda_handler
-      Role: !Sub arn:aws:iam::${AWS::AccountId}:role/VenafiEcosystemLambdaBasicExecutionRole
+      Role: !Sub arn:aws:iam::${AWS::AccountId}:role/VenafiLambdaBasicExecutionRole
       Runtime: python3.10
   TLSPCApplicationResource:
     Type: "Custom::TLSPCApplication"
@@ -41,8 +46,9 @@ Resources:
       ServiceToken: !GetAtt TLSPCApplicationFunction.Arn
       TLSPCAPIKey: !Ref TLSPCAPIKey
       AppName: !Ref AppName
-      CertificateIssuingTemplateName: !Ref CertificateIssuingTemplateName
+      IssuingTemplateName: !Ref IssuingTemplateName
       CertificateAuthority: !Ref CertificateAuthority
+      AppGUID: !GetAtt TLSPCApplicationResource.appGUID
 
 Outputs:
   AppGUID: 
