@@ -1,7 +1,7 @@
 import logging
 import json
 import urllib3
-import boto3
+import traceback
 import cfnresponse
 
 logger = logging.getLogger()
@@ -15,8 +15,12 @@ def get_parameters(event):
     cert_authority=(str(event['ResourceProperties']['CertificateAuthority']))
     return api_key,app_name,issuing_template_name,cert_authority
 
+def get_physical_resource_id(event):
+    physical_resource_id=(str(event.get('PhysicalResourceId', None)))
+    return physical_resource_id
+
 def get_template_id(api_key, issuing_template_name, cert_authority):
-    logger.info("getting template_id")
+    logger.info('getting template_id')
     response = http.request(
         'GET',
         'https://api.venafi.cloud/v1/certificateissuingtemplates',
@@ -33,7 +37,7 @@ def get_template_id(api_key, issuing_template_name, cert_authority):
     return template_id
 
 def get_current_user_id(api_key):
-    logger.info("getting owner_id")
+    logger.info('getting owner_id')
     response = http.request(
         'GET',
         'https://api.venafi.cloud/v1/useraccounts',
@@ -57,21 +61,8 @@ def build_payload(app_name, issuing_template_name, owner_id, template_id):
             issuing_template_name: template_id
         }
     }
-    logger.info("api payload created: data=" + str(data))
+    logger.info('payload:\n' + json.dumps(data))
     return data
-
-def get_app_guid(event):
-    stackId = event.get('StackId')
-    logger.info('stackId=' + stackId)
-    cfn_client = boto3.client('cloudformation')
-    stacks = cfn_client.describe_stacks(StackName = stackId)
-    logger.info('stacks=' + str(stacks))
-    app_guid = None
-    outputs = stacks['Stacks'][0].get('Outputs')
-    if outputs is not None:
-        app_guid = next((output['OutputValue'] for output in stacks['Stacks'][0]['Outputs'] if output['OutputKey'] == 'AppGUID'), None)
-        logger.info('app_guid=' + app_guid)
-    return app_guid
 
 def create_handler(event, context):
     responseData = {}
@@ -80,7 +71,7 @@ def create_handler(event, context):
     ###########
     # code here
     ###########
-    api_key, app_name, issuing_template_name, cert_authority = get_parameters(event)    
+    api_key, app_name, issuing_template_name, cert_authority = get_parameters(event)
     owner_id = get_current_user_id(api_key)
     template_id = get_template_id(api_key, issuing_template_name, cert_authority)
     payload = build_payload(app_name, issuing_template_name, owner_id, template_id)
@@ -94,8 +85,8 @@ def create_handler(event, context):
         },
         body=json.dumps(payload).encode('utf-8')
     )
-    logger.info("response=" + str(response))
-    responseData['AppGUID'] = json.loads(response.data.decode('utf-8'))['applications'][0]['id']
+    logger.info('response:\n' + json.dumps(response.data.decode('utf-8')))
+    responseData['appGUID'] = json.loads(response.data.decode('utf-8'))['applications'][0]['id']
     ###########
     responseData['message'] = requestInfo
     return responseData
@@ -107,25 +98,24 @@ def update_handler(event, context):
     ###########
     # code here
     ###########
-    # NOTE currently unable to complete the "update" logic. need to understand the AppGUID limitation when applied to update (delete is OK)
-    # app_guid = get_app_guid(event)
-    # # if app_guid is None:
-    # #     logger.info("app_guid is not present, exiting without error")
-    # #     return responseData
-    # api_key, app_name, issuing_template_name, cert_authority = get_parameters(event)   
-    # owner_id = get_current_user_id(api_key)
-    # template_id = get_template_id(api_key, issuing_template_name, cert_authority)
-    # payload = build_payload(app_name, issuing_template_name, owner_id, template_id)
-    # response = http.request(x
-    #     'PUT',
-    #     'https://api.venafi.cloud/outagedetection/v1/applications/' + app_guid,
-    #     headers={
-    #         'accept': '*/*',
-    #         'tppl-api-key': api_key
-    #     },
-    #     body=json.dumps(payload).encode('utf-8')
-    # )
-    # logger.info('response=' + str(response))
+    physical_resource_id = get_physical_resource_id(event)
+    api_key, app_name, issuing_template_name, cert_authority = get_parameters(event)
+    owner_id = get_current_user_id(api_key)
+    template_id = get_template_id(api_key, issuing_template_name, cert_authority)
+    payload = build_payload(app_name, issuing_template_name, owner_id, template_id)
+    logger.info('physical_resource_id:' + physical_resource_id)
+    response = http.request(
+        'PUT',
+        'https://api.venafi.cloud/outagedetection/v1/applications/' + physical_resource_id,
+        headers={
+            'accept': 'application/json',
+            'content-type': 'application/json',
+            'tppl-api-key': api_key
+        },
+        body=json.dumps(payload).encode('utf-8')
+    )
+    logger.info('response:\n' + json.dumps(response.data.decode('utf-8')))
+    responseData['appGUID'] = physical_resource_id # failure to do this will trigger a delete
     ###########
     responseData['message'] = requestInfo
     return responseData
@@ -137,23 +127,25 @@ def delete_handler(event, context):
     ###########
     # code here
     ###########
-    app_guid = get_app_guid(event)
-    api_key, _, _, _ = get_parameters(event)   
+    physical_resource_id = get_physical_resource_id(event)
+    api_key, _, _, _ = get_parameters(event)
+    logger.info('physical_resource_id:' + physical_resource_id)
     response = http.request(
-        'PUT',
-        'https://api.venafi.cloud/outagedetection/v1/applications/' + app_guid,
+        'DELETE',
+        'https://api.venafi.cloud/outagedetection/v1/applications/' + physical_resource_id,
         headers={
             'accept': '*/*',
             'tppl-api-key': api_key
         }
     )
-    logger.info('response=' + str(response))
+    logger.info('response:\n' + json.dumps(response.data.decode('utf-8')))
     ###########
     responseData['message'] = requestInfo
     return responseData
 
 def lambda_handler_ex_cfn(event, context):
-    logger.info('event=' + str(event) + ' context=' + str(context))
+    logger.info('event:\n' + json.dumps(event))
+    logger.info('context:\n' + str(context))
     requestTypeHandlers = {
         'Create': create_handler,
         'Update': update_handler,
@@ -169,6 +161,6 @@ def lambda_handler(event, context):
         responseData = lambda_handler_ex_cfn(event, context)
     except Exception as e:
         responseStatus = cfnresponse.FAILED
-        responseData['message'] = str(e)
+        responseData['message'] = traceback.format_exc()
     finally:
-        cfnresponse.send(event, context, responseStatus, responseData)
+        cfnresponse.send(event, context, responseStatus, responseData, responseData.get('appGUID', None))

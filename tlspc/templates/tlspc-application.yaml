@@ -1,5 +1,18 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Description: https://venafi-ecosystem.s3.amazonaws.com/tlspc/templates/tlspc-application.yaml
+Metadata:
+  AWS::CloudFormation::Interface:
+    ParameterGroups:
+      - Label:
+          default: "Application Properties"
+        Parameters:
+          - AppName
+          - IssuingTemplateName
+          - CertificateAuthority
+      - Label:
+          default: "Credentials"
+        Parameters:
+          - TLSPCAPIKey
 
 Parameters:
   TLSPCAPIKey:
@@ -49,6 +62,6 @@ Resources:
       IssuingTemplateName: !Ref IssuingTemplateName
       CertificateAuthority: !Ref CertificateAuthority
 
-Outputs:
-  AppGUID: 
-    Value: !GetAtt TLSPCApplicationResource.AppGUID
+# Outputs:
+#   AppGUID:
+#     Value: !GetAtt TLSPCApplicationResource.appGUID
