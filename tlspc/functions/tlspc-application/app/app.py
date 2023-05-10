@@ -93,17 +93,18 @@ def delete_handler(event, context):
     stackId = event.get('StackId')
     stackName = stackId.split(':')[5]
     logger.info('stackName=' + stackName)
-    response = client.describe_stacks(StackName = stackName)
-    appGUID = next((output['OutputValue'] for output in response['Stacks'][0]['Outputs'] if output['OutputKey'] == 'appGUID'), None)
-    logger.info('appGUID=' + appGUID)
-    response = http.request(
-        'DELETE',
-        'https://api.venafi.cloud/outagedetection/v1/applications/' + appGUID,
-        headers={
-            'accept': '*/*',
-            'tppl-api-key': api_key
-        }
-    )
+    response = client.describe_stacks # (StackName = stackName)
+    logger.info('describe-stacks (all) response=' + response)
+    # appGUID = next((output['OutputValue'] for output in response['Stacks'][0]['Outputs'] if output['OutputKey'] == 'appGUID'), None)
+    # logger.info('appGUID=' + appGUID)
+    # response = http.request(
+    #     'DELETE',
+    #     'https://api.venafi.cloud/outagedetection/v1/applications/' + appGUID,
+    #     headers={
+    #         'accept': '*/*',
+    #         'tppl-api-key': api_key
+    #     }
+    # )
     ###########
     responseData['message'] = requestInfo
     return responseData
