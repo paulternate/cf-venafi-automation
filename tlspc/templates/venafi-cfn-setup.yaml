@@ -1,10 +1,10 @@
 AWSTemplateFormatVersion: "2010-09-09"
-Description: https://venafi-ecosystem.s3.amazonaws.com/tlspc/templates/venafi-ecosystem-setup.yaml
+Description: https://venafi-ecosystem.s3.amazonaws.com/tlspc/templates/venafi-cfn-setup.yaml
 Resources:
-  VenafiEcosystemLambdaBasicExecutionRole:
+  VenafiLambdaBasicExecutionRole:
     Type: AWS::IAM::Role
     Properties:
-      RoleName: VenafiEcosystemLambdaBasicExecutionRole
+      RoleName: VenafiLambdaBasicExecutionRole
       AssumeRolePolicyDocument:
         Version: "2012-10-17"
         Statement:
