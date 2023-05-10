@@ -66,8 +66,11 @@ def get_app_guid(event):
     cfn_client = boto3.client('cloudformation')
     stacks = cfn_client.describe_stacks(StackName = stackId)
     logger.info('stacks=' + str(stacks))
-    app_guid = next((output['OutputValue'] for output in stacks['Stacks'][0]['Outputs'] if output['OutputKey'] == 'AppGUID'), None)
-    logger.info('app_guid=' + app_guid)
+    app_guid = None
+    outputs = stacks['Stacks'][0].get('Outputs')
+    if outputs is not None:
+        app_guid = next((output['OutputValue'] for output in stacks['Stacks'][0]['Outputs'] if output['OutputKey'] == 'AppGUID'), None)
+        logger.info('app_guid=' + app_guid)
     return app_guid
 
 def create_handler(event, context):
@@ -104,21 +107,25 @@ def update_handler(event, context):
     ###########
     # code here
     ###########
-    app_guid = get_app_guid(event)
-    api_key, app_name, issuing_template_name, cert_authority = get_parameters(event)   
-    owner_id = get_current_user_id(api_key)
-    template_id = get_template_id(api_key, issuing_template_name, cert_authority)
-    payload = build_payload(app_name, issuing_template_name, owner_id, template_id)
-    response = http.request(
-        'PUT',
-        'https://api.venafi.cloud/outagedetection/v1/applications/' + app_guid,
-        headers={
-            'accept': '*/*',
-            'tppl-api-key': api_key
-        },
-        body=json.dumps(payload).encode('utf-8')
-    )
-    logger.info('response=' + str(response))
+    # NOTE currently unable to complete the "update" logic. need to understand the AppGUID limitation when applied to update (delete is OK)
+    # app_guid = get_app_guid(event)
+    # # if app_guid is None:
+    # #     logger.info("app_guid is not present, exiting without error")
+    # #     return responseData
+    # api_key, app_name, issuing_template_name, cert_authority = get_parameters(event)   
+    # owner_id = get_current_user_id(api_key)
+    # template_id = get_template_id(api_key, issuing_template_name, cert_authority)
+    # payload = build_payload(app_name, issuing_template_name, owner_id, template_id)
+    # response = http.request(x
+    #     'PUT',
+    #     'https://api.venafi.cloud/outagedetection/v1/applications/' + app_guid,
+    #     headers={
+    #         'accept': '*/*',
+    #         'tppl-api-key': api_key
+    #     },
+    #     body=json.dumps(payload).encode('utf-8')
+    # )
+    # logger.info('response=' + str(response))
     ###########
     responseData['message'] = requestInfo
     return responseData
