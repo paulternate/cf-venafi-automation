@@ -108,7 +108,7 @@ def delete_handler(event, context):
     return responseData
 
 def lambda_handler_ex_cfn(event, context):
-    logger.info('Received event: ' + str(event))
+    logger.info('event=' + str(event) + ' context=' + str(context))
     requestTypeHandlers = {
         'Create': create_handler,
         'Update': update_handler,
