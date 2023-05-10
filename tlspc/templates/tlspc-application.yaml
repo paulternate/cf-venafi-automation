@@ -62,6 +62,8 @@ Resources:
       IssuingTemplateName: !Ref IssuingTemplateName
       CertificateAuthority: !Ref CertificateAuthority
 
-# Outputs:
-#   AppGUID:
-#     Value: !GetAtt TLSPCApplicationResource.appGUID
+Outputs:
+  PhysicalResourceId:
+    Value: !GetAtt TLSPCApplicationResource.PhysicalResourceId
+  Message:
+    Value: !GetAtt TLSPCApplicationResource.Message

@@ -86,9 +86,9 @@ def create_handler(event, context):
         body=json.dumps(payload).encode('utf-8')
     )
     logger.info('response:\n' + json.dumps(response.data.decode('utf-8')))
-    responseData['appGUID'] = json.loads(response.data.decode('utf-8'))['applications'][0]['id']
+    responseData['PhysicalResourceId'] = json.loads(response.data.decode('utf-8'))['applications'][0]['id']
     ###########
-    responseData['message'] = requestInfo
+    responseData['Message'] = requestInfo
     return responseData
 
 def update_handler(event, context):
@@ -115,9 +115,9 @@ def update_handler(event, context):
         body=json.dumps(payload).encode('utf-8')
     )
     logger.info('response:\n' + json.dumps(response.data.decode('utf-8')))
-    responseData['appGUID'] = physical_resource_id # failure to do this will trigger a delete
+    responseData['PhysicalResourceId'] = physical_resource_id # failure to do this will trigger a delete
     ###########
-    responseData['message'] = requestInfo
+    responseData['Message'] = requestInfo
     return responseData
 
 def delete_handler(event, context):
@@ -139,8 +139,9 @@ def delete_handler(event, context):
         }
     )
     logger.info('response:\n' + json.dumps(response.data.decode('utf-8')))
+    responseData['PhysicalResourceId'] = physical_resource_id
     ###########
-    responseData['message'] = requestInfo
+    responseData['Message'] = requestInfo
     return responseData
 
 def lambda_handler_ex_cfn(event, context):
@@ -161,6 +162,6 @@ def lambda_handler(event, context):
         responseData = lambda_handler_ex_cfn(event, context)
     except Exception as e:
         responseStatus = cfnresponse.FAILED
-        responseData['message'] = traceback.format_exc()
+        responseData['Message'] = traceback.format_exc()
     finally:
-        cfnresponse.send(event, context, responseStatus, responseData, responseData.get('appGUID', None))
+        cfnresponse.send(event, context, responseStatus, responseData, responseData.get('PhysicalResourceId', None))
