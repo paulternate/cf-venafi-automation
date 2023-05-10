@@ -13,7 +13,9 @@
                 "payload": {
                     "path": "${workspaceFolder}/tlspc/functions/tlspc-application/events/event.json"
                 },
-                "environmentVariables": {}
+                "environmentVariables": {
+                    "PYDEVD_WARN_SLOW_RESOLVE_TIMEOUT": "600"
+                }
             }
         },
         {
@@ -29,7 +31,9 @@
                 "payload": {
                     "path": "${workspaceFolder}/tlspc/functions/do-nothing/events/event.json"
                 },
-                "environmentVariables": {}
+                "environmentVariables": {
+                    "PYDEVD_WARN_SLOW_RESOLVE_TIMEOUT": "600"
+                }
             }
         }
     ]
