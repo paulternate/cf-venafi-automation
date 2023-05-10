@@ -5,7 +5,7 @@ Parameters:
   TLSPCAPIKey:
     Type: String
     Description: From https://ui.venafi.cloud/platform-settings/user-preferences?key=api-keys
-    ConstraintDescription: VaaS API key must only lowercase letters and numbers
+    ConstraintDescription: VaaS API key must contain only lowercase letters and numbers
     AllowedPattern: "[a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12}"
     NoEcho: true
 
