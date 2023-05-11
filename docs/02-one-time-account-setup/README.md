@@ -1,25 +1,40 @@
 # 02. One-Time Account Setup
 
-WIP
+## What's this all about?
 
-## NOTE 
+Security teams need to strike a balance between granting enough privilege for staff to do the job, whilst staying secure.
+Privilege escalation risks in AWS are contained by limiting what you're allowed to do, particularly with the Identity and Access Management (IAM) service.
+Such limits can impact the standard workflow used when creating and deploying Lambda functions.
+We can address this in each AWS account by pre-configuring an IAM Role for Lambda to use, but someone with elevated rights will need to apply the fix.
 
-This CloudFormation template requires the users to possess elevated rights which some users will **not** possess in the `venafi-se` and `venafi-ps` AWS accounts.
-Attendees can assume that this step has been completed in advance and move straight on to the [next chapter](../03-tlspc-create-application/README.md)
+## What do I need to do?
 
-## The template
+**Answer: probably nothing.**
 
+The AWS accounts you're using today have likely had the fix applied so the following action is **not required** and you can move straight on with the [first exercise](../03-tlspc-create-application/README.md).
 
-and is a prerequisite in each target AWS account.
-It is responsible for creating an IAM Role with the minimum rights
+For anyone else, assuming you have the elevated rights required, you need to apply this fix via CloudFormation.
 
+If you're not sure, please consult your instructor.
 
+## The Venafi CFN Setup Template
 
-permits Lambda functions to create log entries in CloudWatch.
-Since users may not themselves may not have the rights to create IAM Roles
+| Type | Description | S3 | Source |
+| - | - | - | - |
+| Template | Creates an IAM Role named VenafiLambdaBasicExecutionRole. This is for use by Lambda Functions, providing them with the ability to send logs to CloudWatch and interact with the S3 service for storage | https://venafi-ecosystem.s3.amazonaws.com/tlspc/templates/venafi-cfn-setup.yaml | [View](https://github.com/paulternate/cf-venafi-automation/blob/main/tlspc/templates/venafi-cfn-setup.yaml) |
 
+### Steps
 
+- Navigate to https://us-east-1.console.aws.amazon.com/cloudformation/home
+- Click on "Create stack", then click "With new resources (standard)"
+- On the "Create stack" page, set "Amazon S3 URL" to `https://venafi-ecosystem.s3.amazonaws.com/tlspc/templates/venafi-cfn-setup.yaml`, then click "Next"
+- On the "Specify stack details" page, set "Stack name" to something appropriate, like, `venafi-cfn-setup`, then click "Next"
+- Scroll to the foot of the "Configure stack options" page, then click "Next"
+- Scroll to the foot of the "Review" page, check ✅ the "Capabilities" checkbox and finally click "Submit"
 
-It is included here for completeness but, in the case of the `venafi-se` and `venafi-ps` accounts you can assume this has been done already and move on to the [next chapter](../01/README.md)
+With the new Stack successfully created, you should be able to continue with the exercises in this workshop.
+
+NOTE: You ran the Template in the "us-east-1" region.
+Like most AWS services, CloudFormation is regionally scoped. However, the IAM resources it creates are global, so it's not particularly important where it runs.
 
 Next: [Main Menu](../README.md) | [03. CloudFormation Creates Application in TLSPC](../03-tlspc-create-application/README.md)
