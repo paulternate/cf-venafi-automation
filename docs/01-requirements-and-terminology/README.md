@@ -14,6 +14,8 @@ To successfully complete this workshop you will need the following:
 
 ## Terminology
 
+The following table covers a few terms which you'll see in this workshop and the minimum you need to know about them.
+
 | Term  | Description |
 | - | - |
 | Template | The YAML or JSON file passed to CloudFormation which describes a collection of desired resources and their inter-dependencies. These resources are typically restricted to AWS, but not today! |
