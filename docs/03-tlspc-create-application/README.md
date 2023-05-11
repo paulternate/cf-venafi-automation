@@ -12,7 +12,7 @@ They are as follows:
 | Type | Description | S3 | Source |
 | - | - | - | - |
 | Template | Orchestrates the lifecycle of a TLSPCApplication Custom Resource which references the Function (deployed simultaneously) | https://venafi-ecosystem.s3.amazonaws.com/tlspc/templates/tlspc-application.yaml | [View](https://github.com/paulternate/cf-venafi-automation/blob/main/tlspc/templates/tlspc-application.yaml)  |
-| Function | Implements the Create/Update/Delete operations required by the TLSPCApplication Custom Resource | https://venafi-ecosystem.s3.amazonaws.com/tlspc/functions/tlspc-application.zip | [View](https://github.com/paulternate/cf-venafi-automation/blob/main/tlspc/functions/tlspc-application/app/app.py)   |
+| Function | Implements the Create/Update/Delete operations required by the TLSPCApplication Custom Resource | https://venafi-ecosystem.s3.amazonaws.com/tlspc/functions/tlspc-application.zip | [View](https://github.com/paulternate/cf-venafi-automation/blob/main/tlspc/functions/tlspc-application/app/app.py) |
 
 ## Let's Go!
 

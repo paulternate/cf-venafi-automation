@@ -11,9 +11,9 @@ We can address this in each AWS account by pre-configuring an IAM Role for Lambd
 
 **Answer: probably nothing.**
 
-The AWS accounts you're using today have likely had the fix applied so the following action is **not required** and you can move straight on with the [first exercise](../03-tlspc-create-application/README.md).
+If you're using a Venafi/Jetstack AWS account today then the fix has likely been applied already so the following action is **not required** and you can move straight on with the [first exercise](../03-tlspc-create-application/README.md).
 
-For anyone else, assuming you have the elevated rights required, you need to apply this fix via CloudFormation.
+For anyone else, assuming you have the elevated rights required in your AWS account, you will need to apply this fix via CloudFormation.
 
 If you're not sure, please consult your instructor.
 
@@ -23,7 +23,9 @@ If you're not sure, please consult your instructor.
 | - | - | - | - |
 | Template | Creates an IAM Role named VenafiLambdaBasicExecutionRole. This is for use by Lambda Functions, providing them with the ability to send logs to CloudWatch and interact with the S3 service for storage | https://venafi-ecosystem.s3.amazonaws.com/tlspc/templates/venafi-cfn-setup.yaml | [View](https://github.com/paulternate/cf-venafi-automation/blob/main/tlspc/templates/venafi-cfn-setup.yaml) |
 
-### Steps
+## Steps to apply the fix
+
+The following steps will enable Lambda Functions in the exercises to be successfully created.
 
 - Navigate to https://us-east-1.console.aws.amazon.com/cloudformation/home
 - Click on "Create stack", then click "With new resources (standard)"
@@ -35,6 +37,6 @@ If you're not sure, please consult your instructor.
 With the new Stack successfully created, you should be able to continue with the exercises in this workshop.
 
 NOTE: You ran the Template in the "us-east-1" region.
-Like most AWS services, CloudFormation is regionally scoped. However, the IAM resources it creates are global, so it's not particularly important where it runs.
+Like most AWS services, CloudFormation is regionally scoped. However, the IAM resources it creates are global, so it's not particularly important where it runs ... in case you were wondering.
 
 Next: [Main Menu](../README.md) | [03. CloudFormation Creates Application in TLSPC](../03-tlspc-create-application/README.md)
