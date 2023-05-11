@@ -28,8 +28,8 @@ The following table covers a few terms which you'll see in this workshop and the
 ## Caveats
 
 The Ecosystem team would like to clarify that this solution is by no means the finished article.
-The TLSPC API coverage does not extend too far at this point and features you might expect to see will be missing.
-The primary motivation for putting this workshop together is to establish a proof of concept and get you thinking about what types of integrations our customers could benefit from.
+Coverage of the TLSPC API does not extend too far at this point and features you might expect to see will be missing.
+The primary motivation for putting this workshop together was to establish a proof of concept, have you experience what's possible first-hand and get you thinking about what types of third-party integrations are valuable.
 
 Maybe you think the Ecosystem team should focus their automation and IaC integration efforts elsewhere.
 Or maybe you think we missed the point completely.
