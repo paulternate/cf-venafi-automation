@@ -27,12 +27,13 @@ The following table covers a few terms which you'll see in this workshop and the
 
 ## Caveats
 
-This solution is really at the proof of concept stage and API coverage has gaps and does not extend too far at this point.
-The primary motivation for putting this workshop together is to establish a proof of concept and get you all thinking about what types of integrations our customers could benefit from.
+The Ecosystem team would like to clarify that this solution is by no means the finished article.
+The TLSPC API coverage does not extend too far at this point and features you might expect to see will be missing.
+The primary motivation for putting this workshop together is to establish a proof of concept and get you thinking about what types of integrations our customers could benefit from.
 
 Maybe you think the Ecosystem team should focus their automation and IaC integration efforts elsewhere.
 Or maybe you think we missed the point completely.
-Either way, please let us know, because we'd like to know what the field is telling you.
+Either way, we'd love to know.
+If customers are telling you they need something like this, but different in some way, let's work together to provide them with the tools they need to be "FastSecure".
 
 Next: [Main Menu](../README.md) | [02. One-Time Account Setup](../02-one-time-account-setup/README.md)
-
