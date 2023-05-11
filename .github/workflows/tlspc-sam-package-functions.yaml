@@ -1,4 +1,4 @@
-name: Zip and Upload TLSPC Lambda Functions to S3
+name: tlspc-sam-package-functions
 
 on:
   push:
@@ -28,7 +28,7 @@ jobs:
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: us-east-1
 
-    - name: Zip and upload Lambdas
+    - name: Call sam build/package for each function
       run: |
         curl -Lo /tmp/aws-sam-cli.zip https://github.com/aws/aws-sam-cli/releases/latest/download/aws-sam-cli-linux-x86_64.zip
         sudo unzip -q /tmp/aws-sam-cli.zip -d /usr/local/bin/
@@ -53,3 +53,4 @@ jobs:
             fi
           fi
         done
+        popd > /dev/null
