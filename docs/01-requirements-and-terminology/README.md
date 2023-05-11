@@ -2,6 +2,8 @@
 
 ## Requirements
 
+To successfully complete this workshop you will need the following:
+
 - Access to the "AWS Single Sign-on" (SSO) tile via https://venafi.okta.com/
 - A minimum of "Basic" access to one of the following AWS accounts via SSO:
   - "venafi-se" (aka "Venafi SE")
