@@ -34,7 +34,8 @@ The following steps will enable Lambda Functions in the exercises to be successf
 - Scroll to the foot of the "Configure stack options" page, then click "Next"
 - Scroll to the foot of the "Review" page, check ✅ the "Capabilities" checkbox and finally click "Submit"
 
-With the new Stack successfully created, you should be able to continue with the exercises in this workshop.
+After ~30 secs, the stack will reach a "Staus" of "CREATE_COMPLETE".
+You will now be able to continue with the exercises in this workshop.
 
 NOTE: You ran the Template in the "us-east-1" region.
 Like most AWS services, CloudFormation is regionally scoped. However, the IAM resources it creates are global, so it's not particularly important where it runs ... in case you were wondering.
