@@ -19,7 +19,7 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v2
       with:
-        python-version: '3.7'
+        python-version: '3.10'
 
     - name: Set up AWS CLI
       uses: aws-actions/configure-aws-credentials@v2
@@ -30,17 +30,26 @@ jobs:
 
     - name: Zip and upload Lambdas
       run: |
-        pushd .
+        curl -Lo /tmp/aws-sam-cli.zip https://github.com/aws/aws-sam-cli/releases/latest/download/aws-sam-cli-linux-x86_64.zip
+        sudo unzip -q /tmp/aws-sam-cli.zip -d /usr/local/bin/
+
+        s3_bucket=venafi-ecosystem
+        s3_prefix=tlspc/functions
+        pushd . > /dev/null
         cd tlspc/functions/
         for dir in *; do
           if [ -d "${dir}" ]; then
-            if [ -f "${dir}/app/requirements.txt" ]; then
-              pip3 install --requirement "${dir}/app/requirements.txt" --target "${dir}/app"
+            echo "processing ${dir}"
+            if [ -f "${dir}/template.yaml" ]; then
+              echo "found ${dir}/template.yaml"
+              pushd . > /dev/null
+              cd "${dir}"
+              sam build
+              sam package --s3-bucket ${s3_bucket} --s3-prefix ${s3_prefix} --force-upload --output-template-file ./.aws-sam/output.yaml
+              code_uri=$(grep CodeUri < ./.aws-sam/output.yaml | cut -d ':' -f2- | tr -d ' ')
+              echo "code_uri=${code_uri}"
+              aws s3 mv ${code_uri} s3://${s3_bucket}/${s3_prefix}/${dir}.zip
+              popd > /dev/null
             fi
-            pushd .
-            cd "${dir}/app" && zip -r "../../${dir}.zip" *
-            aws s3 cp "../../${dir}.zip" s3://venafi-ecosystem/tlspc/functions/
-            popd
           fi
         done
-        popd
