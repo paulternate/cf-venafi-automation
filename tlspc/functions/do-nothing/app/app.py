@@ -40,7 +40,7 @@ def lambda_handler(event, context):
     responseData = {}
     responseStatus = cfnresponse.SUCCESS
     try:
-        logger.info('event:\n' + json.dumps(event))
+        # logger.info('event:\n' + json.dumps(event)) # <-- includes sensitive info!!!
         logger.info('context:\n' + str(context))
         requestTypeHandlers = {
             'Create': create_handler,
