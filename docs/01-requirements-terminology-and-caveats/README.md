@@ -1,4 +1,4 @@
-# 01. Requirements and Terminology 
+# 01. Requirements, Terminology and Caveats
 
 ## Requirements
 
@@ -24,6 +24,15 @@ The following table covers a few terms which you'll see in this workshop and the
 | S3 | Amazon Simple Storage Service (S3) is a scalable cloud storage service providing unlimited(!) storage and retrieval of data anywhere on the web. |
 | Lambda | A compute service provided by AWS that allows you to run your code without having to provision or manage EC2 instances. Unlike EC2, Lambda only charges you for the time that your code is running. |
 | Function | A piece of code uploaded to AWS Lambda which comes into existence and executes in response to specific events. Lambda Function instances are short-lived and stateless so they often use S3 for their persistence requirements. Lambda Functions are typically, but not exclusively, written in Python or NodeJS and can be invoked from Custom Resources. |
+
+## Caveats
+
+This solution is really at the proof of concept stage and API coverage has gaps and does not extend too far at this point.
+The primary motivation for putting this workshop together is to establish a proof of concept and get you all thinking about what types of integrations our customers could benefit from.
+
+Maybe you think the Ecosystem team should focus their automation and IaC integration efforts elsewhere.
+Or maybe you think we missed the point completely.
+Either way, please let us know, because we'd like to know what the field is telling you.
 
 Next: [Main Menu](../README.md) | [02. One-Time Account Setup](../02-one-time-account-setup/README.md)
 

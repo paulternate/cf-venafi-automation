@@ -4,7 +4,7 @@
 * [00. Infrastructure As Code and AWS CloudFormation](00-iac-cloudformation/README.md)
 
 ## Technical Orientation
-* [01. Requirements and Terminology ](01-requirements-and-terminology/README.md)
+* [01. Requirements, Terminology and Caveats](01-requirements-terminology-and-caveats/README.md)
 * [02. One-Time Account Setup](02-one-time-account-setup/README.md) (not required for Venafi/Jetstack accounts)
 
 ## Workshop Exercises
