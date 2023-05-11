@@ -38,6 +38,6 @@ The Venafi Ecosystem team is tasked with making the consumption of Venafi servic
 Imagine a Cloud Native company who is both a customer of AWS and a user of TLS Protect Cloud (TLSPC).
 They need to mint certificates via TLSPC **before** activating their AWS compute resources.
 As such, TLSPC is a deep-rooted dependency of their own infrastructure.
-The use of Custom Resources to represent TLSPC capabilities allows you to treat TLSPC as an extension of AWS, ensuring that policy-enforced X.509 certificates are available at the point of need.
+The use of Custom Resources to represent TLSPC capabilities allows them to treat TLSPC as an extension of AWS, ensuring that policy-enforced X.509 certificates are delivered at the point of need, using familiar tools and best practice.
 
 Next: [Main Menu](../README.md) | [01. Venafi Okta, AWS Single Sign-On and navigation](../01-venafi-okta-aws-sso/README.md)
