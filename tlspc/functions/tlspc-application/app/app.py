@@ -84,8 +84,8 @@ def create_handler(event, context):
         body=json.dumps(payload).encode('utf-8')
     )
     logger.info('response:\n' + json.dumps(response.data.decode('utf-8')))
-    responseData['PhysicalResourceId'] = json.loads(response.data.decode('utf-8'))['applications'][0]['id']
     ###########
+    responseData['PhysicalResourceId'] = json.loads(response.data.decode('utf-8'))['applications'][0]['id']
     responseData['Message'] = requestInfo
     return responseData
 
@@ -93,8 +93,8 @@ def update_handler(event, context):
     responseData = {}
     requestInfo = 'RequestType: Update'
     logger.info(requestInfo)
-    ###########
     physical_resource_id = get_physical_resource_id(event)
+    ###########
     api_key, app_name, issuing_template_name, cert_authority = get_parameters(event)
     owner_id = get_current_user_id(api_key)
     template_id = get_template_id(api_key, issuing_template_name, cert_authority)
@@ -111,8 +111,8 @@ def update_handler(event, context):
         body=json.dumps(payload).encode('utf-8')
     )
     logger.info('response:\n' + json.dumps(response.data.decode('utf-8')))
-    responseData['PhysicalResourceId'] = physical_resource_id # failure to do this will trigger a delete
     ###########
+    responseData['PhysicalResourceId'] = physical_resource_id # failure to do this will trigger a delete
     responseData['Message'] = requestInfo
     return responseData
 
@@ -120,8 +120,8 @@ def delete_handler(event, context):
     responseData = {}
     requestInfo = 'RequestType: Delete'
     logger.info(requestInfo)
-    ###########
     physical_resource_id = get_physical_resource_id(event)
+    ###########
     api_key, _, _, _ = get_parameters(event)
     logger.info('physical_resource_id:' + physical_resource_id)
     response = http.request(
@@ -133,8 +133,8 @@ def delete_handler(event, context):
         }
     )
     logger.info('response:\n' + json.dumps(response.data.decode('utf-8')))
-    responseData['PhysicalResourceId'] = physical_resource_id
     ###########
+    responseData['PhysicalResourceId'] = physical_resource_id
     responseData['Message'] = requestInfo
     return responseData
 

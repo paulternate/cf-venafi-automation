@@ -6,6 +6,10 @@ import cfnresponse
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
 
+def get_physical_resource_id(event):
+    physical_resource_id=(str(event.get('PhysicalResourceId', None)))
+    return physical_resource_id
+
 def create_handler(event, context):
     responseData = {}
     requestInfo = 'RequestType: Create'
@@ -13,6 +17,7 @@ def create_handler(event, context):
     ###########
     # code here
     ###########
+    responseData['PhysicalResourceId'] = "insert created physical resource id here!"
     responseData['message'] = requestInfo
     return responseData
 
@@ -20,9 +25,11 @@ def update_handler(event, context):
     responseData = {}
     requestInfo = 'RequestType: Update'
     logger.info(requestInfo)
+    physical_resource_id = get_physical_resource_id(event)
     ###########
     # code here
     ###########
+    responseData['PhysicalResourceId'] = physical_resource_id # failure to do this will trigger a delete
     responseData['message'] = requestInfo
     return responseData
 
@@ -30,9 +37,11 @@ def delete_handler(event, context):
     responseData = {}
     requestInfo = 'RequestType: Delete'
     logger.info(requestInfo)
+    physical_resource_id = get_physical_resource_id(event)
     ###########
     # code here
     ###########
+    responseData['PhysicalResourceId'] = physical_resource_id
     responseData['message'] = requestInfo
     return responseData
 
