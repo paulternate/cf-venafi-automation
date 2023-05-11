@@ -63,7 +63,5 @@ Resources:
       CertificateAuthority: !Ref CertificateAuthority
 
 Outputs:
-  PhysicalResourceId:
-    Value: !GetAtt TLSPCApplicationResource.PhysicalResourceId
   Message:
     Value: !GetAtt TLSPCApplicationResource.Message
