@@ -40,4 +40,4 @@ They need to mint certificates via TLSPC **before** activating their AWS compute
 As such, TLSPC is a deep-rooted dependency of their own infrastructure.
 The use of Custom Resources to represent TLSPC capabilities allows them to treat TLSPC as an extension of AWS, ensuring that policy-enforced X.509 certificates are delivered at the point of need, using familiar tools and best practice.
 
-Next: [Main Menu](../README.md) | [01. Requirements, Terminology and Caveats](01-requirements-terminology-and-caveats/README.md)
+Next: [Main Menu](../README.md) | [01. Requirements, Terminology and Caveats](../01-requirements-terminology-and-caveats/README.md)
