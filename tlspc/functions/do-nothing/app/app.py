@@ -1,4 +1,5 @@
 import logging
+import traceback
 import cfnresponse
 
 logger = logging.getLogger()
@@ -34,23 +35,22 @@ def delete_handler(event, context):
     responseData['message'] = requestInfo
     return responseData
 
-def lambda_handler_ex_cfn(event, context):
-    logger.info('Received event: ' + str(event))
-    requestTypeHandlers = {
-        'Create': create_handler,
-        'Update': update_handler,
-        'Delete': delete_handler
-    }
-    requestTypeHandler = requestTypeHandlers.get(event.get('RequestType'))
-    return requestTypeHandler(event, context)
-
 def lambda_handler(event, context):
     responseData = {}
     responseStatus = cfnresponse.SUCCESS
     try:
-        responseData = lambda_handler_ex_cfn(event, context)
+        logger.info('event:\n' + json.dumps(event))
+        logger.info('context:\n' + str(context))
+        requestTypeHandlers = {
+            'Create': create_handler,
+            'Update': update_handler,
+            'Delete': delete_handler
+        }
+        requestTypeHandler = requestTypeHandlers.get(event.get('RequestType'))
+        responseData = requestTypeHandler(event, context)
     except Exception as e:
         responseStatus = cfnresponse.FAILED
-        responseData['message'] = str(e)
+        responseData['Message'] = traceback.format_exc()
     finally:
-        cfnresponse.send(event, context, responseStatus, responseData)
+        cfnresponse.send(event, context, responseStatus, responseData, responseData.get('PhysicalResourceId', None))
+

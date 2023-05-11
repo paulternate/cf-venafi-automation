@@ -69,8 +69,6 @@ def create_handler(event, context):
     requestInfo = 'RequestType: Create'
     logger.info(requestInfo)
     ###########
-    # code here
-    ###########
     api_key, app_name, issuing_template_name, cert_authority = get_parameters(event)
     owner_id = get_current_user_id(api_key)
     template_id = get_template_id(api_key, issuing_template_name, cert_authority)
@@ -95,8 +93,6 @@ def update_handler(event, context):
     responseData = {}
     requestInfo = 'RequestType: Update'
     logger.info(requestInfo)
-    ###########
-    # code here
     ###########
     physical_resource_id = get_physical_resource_id(event)
     api_key, app_name, issuing_template_name, cert_authority = get_parameters(event)
@@ -125,8 +121,6 @@ def delete_handler(event, context):
     requestInfo = 'RequestType: Delete'
     logger.info(requestInfo)
     ###########
-    # code here
-    ###########
     physical_resource_id = get_physical_resource_id(event)
     api_key, _, _, _ = get_parameters(event)
     logger.info('physical_resource_id:' + physical_resource_id)
@@ -144,22 +138,19 @@ def delete_handler(event, context):
     responseData['Message'] = requestInfo
     return responseData
 
-def lambda_handler_ex_cfn(event, context):
-    logger.info('event:\n' + json.dumps(event))
-    logger.info('context:\n' + str(context))
-    requestTypeHandlers = {
-        'Create': create_handler,
-        'Update': update_handler,
-        'Delete': delete_handler
-    }
-    requestTypeHandler = requestTypeHandlers.get(event.get('RequestType'))
-    return requestTypeHandler(event, context)
-
 def lambda_handler(event, context):
     responseData = {}
     responseStatus = cfnresponse.SUCCESS
     try:
-        responseData = lambda_handler_ex_cfn(event, context)
+        logger.info('event:\n' + json.dumps(event))
+        logger.info('context:\n' + str(context))
+        requestTypeHandlers = {
+            'Create': create_handler,
+            'Update': update_handler,
+            'Delete': delete_handler
+        }
+        requestTypeHandler = requestTypeHandlers.get(event.get('RequestType'))
+        responseData = requestTypeHandler(event, context)
     except Exception as e:
         responseStatus = cfnresponse.FAILED
         responseData['Message'] = traceback.format_exc()
