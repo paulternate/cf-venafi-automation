@@ -11,7 +11,7 @@ http = urllib3.PoolManager()
 def get_parameters(event):
     api_key=(str(event['ResourceProperties']['TLSPCAPIKey']))
     app_name=(str(event['ResourceProperties']['AppName']))
-    app_description=(str(event['ResourceProperties']['AppName']))
+    app_description=(str(event['ResourceProperties']['AppDescription']))
     issuing_template_name=(str(event['ResourceProperties']['IssuingTemplateName']))
     cert_authority=(str(event['ResourceProperties']['CertificateAuthority']))
     return api_key, app_name, app_description, issuing_template_name, cert_authority
