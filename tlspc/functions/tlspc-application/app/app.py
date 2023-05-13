@@ -11,9 +11,10 @@ http = urllib3.PoolManager()
 def get_parameters(event):
     api_key=(str(event['ResourceProperties']['TLSPCAPIKey']))
     app_name=(str(event['ResourceProperties']['AppName']))
+    app_description=(str(event['ResourceProperties']['AppName']))
     issuing_template_name=(str(event['ResourceProperties']['IssuingTemplateName']))
     cert_authority=(str(event['ResourceProperties']['CertificateAuthority']))
-    return api_key,app_name,issuing_template_name,cert_authority
+    return api_key, app_name, app_description, issuing_template_name, cert_authority
 
 def get_physical_resource_id(event):
     physical_resource_id=(str(event.get('PhysicalResourceId', None)))
@@ -48,9 +49,10 @@ def get_current_user_id(api_key):
     owner_id = json.loads(response.data.decode('utf-8'))['user']['id']
     return owner_id
 
-def build_payload(app_name, issuing_template_name, owner_id, template_id):
+def build_payload(app_name, app_description, issuing_template_name, owner_id, template_id):
     data = {
         "name": app_name,
+        "description": app_description,
         "ownerIdsAndTypes": [ 
             { 
                 "ownerId": owner_id,
@@ -69,10 +71,10 @@ def create_handler(event, context):
     requestInfo = 'RequestType: Create'
     logger.info(requestInfo)
     ###########
-    api_key, app_name, issuing_template_name, cert_authority = get_parameters(event)
+    api_key, app_name, app_description, issuing_template_name, cert_authority = get_parameters(event)
     owner_id = get_current_user_id(api_key)
     template_id = get_template_id(api_key, issuing_template_name, cert_authority)
-    payload = build_payload(app_name, issuing_template_name, owner_id, template_id)
+    payload = build_payload(app_name, app_description, issuing_template_name, owner_id, template_id)
     response = http.request(
         'POST',
         'https://api.venafi.cloud/outagedetection/v1/applications',
@@ -95,10 +97,10 @@ def update_handler(event, context):
     logger.info(requestInfo)
     physical_resource_id = get_physical_resource_id(event)
     ###########
-    api_key, app_name, issuing_template_name, cert_authority = get_parameters(event)
+    api_key, app_name, app_description, issuing_template_name, cert_authority = get_parameters(event)
     owner_id = get_current_user_id(api_key)
     template_id = get_template_id(api_key, issuing_template_name, cert_authority)
-    payload = build_payload(app_name, issuing_template_name, owner_id, template_id)
+    payload = build_payload(app_name, app_description, issuing_template_name, owner_id, template_id)
     logger.info('physical_resource_id:' + physical_resource_id)
     response = http.request(
         'PUT',
@@ -122,7 +124,7 @@ def delete_handler(event, context):
     logger.info(requestInfo)
     physical_resource_id = get_physical_resource_id(event)
     ###########
-    api_key, _, _, _ = get_parameters(event)
+    api_key, _, _, _, _ = get_parameters(event)
     logger.info('physical_resource_id:' + physical_resource_id)
     response = http.request(
         'DELETE',

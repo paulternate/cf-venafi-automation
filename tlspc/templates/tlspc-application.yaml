@@ -7,6 +7,7 @@ Metadata:
           default: "Application Properties"
         Parameters:
           - AppName
+          - AppDescription
           - IssuingTemplateName
           - CertificateAuthority
       - Label:
@@ -22,6 +23,9 @@ Parameters:
     AllowedPattern: "[a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12}"
     NoEcho: true
   AppName:
+    Type: String
+    Description: As shown at https://ui.venafi.cloud/certificate-issuance/applications
+  AppDescription:
     Type: String
     Description: As shown at https://ui.venafi.cloud/certificate-issuance/applications
   IssuingTemplateName:
@@ -59,6 +63,7 @@ Resources:
       ServiceToken: !GetAtt TLSPCApplicationFunction.Arn
       TLSPCAPIKey: !Ref TLSPCAPIKey
       AppName: !Ref AppName
+      AppDescription: !Ref AppDescription
       IssuingTemplateName: !Ref IssuingTemplateName
       CertificateAuthority: !Ref CertificateAuthority
 
