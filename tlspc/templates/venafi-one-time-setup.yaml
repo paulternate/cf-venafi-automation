@@ -4,7 +4,7 @@ Resources:
   VenafiTLSPCCertificatesBucket:
     Type: AWS::S3::Bucket
     Properties:
-      BucketName: venafi-tlspc-certificates-${AWS::AccountID}
+      BucketName: !Sub venafi-tlspc-certificates-${AWS::AccountID}
       VersioningConfiguration:
         Status: Enabled
   VenafiLambdaBasicExecutionRole:
