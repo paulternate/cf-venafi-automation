@@ -14,13 +14,16 @@ They are as follows:
 | Template | Orchestrates the lifecycle of a TLSPCApplication Custom Resource which references the Function (deployed simultaneously) | https://venafi-ecosystem.s3.amazonaws.com/tlspc/templates/tlspc-application.yaml | [View](../../tlspc/templates/tlspc-application.yaml)  |
 | Function | Implements the Create/Update/Delete operations required by the TLSPCApplication Custom Resource | https://venafi-ecosystem.s3.amazonaws.com/tlspc/functions/tlspc-application.zip | [View](../../tlspc/functions/tlspc-application/app/app.py) |
 
-## Creating the Stack
+## A note on Defaults and warning messages
+
+Unless otherwise stated, all console settings should be left in their **DEFAULT** state.
+
+Any warning banners which appear in the AWS Console during these steps are typically caused by policy restrictions in the target AWS account and can be safely **IGNORED**.
+
+## Creating your Stack
 
 The following steps will register your Application in TLSPC.
-This will be used later to create certificates.
-
-**NOTE**: Unless otherwise stated, all settings should be left in their **DEFAULT** state.
-Any warning banners which appear in the AWS Console during these steps are typically caused by policy restrictions in the target AWS account and can be safely **IGNORED**.
+This Application will be used later to create certificates.
 
 1. Navigate to https://us-east-1.console.aws.amazon.com/cloudformation/home
 1. Click on "Create stack", then click "With new resources (standard)"
@@ -37,6 +40,10 @@ Any warning banners which appear in the AWS Console during these steps are typic
      johnlennon-23-06-01
      ```
    - Set **"AppName"** to the **same value** you just used for the "Stack name"
+   - Set **"AppDescription"** to
+     ```
+     I created this TLSPC application!
+     ```
    - Set **"IssuingTemplateName"** to
      ```
      Default
@@ -56,10 +63,46 @@ If your TLSPC environment has this Issuing Template renamed or is somehow missin
 
 After ~30 secs, the stack will reach a "Status" of "CREATE_COMPLETE".
 
-At this point your Application will become visible at https://ui.venafi.cloud/certificate-issuance/applications
+At this point your newly created TLSPC Application will become visible at https://ui.venafi.cloud/certificate-issuance/applications
+
+## Reviewing and updating your Stack
+
+The following steps will update your Application in TLSPC.
+In doing so, you will familiarize yourself with the process for updating Stacks in CloudFormation.
+
+1. Navigate to https://us-east-1.console.aws.amazon.com/cloudformation/home
+1. Find or search for your Stack using the name you provided earlier.
+1. The Stack name is displayed as a blue hyperlink.
+   Click this link now.
+1. Take a moment to browse over tabs which are on display.
+   Here are some observations regarding these tabs.
+   - **Stack info** - This tab includes the system generated Stack ID. This is an example of an Amazon Resource Name (ARN) which is a system-generated identifier assigned to all AWS resources.
+   These identifiers are universally unique within the AWS cloud.
+   - **Events** - Details the steps CloudFormation has taken to (one hopes) successfully translate your parameterized Template into a Stack.
+   The Events tab is usually your first port of call when investigating CloudFormation failures.
+   - **Resources** - A list of the resources (Native AWS and Custom) which CloudFormation created for you. You will observe that your Stack has one Lambda Function and one TLSPCApplication.
+   In the columm named Physical ID you will find a handy blue hyperlink to the Lambda function.
+   The TLSPCApplication also has a collection of letters and numbers known as the Physical ID.
+   **Ask yourself, what do you think this represents?**
+   - **Outputs** - Outputs are selected informative results of successful runs. For example, if your stack creates a database entry CloudFormation could deposit a unique identifier here.
+   - **Parameters** - A copy of the Parameters used when the Stack was Created or Updated.
+   - **Template** - A copy of the Template used when the Stack was Created or Updated.
+   - **Change sets** - This feature is beyond scope for today.
+1. In the upper-right portion of the screen you will see 4 buttons.
+   Locate the "Update" button and click it.
+1. On the "Update stack" page, click "Next".
+1. On the "Update stack" page, click "Next".
+1. On the "Specify stack details" page:
+   - Change **"AppDescription"** to
+     ```
+     I updated this TLSPC application!
+     ```
+   - Click "Next"
+1. Scroll to the foot of the "Configure stack options" page, then click "Next"
+1. Scroll to the foot of the "Review" page and finally click "Submit"
+
+After ~30 secs, the stack will reach a "Status" of "UPDATE_COMPLETE".
+
+At this point your newly updated TLSPC Application will become visible at https://ui.venafi.cloud/certificate-issuance/applications
 
 Next: [Main Menu](../README.md) | [04. CloudFormation Creates Issuing Template in TLSPC](../04-tlspc-create-issuing-template/README.md)
-
-## Updating the Stack
-
-TODO ... once the Description parameter is implemented.
