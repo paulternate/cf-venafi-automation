@@ -17,11 +17,13 @@ For anyone else, assuming you have the elevated rights required in your AWS acco
 
 If you're not sure, please consult your instructor.
 
-## The Venafi CFN Setup Template
+## The Venafi One-Time Setup Template
 
 | Type | Description | S3 | Source |
 | - | - | - | - |
-| Template | Creates an IAM Role named VenafiLambdaBasicExecutionRole. This is for use by Lambda Functions, providing them with the ability to send logs to CloudWatch and interact with the S3 service for storage | https://venafi-ecosystem.s3.amazonaws.com/tlspc/templates/venafi-cfn-setup.yaml | [View](../../tlspc/templates/venafi-cfn-setup.yaml) |
+| Template | Creates an IAM Role named VenafiLambdaBasicExecutionRole and an S3 bucket named VenafiTLSPCCertificates-${AWS::AccountID}. VenafiLambdaBasicExecutionRole is used by Lambda Functions to provide them with the ability to send logs to CloudWatch and interact with the S3 service for storage | https://venafi-ecosystem.s3.amazonaws.com/tlspc/templates/venafi-one-time-setup.yaml | [View](../../tlspc/templates/venafi-one-time-setup.yaml) |
+
+<!-- if this template get any more complicated (likely) we may need a resource column in the above table -->
 
 ## Creating your Stack
 
@@ -38,6 +40,8 @@ After ~30 secs, the Stack will reach a "Status" of "CREATE_COMPLETE".
 You will now be able to continue with the exercises in this workshop.
 
 NOTE: You ran the Template in the "us-east-1" region.
-Like most AWS services, CloudFormation is regionally scoped. However, the IAM resources it creates are global, so it's not particularly important where this template is runs ... in case you were wondering.
+For the purpose of this exercise, and to keep a long story short, it's probably best just to stick with this arrangement!
+
+<!-- if we need to regionalize these buckets (and setup replication) then we should do so with another template (or use CDK) in a manner similar to the "venafi-ecosystem" buckets -->
 
 Next: [Main Menu](../README.md) | [03. CloudFormation Creates Application in TLSPC](../03-tlspc-create-application/README.md)

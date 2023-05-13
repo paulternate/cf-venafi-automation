@@ -1,6 +1,12 @@
 AWSTemplateFormatVersion: "2010-09-09"
-Description: https://venafi-ecosystem.s3.amazonaws.com/tlspc/templates/venafi-cfn-setup.yaml
+Description: https://venafi-ecosystem.s3.amazonaws.com/tlspc/templates/venafi-one-time-setup.yaml
 Resources:
+  VenafiTLSPCCertificatesBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: VenafiTLSPCCertificates-${AWS::AccountID}
+      VersioningConfiguration:
+        Status: Enabled
   VenafiLambdaBasicExecutionRole:
     Type: AWS::IAM::Role
     Properties:
