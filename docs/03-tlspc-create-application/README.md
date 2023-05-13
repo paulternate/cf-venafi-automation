@@ -2,7 +2,7 @@
 
 ## What you will learn
 
-In this section you will use CloudFormation (sometimes abbreviated to CFN) to deploy a Custom Resource representing a single Application in TLSPC.
+In this section you will use CloudFormation (sometimes abbreviated to CFN, or just CF) to deploy a Custom Resource representing a single Application in TLSPC.
 
 ## TLSPCApplication Templates and Functions
 
