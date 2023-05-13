@@ -21,23 +21,23 @@ If you're not sure, please consult your instructor.
 
 | Type | Description | S3 | Source |
 | - | - | - | - |
-| Template | Creates an IAM Role named VenafiLambdaBasicExecutionRole. This is for use by Lambda Functions, providing them with the ability to send logs to CloudWatch and interact with the S3 service for storage | https://venafi-ecosystem.s3.amazonaws.com/tlspc/templates/venafi-cfn-setup.yaml | [View](https://github.com/paulternate/cf-venafi-automation/blob/main/tlspc/templates/venafi-cfn-setup.yaml) |
+| Template | Creates an IAM Role named VenafiLambdaBasicExecutionRole. This is for use by Lambda Functions, providing them with the ability to send logs to CloudWatch and interact with the S3 service for storage | https://venafi-ecosystem.s3.amazonaws.com/tlspc/templates/venafi-cfn-setup.yaml | [View](../../tlspc/templates/venafi-cfn-setup.yaml) |
 
-## Steps to apply the fix
+## Creating the Stack
 
 The following steps will enable Lambda Functions in the exercises to be successfully created.
 
 - Navigate to https://us-east-1.console.aws.amazon.com/cloudformation/home
 - Click on "Create stack", then click "With new resources (standard)"
-- On the "Create stack" page, set "Amazon S3 URL" to `https://venafi-ecosystem.s3.amazonaws.com/tlspc/templates/venafi-cfn-setup.yaml`, then click "Next"
+- On the "Create stack" page, under "Specify template", set "Amazon S3 URL" to `https://venafi-ecosystem.s3.amazonaws.com/tlspc/templates/venafi-cfn-setup.yaml`, then click "Next"
 - On the "Specify stack details" page, set "Stack name" to something appropriate, like, `venafi-cfn-setup`, then click "Next"
 - Scroll to the foot of the "Configure stack options" page, then click "Next"
 - Scroll to the foot of the "Review" page, check ✅ the "Capabilities" checkbox and finally click "Submit"
 
-After ~30 secs, the stack will reach a "Staus" of "CREATE_COMPLETE".
+After ~30 secs, the Stack will reach a "Status" of "CREATE_COMPLETE".
 You will now be able to continue with the exercises in this workshop.
 
 NOTE: You ran the Template in the "us-east-1" region.
-Like most AWS services, CloudFormation is regionally scoped. However, the IAM resources it creates are global, so it's not particularly important where it runs ... in case you were wondering.
+Like most AWS services, CloudFormation is regionally scoped. However, the IAM resources it creates are global, so it's not particularly important where this template is runs ... in case you were wondering.
 
 Next: [Main Menu](../README.md) | [03. CloudFormation Creates Application in TLSPC](../03-tlspc-create-application/README.md)
