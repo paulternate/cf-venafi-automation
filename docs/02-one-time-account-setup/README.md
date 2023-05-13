@@ -23,7 +23,7 @@ If you're not sure, please consult your instructor.
 | - | - | - | - |
 | Template | Creates an IAM Role named VenafiLambdaBasicExecutionRole. This is for use by Lambda Functions, providing them with the ability to send logs to CloudWatch and interact with the S3 service for storage | https://venafi-ecosystem.s3.amazonaws.com/tlspc/templates/venafi-cfn-setup.yaml | [View](../../tlspc/templates/venafi-cfn-setup.yaml) |
 
-## Creating the Stack
+## Creating your Stack
 
 The following steps will enable Lambda Functions in the exercises to be successfully created.
 
