@@ -45,8 +45,8 @@ jobs:
               pushd . > /dev/null
               cd "${dir}"
               sam build
-              sam package --s3-bucket ${s3_bucket} --s3-prefix ${s3_prefix} --force-upload --output-template-file ./.aws-sam/output.yaml
-              code_uri=$(grep CodeUri < ./.aws-sam/output.yaml | cut -d ':' -f2- | tr -d ' ')
+              sam package --s3-bucket ${s3_bucket} --s3-prefix ${s3_prefix} --force-upload --output-template-file .aws-sam/output.yaml
+              code_uri=$(grep CodeUri < .aws-sam/output.yaml | cut -d ':' -f2- | tr -d ' ')
               echo "code_uri=${code_uri}"
               aws s3 mv ${code_uri} s3://${s3_bucket}/${s3_prefix}/${dir}.zip
               popd > /dev/null
