@@ -20,7 +20,7 @@ Parameters:
     Type: String
     Description: Obtained from https://ui.venafi.cloud/platform-settings/user-preferences?key=api-keys
     ConstraintDescription: VaaS API key must contain only lowercase letters and numbers
-    AllowedPattern: "[a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12}"
+    AllowedPattern: [a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12}
     NoEcho: true
   AppName:
     Type: String
@@ -57,6 +57,7 @@ Resources:
       Handler: app.lambda_handler
       Role: !Sub arn:aws:iam::${AWS::AccountId}:role/VenafiLambdaBasicExecutionRole
       Runtime: python3.10
+      Timeout: 60
   TLSPCApplicationResource:
     Type: Custom::TLSPCApplication
     Properties:

@@ -19,6 +19,7 @@ Resources:
       Handler: app.lambda_handler
       Role: !Sub arn:aws:iam::${AWS::AccountId}:role/VenafiLambdaBasicExecutionRole
       Runtime: python3.10
+      Timeout: 60
   DoNothingResource:
     Type: Custom::DoNothing
     Properties:

@@ -4,12 +4,12 @@ Metadata:
   AWS::CloudFormation::Interface:
     ParameterGroups:
       - Label:
-          default: "Certificate Properties"
+          default: Certificate Properties
         Parameters:
           - Zone
           - CommonName
       - Label:
-          default: "Credentials"
+          default: Credentials
         Parameters:
           - TLSPCAPIKey
 
@@ -18,13 +18,13 @@ Parameters:
     Type: String
     Description: From https://ui.venafi.cloud/platform-settings/user-preferences?key=api-keys
     ConstraintDescription: VaaS API key must contain only lowercase letters and numbers
-    AllowedPattern: [a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12}
+    AllowedPattern: ^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$
     NoEcho: true
   Zone:
     Type: String
-    Description: Zones are logical organizational units used for managing digital certificates
-    ConstraintDescription: Typical form is <AppName>\\<IssuingTemplateAlias>
-    AllowedPattern: ^\\S+\\\\\\S+$
+    Description: Zones are logical organizational units used for managing digital certificates. Typical form is <AppName>\<IssuingTemplateAlias>
+    ConstraintDescription: Typical form is <AppName>\<IssuingTemplateAlias>
+    AllowedPattern: ^.*\\.*$
   CommonName:
     Type: String
     Description: The subject/domain of the certificate
@@ -41,6 +41,7 @@ Resources:
       Handler: app.lambda_handler
       Role: !Sub arn:aws:iam::${AWS::AccountId}:role/VenafiLambdaBasicExecutionRole
       Runtime: python3.10
+      Timeout: 60
   TLSPCCertificateResource:
     Type: Custom::TLSPCCertificate
     Properties:
