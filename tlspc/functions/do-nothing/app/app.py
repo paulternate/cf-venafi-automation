@@ -6,11 +6,17 @@ import cfnresponse
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
 
-def redact_sensitive_info(json_data, sensitive_keys, redacted_value='***'):
+def redact_sensitive_info(json_data, sensitive_key, redacted_value='***'):
     data = json.loads(json_data)
-    for key in sensitive_keys:
-        if key in data:
-            data[key] = redacted_value
+    keys = sensitive_key.split('.')
+    current = data
+    for key in keys[:-1]:
+        if key in current:
+            current = current[key]
+        else:
+            return json_data
+    if keys[-1] in current:
+        current[keys[-1]] = redacted_value
     redacted_json = json.dumps(data)
     return redacted_json
 
@@ -57,7 +63,7 @@ def lambda_handler(event, context):
     responseData = {}
     responseStatus = cfnresponse.SUCCESS
     try:
-        logger.info('event:\n' + json.dumps(redact_sensitive_info(event, 'ResourceProperties.TLSPCAPIKey')))
+        logger.info('event:\n' + redact_sensitive_info(json.dumps(event), 'ResourceProperties.TLSPCAPIKey'))
         logger.info('context:\n' + str(context))
         requestTypeHandlers = {
             'Create': create_handler,
