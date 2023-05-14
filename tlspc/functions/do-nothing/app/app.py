@@ -6,6 +6,14 @@ import cfnresponse
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
 
+def redact_sensitive_info(json_data, sensitive_keys, redacted_value='***'):
+    data = json.loads(json_data)
+    for key in sensitive_keys:
+        if key in data:
+            data[key] = redacted_value
+    redacted_json = json.dumps(data)
+    return redacted_json
+
 def get_physical_resource_id(event):
     physical_resource_id=(str(event.get('PhysicalResourceId', None)))
     return physical_resource_id
@@ -49,7 +57,7 @@ def lambda_handler(event, context):
     responseData = {}
     responseStatus = cfnresponse.SUCCESS
     try:
-        # logger.info('event:\n' + json.dumps(event)) # <-- includes sensitive info!!!
+        logger.info('event:\n' + json.dumps(redact_sensitive_info(event, 'ResourceProperties.TLSPCAPIKey')))
         logger.info('context:\n' + str(context))
         requestTypeHandlers = {
             'Create': create_handler,
