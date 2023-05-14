@@ -57,9 +57,9 @@ def update_handler(event, context):
     ###########
     # code here
     ###########
-    api_key, common_name, _ = get_parameters(event)
+    api_key, _, _ = get_parameters(event)
     conn = venafi_connection(api_key=api_key)
-    request = CertificateRequest(common_name=common_name)
+    request = CertificateRequest(cert_id=physical_resource_id)
     conn.renew_cert(request)
     cert = conn.retrieve_cert(request)
     logger.info(cert.full_chain)

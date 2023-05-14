@@ -29,6 +29,7 @@ Parameters:
     Description: Zones are logical organizational units used for managing digital certificates. Typical form is <AppName>\<IssuingTemplateAlias>
     ConstraintDescription: Typical form is <AppName>\<IssuingTemplateAlias>
     AllowedPattern: ^.*\\.*$
+    Default: ExampleApp\Default
   CommonName:
     Type: String
     Description: The subject/domain of the certificate
@@ -37,7 +38,7 @@ Parameters:
     Default: www.example.com
   RenewalTrigger:
     Type: String
-    Description: PLEASE IGNORE - this parameter is reserved for internal use
+    Description: PLEASE IGNORE - parameter is reserved for internal use
 
 Resources:
   TLSPCCertificateFunction:
