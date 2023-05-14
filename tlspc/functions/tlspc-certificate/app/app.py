@@ -45,7 +45,7 @@ def create_handler(event, context):
     cert = conn.retrieve_cert(request)
     logger.info(cert.full_chain)
     ###########
-    responseData['PhysicalResourceId'] = request.cert_guid
+    responseData['PhysicalResourceId'] = request.id
     responseData['message'] = requestInfo
     return responseData
 
