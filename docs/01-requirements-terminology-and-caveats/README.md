@@ -9,9 +9,10 @@ To successfully complete this workshop you will need the following:
   - "venafi-se" (aka "Venafi SE")
   - "venafi-ps" (aka "AWS-PS")
   - Any personal account not belonging to Venafi/Jetstack (SSO not a requirement)
+- To complete these exercises using the "us-east-1" AWS region, simply because it's tried and tested there
 - Access, via either your own domain or the company shared one, to TLSPC at https://ui.venafi.cloud/
+- For the purpose of automated CSR generation, at least one VSatellite instance should be active at https://ui.venafi.cloud/vsatellites
 - The ability to distinguish between buses, stairs, bicycles and traffic lights! 😊
-- You are required to complete these exercises using the "us-east-1" region, simply because it's tried and tested in these.
 
 ## Terminology
 
