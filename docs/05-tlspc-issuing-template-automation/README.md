@@ -1,3 +1,3 @@
-# 05. CloudFormation Creates Certificate in TLSPC
+# 05. TLSPC Issuing Template Automation
 
 Next: [Main Menu](../README.md)
