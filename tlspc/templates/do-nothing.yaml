@@ -11,7 +11,7 @@ Parameters:
 
 Resources:
   DoNothingFunction:
-    Type: 'AWS::Lambda::Function'
+    Type: AWS::Lambda::Function
     Properties:
       Code:
         S3Bucket: !Sub venafi-ecosystem-${AWS::Region}
@@ -20,7 +20,7 @@ Resources:
       Role: !Sub arn:aws:iam::${AWS::AccountId}:role/VenafiLambdaBasicExecutionRole
       Runtime: python3.10
   DoNothingResource:
-    Type: "Custom::DoNothing"
+    Type: Custom::DoNothing
     Properties:
       ServiceToken: !GetAtt DoNothingFunction.Arn
       TLSPCAPIKey: !Ref TLSPCAPIKey

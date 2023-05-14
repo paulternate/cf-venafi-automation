@@ -1,0 +1,54 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: https://venafi-ecosystem.s3.amazonaws.com/tlspc/templates/do-nothing.yaml
+Metadata:
+  AWS::CloudFormation::Interface:
+    ParameterGroups:
+      - Label:
+          default: "Certificate Properties"
+        Parameters:
+          - Zone
+          - CommonName
+      - Label:
+          default: "Credentials"
+        Parameters:
+          - TLSPCAPIKey
+
+Parameters:
+  TLSPCAPIKey:
+    Type: String
+    Description: From https://ui.venafi.cloud/platform-settings/user-preferences?key=api-keys
+    ConstraintDescription: VaaS API key must contain only lowercase letters and numbers
+    AllowedPattern: "[a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12}"
+    NoEcho: true
+  Zone:
+    Type: String
+    Description: Zones are logical organizational units used for managing digital certificates
+    ConstraintDescription: Typical form is <AppName>\\<IssuingTemplateAlias>
+    AllowedPattern: "^\\S+\\\\\\S+$"
+  CommonName:
+    Type: String
+    Description: The subject/domain of the certificate
+    ConstraintDescription: For example www.example.com
+    AllowedPattern: "^[a-zA-Z0-9.-]+(\.[a-zA-Z]{2,})+$"
+
+Resources:
+  TLSPCCertificateFunction:
+    Type: AWS::Lambda::Function
+    Properties:
+      Code:
+        S3Bucket: !Sub venafi-ecosystem-${AWS::Region}
+        S3Key: tlspc/functions/tlspc-certificate.zip
+      Handler: app.lambda_handler
+      Role: !Sub arn:aws:iam::${AWS::AccountId}:role/VenafiLambdaBasicExecutionRole
+      Runtime: python3.10
+  TLSPCCertificateResource:
+    Type: Custom::TLSPCCertificate
+    Properties:
+      ServiceToken: !GetAtt DoNothingFunction.Arn
+      TLSPCAPIKey: !Ref TLSPCAPIKey
+      Zone: !Ref Zone
+      CommonName: !Ref CommonName
+
+Outputs:
+  Message: 
+    Value: !GetAtt DoNothingResource.message
