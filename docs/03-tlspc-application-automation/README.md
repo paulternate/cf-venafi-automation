@@ -1,4 +1,4 @@
-# 03. CloudFormation Creates Application in TLSPC
+# 03. TLSPC Application Automation
 
 ## What you will learn
 
@@ -105,4 +105,4 @@ After ~30 secs, the stack will reach a "Status" of "UPDATE_COMPLETE".
 
 At this point your newly updated TLSPC Application will become visible at https://ui.venafi.cloud/certificate-issuance/applications
 
-Next: [Main Menu](../README.md) | [04. CloudFormation Creates Issuing Template in TLSPC](../04-tlspc-create-issuing-template/README.md)
+Next: [Main Menu](../README.md) | [04. TLSPC Certificate Automation](../04-tlspc-certificate-automation/README.md)

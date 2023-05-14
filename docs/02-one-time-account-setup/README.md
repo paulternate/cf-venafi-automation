@@ -44,4 +44,4 @@ For the purpose of this exercise, and to keep a long story short, it's probably 
 
 <!-- if we need to regionalize these buckets (and setup replication) then we should do so with another template (or use CDK) in a manner similar to the "venafi-ecosystem" buckets -->
 
-Next: [Main Menu](../README.md) | [03. CloudFormation Creates Application in TLSPC](../03-tlspc-create-application/README.md)
+Next: [Main Menu](../README.md) | [03. TLSPC Application Automation](../03-tlspc-application-automation/README.md)
