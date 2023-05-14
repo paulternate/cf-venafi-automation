@@ -16,6 +16,20 @@ def get_parameters(event):
     cert_authority=(str(event['ResourceProperties']['CertificateAuthority']))
     return api_key, app_name, app_description, issuing_template_name, cert_authority
 
+def redact_sensitive_info(json_data, sensitive_key, redacted_value='***'):
+    data = json.loads(json_data)
+    keys = sensitive_key.split('.')
+    current = data
+    for key in keys[:-1]:
+        if key in current:
+            current = current[key]
+        else:
+            return json_data
+    if keys[-1] in current:
+        current[keys[-1]] = redacted_value
+    redacted_json = json.dumps(data)
+    return redacted_json
+
 def get_physical_resource_id(event):
     physical_resource_id=(str(event.get('PhysicalResourceId', None)))
     return physical_resource_id
@@ -144,7 +158,7 @@ def lambda_handler(event, context):
     responseData = {}
     responseStatus = cfnresponse.SUCCESS
     try:
-        # logger.info('event:\n' + json.dumps(event)) # <-- includes sensitive info!!!
+        logger.info('event:\n' + json.dumps(redact_sensitive_info(event, 'ResourceProperties.TLSPCAPIKey')))
         logger.info('context:\n' + str(context))
         requestTypeHandlers = {
             'Create': create_handler,
