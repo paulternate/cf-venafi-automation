@@ -158,7 +158,7 @@ def lambda_handler(event, context):
     responseData = {}
     responseStatus = cfnresponse.SUCCESS
     try:
-        logger.info('event:\n' + json.dumps(redact_sensitive_info(event, 'ResourceProperties.TLSPCAPIKey')))
+        logger.info('event:\n' + redact_sensitive_info(json.dumps(event), 'ResourceProperties.TLSPCAPIKey'))
         logger.info('context:\n' + str(context))
         requestTypeHandlers = {
             'Create': create_handler,
