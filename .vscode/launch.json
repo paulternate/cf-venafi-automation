@@ -21,6 +21,24 @@
         {
             "type": "aws-sam",
             "request": "direct-invoke",
+            "name": "tlspc-certificate:Function",
+            "invokeTarget": {
+                "target": "template",
+                "templatePath": "${workspaceFolder}/tlspc/functions/tlspc-certificate/template.yaml",
+                "logicalId": "Function"
+            },
+            "lambda": {
+                "payload": {
+                    "path": "${workspaceFolder}/tlspc/functions/tlspc-certificate/events/event.json"
+                },
+                "environmentVariables": {
+                    "PYDEVD_WARN_SLOW_RESOLVE_TIMEOUT": "600"
+                }
+            }
+        },
+        {
+            "type": "aws-sam",
+            "request": "direct-invoke",
             "name": "do-nothing:Function",
             "invokeTarget": {
                 "target": "template",
