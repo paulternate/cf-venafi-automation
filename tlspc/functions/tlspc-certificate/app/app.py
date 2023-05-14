@@ -9,9 +9,9 @@ logger.setLevel(logging.INFO)
 
 def get_parameters(event):
     api_key=(str(event['ResourceProperties']['TLSPCAPIKey']))
-    zone=(str(event['ResourceProperties']['Zone'])) # e.g. 'my-app\\Default'
     common_name=(str(event['ResourceProperties']['CommonName']))
-    return api_key, zone, common_name
+    zone=(str(event['ResourceProperties']['Zone'])) # e.g. 'my-app\\Default'
+    return api_key, common_name, zone
 
 def redact_sensitive_info(json_data, sensitive_key, redacted_value='***'):
     data = json.loads(json_data)
@@ -38,7 +38,7 @@ def create_handler(event, context):
     ###########
     # code here
     ###########
-    api_key, zone, common_name = get_parameters(event)
+    api_key, common_name, zone = get_parameters(event)
     conn = venafi_connection(api_key=api_key)
     request = CertificateRequest(common_name=common_name)
     conn.request_cert(request, zone)
@@ -57,6 +57,12 @@ def update_handler(event, context):
     ###########
     # code here
     ###########
+    api_key, common_name, _ = get_parameters(event)
+    conn = venafi_connection(api_key=api_key)
+    request = CertificateRequest(common_name=common_name)
+    conn.renew_cert(request)
+    cert = conn.retrieve_cert(request)
+    logger.info(cert.full_chain)
     ###########
     responseData['PhysicalResourceId'] = physical_resource_id # failure to do this will trigger a delete
     responseData['message'] = requestInfo

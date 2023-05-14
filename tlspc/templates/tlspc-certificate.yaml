@@ -12,6 +12,10 @@ Metadata:
           default: Credentials
         Parameters:
           - TLSPCAPIKey
+        - Label:
+          default: System
+        Parameters:
+          - RenewalTrigger
 
 Parameters:
   TLSPCAPIKey:
@@ -30,6 +34,10 @@ Parameters:
     Description: The subject/domain of the certificate
     ConstraintDescription: For example www.example.com
     AllowedPattern: (?!-)[a-zA-Z0-9-.]{1,63}(?<!-)
+    Default: www.example.com
+  RenewalTrigger:
+    Type: String
+    Description: PLEASE IGNORE - this parameter is reserved for internal use
 
 Resources:
   TLSPCCertificateFunction:
@@ -49,6 +57,7 @@ Resources:
       TLSPCAPIKey: !Ref TLSPCAPIKey
       Zone: !Ref Zone
       CommonName: !Ref CommonName
+      RenewalTrigger: !Ref RenewalTrigger
 
 Outputs:
   Message: 
