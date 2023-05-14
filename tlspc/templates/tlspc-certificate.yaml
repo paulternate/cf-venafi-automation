@@ -1,5 +1,5 @@
 AWSTemplateFormatVersion: '2010-09-09'
-Description: https://venafi-ecosystem.s3.amazonaws.com/tlspc/templates/do-nothing.yaml
+Description: https://venafi-ecosystem.s3.amazonaws.com/tlspc/templates/tlspc-certificate.yaml
 Metadata:
   AWS::CloudFormation::Interface:
     ParameterGroups:
@@ -44,11 +44,11 @@ Resources:
   TLSPCCertificateResource:
     Type: Custom::TLSPCCertificate
     Properties:
-      ServiceToken: !GetAtt DoNothingFunction.Arn
+      ServiceToken: !GetAtt TLSPCCertificateFunction.Arn
       TLSPCAPIKey: !Ref TLSPCAPIKey
       Zone: !Ref Zone
       CommonName: !Ref CommonName
 
 Outputs:
   Message: 
-    Value: !GetAtt DoNothingResource.message
+    Value: !GetAtt TLSPCCertificateResource.message
