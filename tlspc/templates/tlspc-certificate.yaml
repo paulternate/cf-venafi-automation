@@ -12,7 +12,7 @@ Metadata:
           default: Credentials
         Parameters:
           - TLSPCAPIKey
-        - Label:
+      - Label:
           default: System
         Parameters:
           - RenewalTrigger
