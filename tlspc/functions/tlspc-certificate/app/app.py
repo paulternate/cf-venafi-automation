@@ -28,6 +28,7 @@ def redact_sensitive_info(json_data, sensitive_key, redacted_value='***'):
     return redacted_json
 
 def get_physical_resource_id(event):
+    # NOTE PhysicalResourceId represents the CR (which changes upon renewals!)
     physical_resource_id=(str(event.get('PhysicalResourceId', None)))
     return physical_resource_id
 
@@ -61,13 +62,13 @@ def update_handler(event, context):
     ###########
     api_key, _, _ = get_parameters(event)
     conn = venafi_connection(api_key=api_key)
-    request = CertificateRequest(cert_id=physical_resource_id)
+    request = CertificateRequest(cert_id=physical_resource_id) # <- this works, even though we appear to be mixing up certs and CRs
     conn.renew_cert(request)
     cert = conn.retrieve_cert(request)
     logger.info('certificate retrieved')
     # TODO put the renewed cert in S3
     ###########
-    responseData['PhysicalResourceId'] = physical_resource_id # failure to do this will trigger a delete
+    responseData['PhysicalResourceId'] = request.id # NOTE physical_resource_id is "old" at this point, so pull in updated value from the request
     responseData['CertGuid'] = request.cert_guid
     responseData['message'] = requestInfo
     return responseData
