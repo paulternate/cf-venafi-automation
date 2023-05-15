@@ -61,6 +61,7 @@ def delete_handler(event, context):
 
 def lambda_handler(event, context):
     responseData = {}
+    responseStatus = cfnresponse.SUCCESS
     try:
         logger.info('event:\n' + redact_sensitive_info(json.dumps(event), 'ResourceProperties.TLSPCAPIKey'))
         logger.info('context:\n' + str(context))
@@ -71,9 +72,8 @@ def lambda_handler(event, context):
         }
         requestTypeHandler = requestTypeHandlers.get(event.get('RequestType'))
         responseData = requestTypeHandler(event, context)
-        responseData['Status'] = cfnresponse.SUCCESS
     except Exception as e:
-        responseData['Status'] = cfnresponse.FAILED
+        responseStatus = cfnresponse.FAILED
         responseData['Message'] = traceback.format_exc()
     finally:
-        cfnresponse.send(event, context, responseData.get('Status'), responseData, responseData.get('PhysicalResourceId', None))
+        cfnresponse.send(event, context, responseStatus, responseData, responseData.get('PhysicalResourceId', None))
