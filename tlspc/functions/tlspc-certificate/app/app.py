@@ -48,7 +48,8 @@ def create_handler(event, context):
     # TODO add the new cert to S3
     ###########
     responseData['PhysicalResourceId'] = request.id  
-    responseData['CertGuid'] = request.cert_guid
+    responseData['LatestCertRequestId'] = request.id 
+    responseData['LatestCertId'] = request.cert_guid
     responseData['message'] = requestInfo
     return responseData
 
@@ -69,8 +70,9 @@ def update_handler(event, context):
     logger.info('certificate retrieved')
     # TODO put the renewed cert in S3
     ###########
-    responseData['PhysicalResourceId'] = request.id # NOTE physical_resource_id is "old" at this point, so pull in updated value from the request
-    responseData['CertGuid'] = request.cert_guid
+    responseData['PhysicalResourceId'] = physical_resource_id # updates consistent with create
+    responseData['LatestCertRequestId'] = request.id
+    responseData['LatestCertId'] = request.cert_guid
     responseData['message'] = requestInfo
     return responseData
 
@@ -90,7 +92,6 @@ def delete_handler(event, context):
     # TODO remove revoked certificate from S3
     ###########
     responseData['PhysicalResourceId'] = physical_resource_id
-    # responseData['CertGuid'] = request.cert_guid
     responseData['message'] = requestInfo
     return responseData
 
