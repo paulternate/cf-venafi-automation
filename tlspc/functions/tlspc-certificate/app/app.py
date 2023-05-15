@@ -64,6 +64,7 @@ def update_handler(event, context):
     conn = venafi_connection(api_key=api_key)
     request = CertificateRequest(cert_id=physical_resource_id) # <- this works, even though we appear to be mixing up certs and CRs
     conn.renew_cert(request)
+    logger.info('certificate renewed')
     cert = conn.retrieve_cert(request)
     logger.info('certificate retrieved')
     # TODO put the renewed cert in S3
@@ -81,8 +82,12 @@ def delete_handler(event, context):
     ###########
     # code here
     ###########
-    # plan - retiring the most recent cert removes the history from the UI
-    # TODO delete the cert from S3
+    api_key, _, _ = get_parameters(event)
+    conn = venafi_connection(api_key=api_key)
+    request = CertificateRequest(cert_id=physical_resource_id) # <- this works, even though we appear to be mixing up certs and CRs
+    conn.revoke_cert(request)
+    logger.info('certificate revoked')
+    # TODO remove revoked certificate from S3
     ###########
     responseData['PhysicalResourceId'] = physical_resource_id
     # responseData['CertGuid'] = request.cert_guid
