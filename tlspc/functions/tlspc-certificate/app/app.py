@@ -1,11 +1,14 @@
 import logging
 import json
+import urllib3
 import traceback
 import cfnresponse
 from vcert import (CertificateRequest, venafi_connection)
+import boto3 # https://github.com/psf/requests/issues/6443 (requests==2.28.1)
 
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
+http = urllib3.PoolManager()
 
 def get_parameters(event):
     api_key=(str(event['ResourceProperties']['TLSPCAPIKey']))
@@ -31,6 +34,16 @@ def get_physical_resource_id(event):
     # NOTE PhysicalResourceId represents the CR (which changes upon renewals!)
     physical_resource_id=(str(event.get('PhysicalResourceId', None)))
     return physical_resource_id
+
+def get_stack_outputs(event):
+    stack_name = event['StackId']
+    cloudformation = boto3.client('cloudformation')
+    response = cloudformation.describe_stacks(StackName=stack_name)
+    return response['Stacks'][0]['Outputs']
+
+def get_stack_output_value(event, output_key):
+    stack_outputs = get_stack_outputs(event)
+    return next((o['OutputValue'] for o in stack_outputs if o['OutputKey'] == output_key), None)
 
 def create_handler(event, context):
     responseData = {}
@@ -85,10 +98,23 @@ def delete_handler(event, context):
     # code here
     ###########
     api_key, _, _ = get_parameters(event)
-    conn = venafi_connection(api_key=api_key)
-    request = CertificateRequest(cert_id=physical_resource_id) # <- this works, even though we appear to be mixing up certs and CRs
-    conn.revoke_cert(request)
-    logger.info('certificate revoked')
+    latest_cert_id = get_stack_output_value(event, 'LatestCertId')
+    logger.info('latest_cert_id: ' + latest_cert_id)
+    payload = {
+	    "addToBlocklist": True,
+	    "certificateIds": [ latest_cert_id ]
+    }
+    response = http.request(
+        'POST',
+        'https://api.venafi.cloud/outagedetection/v1/certificates/retirement',
+        headers={
+            'accept': 'application/json',
+            'content-type': 'application/json',
+            'tppl-api-key': api_key
+        },
+        body=json.dumps(payload).encode('utf-8')
+    )
+    logger.info('certificate retired')
     # TODO remove revoked certificate from S3
     ###########
     responseData['PhysicalResourceId'] = physical_resource_id
