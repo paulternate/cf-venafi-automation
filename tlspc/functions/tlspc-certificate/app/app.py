@@ -60,7 +60,8 @@ def create_handler(event, context):
     logger.info('certificate retrieved')
     # TODO add the new cert to S3
     ###########
-    responseData['PhysicalResourceId'] = request.id  
+    responseData['PhysicalResourceId'] = request.id
+    responseData['LatestCertRequestId'] = request.id
     responseData['LatestCertId'] = request.cert_guid
     responseData['message'] = requestInfo
     return responseData
@@ -74,17 +75,19 @@ def update_handler(event, context):
     # code here
     ###########
     api_key, _, _ = get_parameters(event)
-    latest_cert_id = get_stack_output_value(event, 'LatestCertId')
+    latest_cert_request_id = get_stack_output_value(event, 'LatestCertRequestId')
     conn = venafi_connection(api_key=api_key)
-    request = CertificateRequest(cert_id=latest_cert_id)
+    request = CertificateRequest(cert_id=latest_cert_request_id)
     conn.renew_cert(request)
     logger.info('certificate renewed')
+    request = CertificateRequest(cert_id=request.id)
     cert = conn.retrieve_cert(request)
-    logger.info('certificate retrieved')
+    logger.info('renewed certificate retrieved')
     # TODO put the renewed cert in S3
     ###########
-    responseData['PhysicalResourceId'] = physical_resource_id # updates consistent with create
-    responseData['LatestCertId'] = request.id
+    responseData['PhysicalResourceId'] = physical_resource_id # update consistent with create
+    responseData['LatestCertRequestId'] = request.id
+    responseData['LatestCertId'] = request.latest_cert_id
     responseData['message'] = requestInfo
     return responseData
 
