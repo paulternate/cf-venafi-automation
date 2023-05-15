@@ -42,7 +42,6 @@ def create_handler(event, context):
     conn = venafi_connection(api_key=api_key)
     request = CertificateRequest(common_name=common_name)
     conn.request_cert(request, zone)
-    logger.info('request (new):\n'+ json.dumps(request))
     cert = conn.retrieve_cert(request)
     logger.info('certificate retrieved')
     # TODO add the new cert to S3
@@ -64,7 +63,6 @@ def update_handler(event, context):
     conn = venafi_connection(api_key=api_key)
     request = CertificateRequest(cert_id=physical_resource_id)
     conn.renew_cert(request)
-    logger.info('request (renew):\n'+ json.dumps(request))
     cert = conn.retrieve_cert(request)
     logger.info('certificate retrieved')
     # TODO put the renewed cert in S3
