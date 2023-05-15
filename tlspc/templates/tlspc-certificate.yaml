@@ -63,7 +63,5 @@ Resources:
 Outputs:
   Message: 
     Value: !GetAtt TLSPCCertificateResource.message
-  LatestCertRequestId:
-    Value: !GetAtt TLSPCCertificateResource.LatestCertRequestId
   LatestCertId:
     Value: !GetAtt TLSPCCertificateResource.LatestCertId

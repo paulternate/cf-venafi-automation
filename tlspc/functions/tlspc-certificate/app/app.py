@@ -61,7 +61,6 @@ def create_handler(event, context):
     # TODO add the new cert to S3
     ###########
     responseData['PhysicalResourceId'] = request.id  
-    responseData['LatestCertRequestId'] = request.id 
     responseData['LatestCertId'] = request.cert_guid
     responseData['message'] = requestInfo
     return responseData
@@ -84,7 +83,6 @@ def update_handler(event, context):
     # TODO put the renewed cert in S3
     ###########
     responseData['PhysicalResourceId'] = physical_resource_id # updates consistent with create
-    responseData['LatestCertRequestId'] = request.id
     responseData['LatestCertId'] = request.cert_guid
     responseData['message'] = requestInfo
     return responseData
