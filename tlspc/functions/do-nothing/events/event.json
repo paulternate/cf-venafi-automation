@@ -5,6 +5,7 @@
   "StackId": "arn:aws:cloudformation:us-east-1:999999999999:stack/MyStack/guid",
   "RequestId": "dead",
   "LogicalResourceId": "DoNothingResource",
+  "PhysicalResourceId": "deaddead-dead-dead-dead-deaddeaddead",
   "ResourceType": "Custom::DoNothing",
   "ResourceProperties":
     {
