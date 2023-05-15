@@ -85,7 +85,7 @@ def delete_handler(event, context):
     # TODO delete the cert from S3
     ###########
     responseData['PhysicalResourceId'] = physical_resource_id
-    responseData['CertGuid'] = request.cert_guid
+    # responseData['CertGuid'] = request.cert_guid
     responseData['message'] = requestInfo
     return responseData
 
