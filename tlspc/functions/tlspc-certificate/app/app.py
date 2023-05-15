@@ -74,8 +74,9 @@ def update_handler(event, context):
     # code here
     ###########
     api_key, _, _ = get_parameters(event)
+    latest_cert_id = get_stack_output_value(event, 'LatestCertId')
     conn = venafi_connection(api_key=api_key)
-    request = CertificateRequest(cert_id=physical_resource_id) # <- this works, even though we appear to be mixing up certs and CRs
+    request = CertificateRequest(cert_id=latest_cert_id)
     conn.renew_cert(request)
     logger.info('certificate renewed')
     cert = conn.retrieve_cert(request)
@@ -83,7 +84,7 @@ def update_handler(event, context):
     # TODO put the renewed cert in S3
     ###########
     responseData['PhysicalResourceId'] = physical_resource_id # updates consistent with create
-    responseData['LatestCertId'] = request.cert_guid
+    responseData['LatestCertId'] = request.id
     responseData['message'] = requestInfo
     return responseData
 
