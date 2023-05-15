@@ -63,3 +63,5 @@ Resources:
 Outputs:
   Message: 
     Value: !GetAtt TLSPCCertificateResource.message
+  CertGuid
+  Value: !GetAtt TLSPCCertificateResource.CertGuid
