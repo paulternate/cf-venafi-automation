@@ -42,8 +42,10 @@ def create_handler(event, context):
     conn = venafi_connection(api_key=api_key)
     request = CertificateRequest(common_name=common_name)
     conn.request_cert(request, zone)
+    logger.info('request (new):\n'+ json.dumps(request))
     cert = conn.retrieve_cert(request)
-    logger.info(cert.full_chain)
+    logger.info('certificate retrieved')
+    # TODO add the new cert to S3
     ###########
     responseData['PhysicalResourceId'] = request.id
     responseData['message'] = requestInfo
@@ -61,8 +63,10 @@ def update_handler(event, context):
     conn = venafi_connection(api_key=api_key)
     request = CertificateRequest(cert_id=physical_resource_id)
     conn.renew_cert(request)
+    logger.info('request (renew):\n'+ json.dumps(request))
     cert = conn.retrieve_cert(request)
-    logger.info(cert.full_chain)
+    logger.info('certificate retrieved')
+    # TODO put the renewed cert in S3
     ###########
     responseData['PhysicalResourceId'] = physical_resource_id # failure to do this will trigger a delete
     responseData['message'] = requestInfo
@@ -76,6 +80,8 @@ def delete_handler(event, context):
     ###########
     # code here
     ###########
+    # plan - retiring the most recent cert removes the history from the UI
+    # TODO delete the cert from S3
     ###########
     responseData['PhysicalResourceId'] = physical_resource_id
     responseData['message'] = requestInfo
