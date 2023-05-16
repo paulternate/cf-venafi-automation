@@ -51,9 +51,7 @@ def retreive_cert_with_retry(conn, request):
     for i in range(max_attempts):
         time.sleep(4)
         logger.info('retreive_cert_with_retry: attempt: '+ str(i))
-        logger.info('request.cert_guid (before): ' + request.cert_guid)
         cert = conn.retrieve_cert(request)
-        logger.info('request.cert_guid (after): ' + request.cert_guid)
         if cert is not None:
             return cert
     raise Exception(f"Function {function.__name__} failed after {max_attempts} attempts")
@@ -91,10 +89,16 @@ def update_handler(event, context):
     latest_cert_request_id = get_stack_output_value(event, 'LatestCertRequestId')
     conn = venafi_connection(api_key=api_key)
     request = CertificateRequest(cert_id=latest_cert_request_id)
+    logger.info('request.id (before): ' + str(request.id))
+    logger.info('request.id (before): ' + str(request.cert_guid))
     conn.renew_cert(request)
+    logger.info('request.id (mid): ' + str(request.id))
+    logger.info('request.id (mid): ' + str(request.cert_guid))
     logger.info('certificate renewed')
     # after conn.renew_cert, request.cert_guid is only set after a successful call to conn.retrieve_cert()
     cert = retreive_cert_with_retry(conn, request)
+    logger.info('request.id (after): ' + str(request.id))
+    logger.info('request.id (after): ' + str(request.cert_guid))
     logger.info('renewed certificate retrieved')
     # TODO put the renewed cert in S3
     ###########
