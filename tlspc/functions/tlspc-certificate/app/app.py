@@ -1,4 +1,5 @@
-import logging
+ import logging
+import time
 import json
 import urllib3
 import traceback
@@ -80,8 +81,7 @@ def update_handler(event, context):
     request = CertificateRequest(cert_id=latest_cert_request_id)
     conn.renew_cert(request)
     logger.info('certificate renewed')
-    request = CertificateRequest(cert_id=request.id)
-    # on renewals, request.cert_guid is only set after a successful call to conn.retrieve_cert()
+    # after conn.renew_cert, request.cert_guid is only set after a successful call to conn.retrieve_cert()
     cert = conn.retrieve_cert(request)
     logger.info('renewed certificate retrieved')
     # TODO put the renewed cert in S3
