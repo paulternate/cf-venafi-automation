@@ -50,7 +50,7 @@ def retreive_cert_with_retry(conn, request):
     max_attempts = 5
     for i in range(max_attempts):
         time.sleep(4)
-        logger.info('retreive_cert_with_retry: attempt: '+ i)
+        logger.info('retreive_cert_with_retry: attempt: '+ str(i))
         logger.info('request.cert_guid (before): ' + request.cert_guid)
         cert = conn.retrieve_cert(request)
         logger.info('request.cert_guid (after): ' + request.cert_guid)
