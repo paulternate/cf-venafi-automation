@@ -50,11 +50,12 @@ def retreive_cert_with_retry(conn, request):
     max_attempts = 5
     for i in range(max_attempts):
         time.sleep(4)
+        logger.info('retreive_cert_with_retry: attempt: '+ i)
+        logger.info('request.cert_guid (before): ' + request.cert_guid)
         cert = conn.retrieve_cert(request)
-        logger.info('cert: ' + str(cert))
+        logger.info('request.cert_guid (after): ' + request.cert_guid)
         if cert is not None:
             return cert
-        logger.info('retreive_cert unsuccessful after ' + i + ' tries')
     raise Exception(f"Function {function.__name__} failed after {max_attempts} attempts")
 
 def create_handler(event, context):
