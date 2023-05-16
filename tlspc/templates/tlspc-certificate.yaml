@@ -13,6 +13,10 @@ Metadata:
         Parameters:
           - TLSPCAPIKey
       - Label:
+          default: Certificate Storage
+        Parameters:
+          - TargetS3Bucket
+      - Label:
           default: System
         Parameters:
           - RenewalTrigger
@@ -26,7 +30,7 @@ Parameters:
     NoEcho: true
   Zone:
     Type: String
-    Description: Zones are logical organizational units used for managing digital certificates. Typical form is <AppName>\<IssuingTemplateAlias>
+    Description: Zones are logical organizational units used for managing digital certificates
     ConstraintDescription: Typical form is <AppName>\<IssuingTemplateAlias>
     AllowedPattern: ^.*\\.*$
     Default: ExampleApp\Default
@@ -36,6 +40,11 @@ Parameters:
     ConstraintDescription: For example www.example.com
     AllowedPattern: (?!-)[a-zA-Z0-9-.]{1,63}(?<!-)
     Default: www.example.com
+  TargetS3Bucket:
+    Type: String
+    Description: The name of a versioned S3 Bucket where your TLSPC Certificates will be deposited. Defaults to venafi-tlspc-certificates-${AWS::AccountId} when left blank.
+    ConstraintDescription: Needs to remain blank or follow the S3 bucket naming convention
+    AllowedPattern: ^(|[a-z0-9][a-z0-9\-]{1,61}[a-z0-9])$
   RenewalTrigger:
     Type: String
     Description: PLEASE IGNORE - parameter is reserved for internal use
@@ -58,6 +67,7 @@ Resources:
       TLSPCAPIKey: !Ref TLSPCAPIKey
       Zone: !Ref Zone
       CommonName: !Ref CommonName
+      TargetS3Bucket: !Ref TargetS3Bucket
       RenewalTrigger: !Ref RenewalTrigger
 
 Outputs:
@@ -67,3 +77,5 @@ Outputs:
     Value: !GetAtt TLSPCCertificateResource.LatestCertRequestId
   LatestCertId:
     Value: !GetAtt TLSPCCertificateResource.LatestCertId
+  S3URI:
+    Value: !GetAtt TLSPCCertificateResource.S3URI

@@ -1,5 +1,6 @@
 import logging
 import time
+from datetime import datetime
 import json
 import urllib3
 import traceback
@@ -11,11 +12,18 @@ logger = logging.getLogger()
 logger.setLevel(logging.INFO)
 http = urllib3.PoolManager()
 
+def get_aws_account():
+    sts = boto3.client('sts')
+    return sts.get_caller_identity().get('Account')
+
 def get_parameters(event):
-    api_key=(str(event['ResourceProperties']['TLSPCAPIKey']))
-    common_name=(str(event['ResourceProperties']['CommonName']))
-    zone=(str(event['ResourceProperties']['Zone'])) # e.g. 'my-app\\Default'
-    return api_key, common_name, zone
+    api_key = str(event['ResourceProperties']['TLSPCAPIKey'])
+    common_name = str(event['ResourceProperties']['CommonName'])
+    zone = str(event['ResourceProperties']['Zone']) # e.g. 'my-app\\Default'
+    target_s3_bucket = str(event['ResourceProperties'].get('TargetS3Bucket', ''))
+    if not target_s3_bucket:
+        target_s3_bucket = 'venafi-tlspc-certificates-' + get_aws_account()
+    return api_key, common_name, zone, target_s3_bucket
 
 def redact_sensitive_info(json_data, sensitive_key, redacted_value='***'):
     data = json.loads(json_data)
@@ -32,7 +40,7 @@ def redact_sensitive_info(json_data, sensitive_key, redacted_value='***'):
     return redacted_json
 
 def get_physical_resource_id(event):
-    # NOTE PhysicalResourceId represents the CR (which changes upon renewals!)
+    # NOTE PhysicalResourceId represents the first CR (which changes upon renewals!)
     physical_resource_id=(str(event.get('PhysicalResourceId', None)))
     return physical_resource_id
 
@@ -47,9 +55,9 @@ def get_stack_output_value(event, output_key):
     return next((o['OutputValue'] for o in stack_outputs if o['OutputKey'] == output_key), None)
 
 def retreive_cert_with_retry(conn, request):
-    max_attempts = 5
+    max_attempts = 10
     for i in range(max_attempts):
-        time.sleep(4)
+        time.sleep(2)
         logger.info('retreive_cert_with_retry: attempt: '+ str(i))
         cert = conn.retrieve_cert(request)
         if cert is not None:
@@ -68,6 +76,13 @@ def get_cert_id(api_key, request_id):
     data = json.loads(response.data.decode('utf-8'))
     return data.get('certificateIds')[0]
 
+def store_cert_in_s3(target_s3_bucket, physical_resource_id, cert):
+    prefix = datetime.utcnow().strftime("%Y/%m/%d/%H/%M/%S/")
+    object_key = f'{prefix}{physical_resource_id}/cert.pem'
+    s3 = boto3.client('s3')
+    s3.put_object(Body=cert.full_chain, Bucket=target_s3_bucket, Key=object_key)
+    return f's3://target_s3_bucket/{object_key}'
+
 def create_handler(event, context):
     responseData = {}
     requestInfo = 'RequestType: Create'
@@ -75,17 +90,20 @@ def create_handler(event, context):
     ###########
     # code here
     ###########
-    api_key, common_name, zone = get_parameters(event)
+    api_key, common_name, zone, target_s3_bucket = get_parameters(event)
     conn = venafi_connection(api_key=api_key)
     request = CertificateRequest(common_name=common_name)
     conn.request_cert(request, zone)
     cert = retreive_cert_with_retry(conn, request)
     logger.info('certificate retrieved')
-    # TODO add the new cert to S3
+
+    s3_uri = store_cert_in_s3(target_s3_bucket, request.id, cert)
+    logger.info('object stored: s3_url='+ s3_uri)
     ###########
     responseData['PhysicalResourceId'] = request.id
     responseData['LatestCertRequestId'] = request.id
     responseData['LatestCertId'] = request.cert_guid
+    responseData['S3URI'] = s3_uri
     responseData['message'] = requestInfo
     return responseData
 
@@ -97,16 +115,13 @@ def update_handler(event, context):
     ###########
     # code here
     ###########
-    api_key, _, _ = get_parameters(event)
+    api_key, _, _, target_s3_bucket = get_parameters(event)
     latest_cert_request_id = get_stack_output_value(event, 'LatestCertRequestId')
     conn = venafi_connection(api_key=api_key)
 
     request = CertificateRequest(cert_id=latest_cert_request_id)
     conn.renew_cert(request)
     cert_id = get_cert_id(api_key, request.id)
-    logger.info('cert_id (mid): ' + str(cert_id))
-    logger.info('request.id (mid): ' + str(request.id))
-    logger.info('request.cert_guid (mid): ' + str(request.cert_guid))
     logger.info('certificate renewed')
 
     # after conn.renew_cert, request.cert_guid is only set after a successful call to conn.retrieve_cert() ... unless you're in AWS! (see get_cert_id())
@@ -114,11 +129,13 @@ def update_handler(event, context):
     cert_id = get_cert_id(api_key, request.id)
     logger.info('renewed certificate retrieved')
 
-    # TODO put the renewed cert in S3
+    s3_uri = store_cert_in_s3(target_s3_bucket, request.id, cert)
+    logger.info('object stored: s3_url='+ s3_uri)
     ###########
     responseData['PhysicalResourceId'] = physical_resource_id # fix PhysicalResourceId to first CR, to CFN happy
     responseData['LatestCertRequestId'] = request.id
     responseData['LatestCertId'] = cert_id # should be able to use request.cert_guid, but ¯\_(ツ)_/¯
+    responseData['S3URI'] = s3_uri
     responseData['message'] = requestInfo
     return responseData
 
@@ -130,7 +147,7 @@ def delete_handler(event, context):
     ###########
     # code here
     ###########
-    api_key, _, _ = get_parameters(event)
+    api_key, _, _, _ = get_parameters(event)
     latest_cert_id = get_stack_output_value(event, 'LatestCertId')
     logger.info('latest_cert_id: ' + latest_cert_id)
     payload = {
@@ -147,8 +164,7 @@ def delete_handler(event, context):
         },
         body=json.dumps(payload).encode('utf-8')
     )
-    logger.info('certificate retired')
-    # TODO remove revoked certificate from S3
+    logger.info('certificate retired - NOTE objects may remain in S3')
     ###########
     responseData['PhysicalResourceId'] = physical_resource_id
     responseData['message'] = requestInfo

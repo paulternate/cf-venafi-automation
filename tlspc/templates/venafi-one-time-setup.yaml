@@ -1,12 +1,14 @@
 AWSTemplateFormatVersion: "2010-09-09"
 Description: https://venafi-ecosystem.s3.amazonaws.com/tlspc/templates/venafi-one-time-setup.yaml
 Resources:
+
   VenafiTLSPCCertificatesBucket:
     Type: AWS::S3::Bucket
     Properties:
       BucketName: !Sub venafi-tlspc-certificates-${AWS::AccountId}
       VersioningConfiguration:
         Status: Enabled
+
   VenafiLambdaBasicExecutionRole:
     Type: AWS::IAM::Role
     Properties:
@@ -21,3 +23,19 @@ Resources:
       ManagedPolicyArns:
         - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
         - arn:aws:iam::aws:policy/AWSCloudFormationReadOnlyAccess
+
+  VenafiLambdaCertificatesBucketPolicy:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyName: VenafiLambdaCertificatesBucketPolicy
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Action:
+              - s3:GetObject*
+              - s3:PutObject*
+              - s3:DeleteObject*
+            Resource: !Sub arn:aws:s3:::${VenafiTLSPCCertificatesBucket}/*
+      Roles:
+        - !Ref VenafiLambdaBasicExecutionRole
