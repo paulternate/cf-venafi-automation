@@ -2,9 +2,12 @@ import logging
 import json
 import traceback
 import cfnresponse
+import urllib3
+import http
 
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
+http = urllib3.PoolManager()
 
 def redact_sensitive_info(json_data, sensitive_key, redacted_value='***'):
     data = json.loads(json_data)
@@ -31,6 +34,8 @@ def create_handler(event, context):
     ###########
     # code here
     ###########
+
+    ###########
     responseData['PhysicalResourceId'] = "insert created physical resource id here!"
     responseData['message'] = requestInfo
     return responseData
@@ -43,6 +48,8 @@ def update_handler(event, context):
     ###########
     # code here
     ###########
+
+    ###########
     responseData['PhysicalResourceId'] = physical_resource_id # failure to do this will trigger a delete
     responseData['message'] = requestInfo
     return responseData
@@ -54,6 +61,8 @@ def delete_handler(event, context):
     physical_resource_id = get_physical_resource_id(event)
     ###########
     # code here
+    ###########
+
     ###########
     responseData['PhysicalResourceId'] = physical_resource_id
     responseData['message'] = requestInfo
