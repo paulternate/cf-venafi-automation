@@ -82,6 +82,7 @@ def update_handler(event, context):
     conn.renew_cert(request)
     logger.info('certificate renewed')
     # after conn.renew_cert, request.cert_guid is only set after a successful call to conn.retrieve_cert()
+    time.sleep(1)
     cert = conn.retrieve_cert(request)
     logger.info('renewed certificate retrieved')
     # TODO put the renewed cert in S3
