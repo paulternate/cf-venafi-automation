@@ -57,6 +57,7 @@ def retreive_cert_with_retry(conn, request):
     raise Exception(f"Function {function.__name__} failed after {max_attempts} attempts")
 
 def get_cert_id(api_key, request_id):
+    # the VCert SDK call to conn.retrieve_cert() works fine locally (via SAM) but once deployed into AWS the value for request.cert_guid was ALWAYS null ¯\_(ツ)_/¯
     response = http.request(
         'GET',
         'https://api.venafi.cloud/outagedetection/v1/certificaterequests/' + request_id,
@@ -99,12 +100,8 @@ def update_handler(event, context):
     api_key, _, _ = get_parameters(event)
     latest_cert_request_id = get_stack_output_value(event, 'LatestCertRequestId')
     conn = venafi_connection(api_key=api_key)
-    request = CertificateRequest(cert_id=latest_cert_request_id)
-    cert_id = get_cert_id(api_key, request.id)
-    logger.info('cert_id (before): ' + str(cert_id))
-    logger.info('request.id (before): ' + str(request.id))
-    logger.info('request.cert_guid (before): ' + str(request.cert_guid))
 
+    request = CertificateRequest(cert_id=latest_cert_request_id)
     conn.renew_cert(request)
     cert_id = get_cert_id(api_key, request.id)
     logger.info('cert_id (mid): ' + str(cert_id))
@@ -112,19 +109,16 @@ def update_handler(event, context):
     logger.info('request.cert_guid (mid): ' + str(request.cert_guid))
     logger.info('certificate renewed')
 
-    # after conn.renew_cert, request.cert_guid is only set after a successful call to conn.retrieve_cert()
+    # after conn.renew_cert, request.cert_guid is only set after a successful call to conn.retrieve_cert() ... unless you're in AWS! (see get_cert_id())
     cert = retreive_cert_with_retry(conn, request)
     cert_id = get_cert_id(api_key, request.id)
-    logger.info('cert_id (after): ' + str(cert_id))
-    logger.info('request.id (after): ' + str(request.id))
-    logger.info('request.cert_guid (after): ' + str(request.cert_guid))
     logger.info('renewed certificate retrieved')
 
     # TODO put the renewed cert in S3
     ###########
     responseData['PhysicalResourceId'] = physical_resource_id # fix PhysicalResourceId to first CR, to CFN happy
     responseData['LatestCertRequestId'] = request.id
-    responseData['LatestCertId'] = cert_id
+    responseData['LatestCertId'] = cert_id # should be able to use request.cert_guid, but ¯\_(ツ)_/¯
     responseData['message'] = requestInfo
     return responseData
 
