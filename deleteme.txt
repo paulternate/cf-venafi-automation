@@ -1,8 +1,0 @@
-bucket=venafi-ecosystem-dev # drop the "-dev" as appropriate
-while true; do
-  notifywait .
-  # aws s3 cp templates/venafi-app-stack.yaml s3://${bucket}/templates-alan/venafi-app-stack.yaml
-  aws s3 cp tlspc/templates/bash-hello.yaml s3://venafi-ecosystem/tlspc/templates/bash-hello.yaml
-  aws s3 cp tlspc/templates/do-nothing.yaml s3://venafi-ecosystem/tlspc/templates/do-nothing.yaml
-  aws s3 cp tlspc/templates/venafi-setup.yaml s3://venafi-ecosystem/tlspc/templates/venafi-setup.yaml
-done
