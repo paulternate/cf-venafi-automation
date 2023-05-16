@@ -104,12 +104,14 @@ def update_handler(event, context):
     logger.info('cert_id (before): ' + str(cert_id))
     logger.info('request.id (before): ' + str(request.id))
     logger.info('request.cert_guid (before): ' + str(request.cert_guid))
+
     conn.renew_cert(request)
     cert_id = get_cert_id(api_key, request.id)
     logger.info('cert_id (mid): ' + str(cert_id))
     logger.info('request.id (mid): ' + str(request.id))
     logger.info('request.cert_guid (mid): ' + str(request.cert_guid))
     logger.info('certificate renewed')
+
     # after conn.renew_cert, request.cert_guid is only set after a successful call to conn.retrieve_cert()
     cert = retreive_cert_with_retry(conn, request)
     cert_id = get_cert_id(api_key, request.id)
@@ -117,11 +119,12 @@ def update_handler(event, context):
     logger.info('request.id (after): ' + str(request.id))
     logger.info('request.cert_guid (after): ' + str(request.cert_guid))
     logger.info('renewed certificate retrieved')
+
     # TODO put the renewed cert in S3
     ###########
     responseData['PhysicalResourceId'] = physical_resource_id # fix PhysicalResourceId to first CR, to CFN happy
     responseData['LatestCertRequestId'] = request.id
-    responseData['LatestCertId'] = request.cert_guid
+    responseData['LatestCertId'] = cert_id
     responseData['message'] = requestInfo
     return responseData
 
