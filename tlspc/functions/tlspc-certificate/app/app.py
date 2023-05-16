@@ -56,6 +56,17 @@ def retreive_cert_with_retry(conn, request):
             return cert
     raise Exception(f"Function {function.__name__} failed after {max_attempts} attempts")
 
+def get_cert_id(api_key, request_id):
+    response = http.request(
+        'GET',
+        'https://api.venafi.cloud/outagedetection/v1/certificaterequests/' + request_id,
+        headers={
+            'accept': 'application/json',
+            'tppl-api-key': api_key
+        })
+    data = json.loads(response.data.decode('utf-8'))
+    return data.get('certificateIds')[0]
+
 def create_handler(event, context):
     responseData = {}
     requestInfo = 'RequestType: Create'
@@ -89,16 +100,22 @@ def update_handler(event, context):
     latest_cert_request_id = get_stack_output_value(event, 'LatestCertRequestId')
     conn = venafi_connection(api_key=api_key)
     request = CertificateRequest(cert_id=latest_cert_request_id)
+    cert_id = get_cert_id(api_key, request.id)
+    logger.info('cert_id (before): ' + str(cert_id))
     logger.info('request.id (before): ' + str(request.id))
-    logger.info('request.id (before): ' + str(request.cert_guid))
+    logger.info('request.cert_guid (before): ' + str(request.cert_guid))
     conn.renew_cert(request)
+    cert_id = get_cert_id(api_key, request.id)
+    logger.info('cert_id (mid): ' + str(cert_id))
     logger.info('request.id (mid): ' + str(request.id))
-    logger.info('request.id (mid): ' + str(request.cert_guid))
+    logger.info('request.cert_guid (mid): ' + str(request.cert_guid))
     logger.info('certificate renewed')
     # after conn.renew_cert, request.cert_guid is only set after a successful call to conn.retrieve_cert()
     cert = retreive_cert_with_retry(conn, request)
+    cert_id = get_cert_id(api_key, request.id)
+    logger.info('cert_id (after): ' + str(cert_id))
     logger.info('request.id (after): ' + str(request.id))
-    logger.info('request.id (after): ' + str(request.cert_guid))
+    logger.info('request.cert_guid (after): ' + str(request.cert_guid))
     logger.info('renewed certificate retrieved')
     # TODO put the renewed cert in S3
     ###########
