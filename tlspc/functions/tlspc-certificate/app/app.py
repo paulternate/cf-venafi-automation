@@ -81,7 +81,7 @@ def store_cert_in_s3(target_s3_bucket, physical_resource_id, cert):
     object_key = f'{prefix}{physical_resource_id}/cert.pem'
     s3 = boto3.client('s3')
     s3.put_object(Body=cert.full_chain, Bucket=target_s3_bucket, Key=object_key)
-    return f's3://target_s3_bucket/{object_key}'
+    return f's3://{target_s3_bucket}/{object_key}'
 
 def create_handler(event, context):
     responseData = {}
