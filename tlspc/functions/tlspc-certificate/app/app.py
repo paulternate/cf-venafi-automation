@@ -46,6 +46,16 @@ def get_stack_output_value(event, output_key):
     stack_outputs = get_stack_outputs(event)
     return next((o['OutputValue'] for o in stack_outputs if o['OutputKey'] == output_key), None)
 
+def retreive_cert_with_retry(conn, request):
+    max_attempts = 10
+    for i in range(max_attempts):
+        time.sleep(2)
+        result = conn.retrieve_cert(request)
+        if result is not None:
+            return result
+        logger.info('retreive_cert unsuccessful after ' + i + ' tries')
+    raise Exception(f"Function {function.__name__} failed after {max_attempts} attempts")
+
 def create_handler(event, context):
     responseData = {}
     requestInfo = 'RequestType: Create'
@@ -57,8 +67,7 @@ def create_handler(event, context):
     conn = venafi_connection(api_key=api_key)
     request = CertificateRequest(common_name=common_name)
     conn.request_cert(request, zone)
-    time.sleep(1)
-    cert = conn.retrieve_cert(request)
+    cert = retreive_cert_with_retry(conn, request)
     logger.info('certificate retrieved')
     # TODO add the new cert to S3
     ###########
@@ -83,8 +92,7 @@ def update_handler(event, context):
     conn.renew_cert(request)
     logger.info('certificate renewed')
     # after conn.renew_cert, request.cert_guid is only set after a successful call to conn.retrieve_cert()
-    time.sleep(1)
-    cert = conn.retrieve_cert(request)
+    cert = retreive_cert_with_retry(conn, request)
     logger.info('renewed certificate retrieved')
     # TODO put the renewed cert in S3
     ###########
