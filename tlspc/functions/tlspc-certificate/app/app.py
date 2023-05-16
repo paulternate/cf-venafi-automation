@@ -81,13 +81,14 @@ def update_handler(event, context):
     conn.renew_cert(request)
     logger.info('certificate renewed')
     request = CertificateRequest(cert_id=request.id)
+    # on renewals, request.cert_guid is only set after a successful call to conn.retrieve_cert()
     cert = conn.retrieve_cert(request)
     logger.info('renewed certificate retrieved')
     # TODO put the renewed cert in S3
     ###########
-    responseData['PhysicalResourceId'] = physical_resource_id # update consistent with create
+    responseData['PhysicalResourceId'] = physical_resource_id # fix PhysicalResourceId to first CR, to CFN happy
     responseData['LatestCertRequestId'] = request.id
-    responseData['LatestCertId'] = request.latest_cert_id
+    responseData['LatestCertId'] = request.cert_guid
     responseData['message'] = requestInfo
     return responseData
 
