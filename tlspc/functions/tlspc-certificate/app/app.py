@@ -47,12 +47,13 @@ def get_stack_output_value(event, output_key):
     return next((o['OutputValue'] for o in stack_outputs if o['OutputKey'] == output_key), None)
 
 def retreive_cert_with_retry(conn, request):
-    max_attempts = 10
+    max_attempts = 5
     for i in range(max_attempts):
-        time.sleep(2)
-        result = conn.retrieve_cert(request)
-        if result is not None:
-            return result
+        time.sleep(4)
+        cert = conn.retrieve_cert(request)
+        logger.info('cert: ' + str(cert))
+        if cert is not None:
+            return cert
         logger.info('retreive_cert unsuccessful after ' + i + ' tries')
     raise Exception(f"Function {function.__name__} failed after {max_attempts} attempts")
 
