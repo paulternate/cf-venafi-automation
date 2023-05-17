@@ -7,6 +7,7 @@ import traceback
 import cfnresponse
 from vcert import (CertificateRequest, venafi_connection)
 import boto3 # https://github.com/psf/requests/issues/6443 (requests==2.28.1)
+import botocore
 
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
