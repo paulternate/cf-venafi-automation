@@ -82,7 +82,7 @@ def store_cert_in_s3(target_s3_bucket, physical_resource_id, cert):
     object_key = f'{full_prefix}/cert.pem'
     s3 = boto3.client('s3')
     s3.put_object(Body=cert.full_chain, Bucket=target_s3_bucket, Key=object_key)
-    return f's3://{target_s3_bucket}/{object_key}' f'https://s3.console.aws.amazon.com/s3/buckets/{target_s3_bucket}?prefix={full_prefix}'
+    return f's3://{target_s3_bucket}/{object_key}', f'https://s3.console.aws.amazon.com/s3/buckets/{target_s3_bucket}?prefix={full_prefix}'
 
 def create_handler(event, context):
     responseData = {}
@@ -98,7 +98,7 @@ def create_handler(event, context):
     cert = retreive_cert_with_retry(conn, request)
     logger.info('certificate retrieved')
 
-    s3_uri, s3_url  = store_cert_in_s3(target_s3_bucket, request.id, cert)
+    s3_uri, s3_url = store_cert_in_s3(target_s3_bucket, request.id, cert)
     logger.info('object stored: s3_url='+ s3_uri)
     ###########
     responseData['PhysicalResourceId'] = request.id
