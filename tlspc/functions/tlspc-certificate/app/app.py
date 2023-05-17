@@ -78,8 +78,8 @@ def get_cert_id(api_key, request_id):
 
 def store_cert_in_s3(target_s3_bucket, physical_resource_id, cert):
     date_prefix = datetime.utcnow().strftime("%Y/%m/%d/%H/%M/%S/")
-    full_prefix = f'{date_prefix}{physical_resource_id}'
-    object_key = f'{full_prefix}/cert.pem'
+    full_prefix = f'{date_prefix}{physical_resource_id}/'
+    object_key = f'{full_prefix}cert.pem'
     s3 = boto3.client('s3')
     s3.put_object(Body=cert.full_chain, Bucket=target_s3_bucket, Key=object_key)
     return f's3://{target_s3_bucket}/{object_key}', f'https://s3.console.aws.amazon.com/s3/buckets/{target_s3_bucket}?prefix={full_prefix}'
