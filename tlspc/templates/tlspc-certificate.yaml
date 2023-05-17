@@ -20,7 +20,7 @@ Metadata:
       - Label:
           default: System
         Parameters:
-          - RenewalTrigger
+          - UpdateTrigger
 
 Parameters:
   TLSPCAPIKey:
