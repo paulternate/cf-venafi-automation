@@ -16,6 +16,10 @@ def get_aws_account():
     sts = boto3.client('sts')
     return sts.get_caller_identity().get('Account')
 
+def get_aws_region():
+    session = botocore.session.Session()
+    return session.get_config_variable('region')
+
 def get_parameters(event):
     api_key = str(event['ResourceProperties']['TLSPCAPIKey'])
     common_name = str(event['ResourceProperties']['CommonName'])
@@ -85,7 +89,8 @@ def store_cert_in_s3(target_s3_bucket, physical_resource_id, cert):
     s3 = boto3.client('s3')
     s3.put_object(Body=cert.full_chain, Bucket=target_s3_bucket, Key=latest_key)
     s3.put_object(Body=cert.full_chain, Bucket=target_s3_bucket, Key=dated_key)
-    return f'https://s3.console.aws.amazon.com/s3/buckets/{target_s3_bucket}?prefix={latest_key}', f'https://s3.console.aws.amazon.com/s3/buckets/{target_s3_bucket}?prefix={dated_key}'
+    aws_region = get_aws_region()
+    return f'https://s3.console.aws.amazon.com/s3/buckets/{target_s3_bucket}?region={aws_region}&prefix={latest_key}', f'https://s3.console.aws.amazon.com/s3/buckets/{target_s3_bucket}?region={aws_region}&prefix={dated_key}'
 
 def create_handler(event, context):
     responseData = {}
@@ -134,7 +139,7 @@ def update_handler(event, context):
     cert_id = get_cert_id(api_key, request.id)
     logger.info('renewed certificate retrieved')
 
-    s3_url_latest, s3_url_dated = store_cert_in_s3(target_s3_bucket, request.id, cert)
+    s3_url_latest, s3_url_dated = store_cert_in_s3(target_s3_bucket, physical_resource_id, cert) # physical_resource_id used to ensure consistency with first CR (version history)
     logger.info('objects stored')
     ###########
     responseData['PhysicalResourceId'] = physical_resource_id # fix PhysicalResourceId to first CR, to CFN happy
