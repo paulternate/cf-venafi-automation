@@ -1,0 +1,23 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: _
+Globals:
+  Function:
+    Timeout: 3
+    MemorySize: 128
+
+Resources:
+  Function:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: app/
+      Handler: app.lambda_handler
+      Runtime: python3.10
+
+Outputs:
+  Function:
+    Description: "Lambda Function ARN"
+    Value: !GetAtt Function.Arn
+  FunctionIamRole:
+    Description: "Implicit IAM Role created for function"
+    Value: !GetAtt FunctionRole.Arn
