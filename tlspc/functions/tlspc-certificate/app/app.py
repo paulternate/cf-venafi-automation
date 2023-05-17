@@ -82,18 +82,18 @@ def get_cert_id(api_key, request_id):
     return data.get('certificateIds')[0]
 
 def store_cert_in_s3(target_s3_bucket, physical_resource_id, cert, stack_id, cert_request_id):
-    key = f'{physical_resource_id}/cert.pem'
+    object_key = f'{physical_resource_id}/cert.pem'
     s3 = boto3.client('s3')
-    s3.put_object(Bucket=target_s3_bucket, Key=key, Body=cert.full_chain)
-    logger.info(f'object saved to s3: key={target_s3_bucket}{key}')
+    s3.put_object(Bucket=target_s3_bucket, Key=object_key, Body=cert.full_chain)
+    logger.info(f'cert object saved to s3: target_s3_bucket={target_s3_bucket} object_key={object_key}')
     tags = [
         {'Key': 'StackId', 'Value': stack_id},
         {'Key': 'CertRequestId', 'Value': cert_request_id}
     ]
-    s3.put_object_tagging(Bucket=bucket_name, Key=object_key, Tagging={'TagSet': tags})
-    logger.info(f'object tagged: StackId={stack_id} CertRequestId={cert_request_id}')
+    s3.put_object_tagging(Bucket=target_s3_bucket, Key=object_key, Tagging={'TagSet': tags})
+    logger.info(f'cert object tagged: StackId={stack_id} CertRequestId={cert_request_id}')
     aws_region = get_aws_region()
-    return f'https://s3.console.aws.amazon.com/s3/buckets/{target_s3_bucket}?region={aws_region}&prefix={key}'
+    return f'https://s3.console.aws.amazon.com/s3/buckets/{target_s3_bucket}?region={aws_region}&prefix={object_key}'
 
 def create_handler(event, context):
     responseData = {}
