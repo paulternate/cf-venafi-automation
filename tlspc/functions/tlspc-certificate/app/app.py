@@ -50,9 +50,9 @@ def get_physical_resource_id(event):
     return physical_resource_id
 
 def get_stack_outputs(event):
-    stack_name = event['StackId']
+    stack_id = event['StackId']
     cloudformation = boto3.client('cloudformation')
-    response = cloudformation.describe_stacks(StackName=stack_name)
+    response = cloudformation.describe_stacks(StackName=stack_id)
     return response['Stacks'][0]['Outputs']
 
 def get_stack_output_value(event, output_key):
@@ -81,10 +81,15 @@ def get_cert_id(api_key, request_id):
     data = json.loads(response.data.decode('utf-8'))
     return data.get('certificateIds')[0]
 
-def store_cert_in_s3(target_s3_bucket, physical_resource_id, cert):
+def store_cert_in_s3(target_s3_bucket, physical_resource_id, cert, stack_id, cert_request_id):
     key = f'{physical_resource_id}/cert.pem'
     s3 = boto3.client('s3')
-    s3.put_object(Body=cert.full_chain, Bucket=target_s3_bucket, Key=key)
+    s3.put_object(Bucket=target_s3_bucket, Key=key, Body=cert.full_chain)
+    tags = [
+        {'Key': 'StackId', 'Value': stack_id},
+        {'Key': 'CertRequestId', 'Value': cert_request_id}
+    ]    
+    s3.put_object_tagging(Bucket=bucket_name, Key=object_key, Tagging={'TagSet': tags})
     aws_region = get_aws_region()
     return f'https://s3.console.aws.amazon.com/s3/buckets/{target_s3_bucket}?region={aws_region}&prefix={key}'
 
@@ -102,7 +107,7 @@ def create_handler(event, context):
     cert = retreive_cert_with_retry(conn, request)
     logger.info('certificate retrieved')
 
-    s3_url= store_cert_in_s3(target_s3_bucket, request.id, cert)
+    s3_url= store_cert_in_s3(target_s3_bucket, request.id, cert, event['StackId'], request.id)
     logger.info('objects stored')
     ###########
     responseData['PhysicalResourceId'] = request.id
@@ -134,7 +139,7 @@ def update_handler(event, context):
     cert_id = get_cert_id(api_key, request.id)
     logger.info('renewed certificate retrieved')
 
-    s3_url = store_cert_in_s3(target_s3_bucket, physical_resource_id, cert) # physical_resource_id used to ensure consistency with first CR (version history)
+    s3_url = store_cert_in_s3(target_s3_bucket, physical_resource_id, cert, event['StackId'], request.id) # physical_resource_id used to ensure consistency with first CR (version history)
     logger.info('objects stored')
     ###########
     responseData['PhysicalResourceId'] = physical_resource_id # fix PhysicalResourceId to first CR, to CFN happy
