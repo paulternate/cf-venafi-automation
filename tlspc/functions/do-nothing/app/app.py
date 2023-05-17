@@ -29,21 +29,18 @@ def get_physical_resource_id(event):
 
 def create_handler(event, context):
     responseData = {}
-    requestInfo = 'RequestType: Create'
-    logger.info(requestInfo)
+    logger.info('RequestType: Create')
     ###########
     # code here
     ###########
 
     ###########
     responseData['PhysicalResourceId'] = "insert created physical resource id here!"
-    responseData['message'] = requestInfo
     return responseData
 
 def update_handler(event, context):
     responseData = {}
-    requestInfo = 'RequestType: Update'
-    logger.info(requestInfo)
+    logger.info('RequestType: Update')
     physical_resource_id = get_physical_resource_id(event)
     ###########
     # code here
@@ -51,13 +48,11 @@ def update_handler(event, context):
 
     ###########
     responseData['PhysicalResourceId'] = physical_resource_id # failure to do this will trigger a delete
-    responseData['message'] = requestInfo
     return responseData
 
 def delete_handler(event, context):
     responseData = {}
-    requestInfo = 'RequestType: Delete'
-    logger.info(requestInfo)
+    logger.info('RequestType: Delete')
     physical_resource_id = get_physical_resource_id(event)
     ###########
     # code here
@@ -65,7 +60,6 @@ def delete_handler(event, context):
 
     ###########
     responseData['PhysicalResourceId'] = physical_resource_id
-    responseData['message'] = requestInfo
     return responseData
 
 def lambda_handler(event, context):
@@ -83,6 +77,6 @@ def lambda_handler(event, context):
         responseData = requestTypeHandler(event, context)
     except Exception as e:
         responseStatus = cfnresponse.FAILED
-        responseData['Message'] = traceback.format_exc()
+        responseData['Error'] = traceback.format_exc()
     finally:
         cfnresponse.send(event, context, responseStatus, responseData, responseData.get('PhysicalResourceId', None))

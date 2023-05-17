@@ -25,7 +25,3 @@ Resources:
     Properties:
       ServiceToken: !GetAtt DoNothingFunction.Arn
       TLSPCAPIKey: !Ref TLSPCAPIKey
-
-Outputs:
-  Message: 
-    Value: !GetAtt DoNothingResource.message
