@@ -8,6 +8,9 @@ Parameters:
     ConstraintDescription: TLSPCAPIKey must be structured as xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx and contain only lowercase hex-letters and numbers
     AllowedPattern: "[a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12}"
     NoEcho: true
+  UpdateTrigger:
+    Type: String
+    Description: PLEASE IGNORE - parameter is reserved for internal use
 
 Resources:
   DoNothingFunction:
