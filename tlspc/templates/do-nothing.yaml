@@ -39,4 +39,4 @@ Resources:
     Properties:
       ServiceToken: !GetAtt DoNothingFunction.Arn
       TLSPCAPIKey: !Ref TLSPCAPIKey
-      UpdateTrigger: !Ref UpdateTrigger
+      UpdateTrigger: !Ref UpdateTrigger # reference required for update/change assessment

@@ -76,7 +76,7 @@ Resources:
       CommonName: !Ref CommonName
       ValidityHours: !Ref ValidityHours
       TargetS3Bucket: !Ref TargetS3Bucket
-      UpdateTrigger: !Ref UpdateTrigger
+      UpdateTrigger: !Ref UpdateTrigger # reference required for update/change assessment
 
 Outputs:
   LatestCertRequestId:
