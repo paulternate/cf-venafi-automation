@@ -82,19 +82,21 @@ def get_cert_id(api_key, request_id):
     data = json.loads(response.data.decode('utf-8'))
     return data.get('certificateIds')[0]
 
-def store_cert_in_s3(target_s3_bucket, physical_resource_id, cert, stack_id, cert_request_id):
-    object_key = f'{physical_resource_id}/cert.pem'
+def store_cert_in_s3(target_s3_bucket, physical_resource_id, common_name, cert, stack_id, cert_request_id):
+    object_prefix = f'{physical_resource_id}/'
     s3 = boto3.client('s3')
-    s3.put_object(Bucket=target_s3_bucket, Key=object_key, Body=cert.full_chain)
-    logger.info(f'cert object saved to s3: target_s3_bucket={target_s3_bucket} object_key={object_key}')
+    s3.put_object(Bucket=target_s3_bucket, Key=f'{object_prefix}{common_name}.cert', Body=cert.full_chain)
+    s3.put_object(Bucket=target_s3_bucket, Key=f'{object_prefix}{common_name}.key', Body=cert.key)
+    logger.info(f'cert objects saved to s3: target_s3_bucket={target_s3_bucket} object_prefix={object_prefix} common_name={common_name}')
     tags = [
         {'Key': 'StackId', 'Value': stack_id},
         {'Key': 'CertRequestId', 'Value': cert_request_id}
     ]
-    s3.put_object_tagging(Bucket=target_s3_bucket, Key=object_key, Tagging={'TagSet': tags})
+    s3.put_object_tagging(Bucket=target_s3_bucket, Key=f'{object_prefix}{common_name}.cert', Tagging={'TagSet': tags})
+    s3.put_object_tagging(Bucket=target_s3_bucket, Key=f'{object_prefix}{common_name}.key', Tagging={'TagSet': tags})
     logger.info(f'cert object tagged: StackId={stack_id} CertRequestId={cert_request_id}')
     aws_region = get_aws_region()
-    return f'https://s3.console.aws.amazon.com/s3/buckets/{target_s3_bucket}?region={aws_region}&prefix={object_key}'
+    return f'https://s3.console.aws.amazon.com/s3/buckets/{target_s3_bucket}?region={aws_region}&prefix={object_prefix}'
 
 def create_handler(event, context):
     responseData = {}
@@ -107,12 +109,12 @@ def create_handler(event, context):
     request = CertificateRequest(common_name=common_name)
     request.validity_hours = validity_hours
     request.csr_origin = CSR_ORIGIN_SERVICE
-    request.key_password = api_key # re-using this for now
+    request.key_password = api_key # re-using api_key for now (plan to introduce PrivateKeyPassphrase param)
     conn.request_cert(request, zone)
     cert = retreive_cert_with_retry(conn, request)
     logger.info('certificate retrieved')
 
-    s3_url= store_cert_in_s3(target_s3_bucket, request.id, cert, event['StackId'], request.id)
+    s3_url= store_cert_in_s3(target_s3_bucket, request.id, common_name, cert, event['StackId'], request.id)
     logger.info('objects stored')
     ###########
     responseData['PhysicalResourceId'] = request.id
@@ -128,7 +130,7 @@ def update_handler(event, context):
     ###########
     # code here
     ###########
-    api_key, _, _, _, target_s3_bucket = get_parameters(event)
+    api_key, common_name, _, _, target_s3_bucket = get_parameters(event)
     latest_cert_request_id = get_stack_output_value(event, 'LatestCertRequestId')
     conn = venafi_connection(api_key=api_key)
 
@@ -142,7 +144,7 @@ def update_handler(event, context):
     cert_id = get_cert_id(api_key, request.id)
     logger.info('renewed certificate retrieved')
 
-    s3_url = store_cert_in_s3(target_s3_bucket, physical_resource_id, cert, event['StackId'], request.id) # physical_resource_id used to ensure consistency with first CR (version history)
+    s3_url = store_cert_in_s3(target_s3_bucket, physical_resource_id, common_name, cert, event['StackId'], request.id) # physical_resource_id used to ensure consistency with first CR (version history)
     logger.info('objects stored')
     ###########
     responseData['PhysicalResourceId'] = physical_resource_id # fix PhysicalResourceId to first CR, to CFN happy
