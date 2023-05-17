@@ -1,21 +1,18 @@
 {
-  "RequestType": "Update",
+  "RequestType": "Create",
   "ServiceToken": "arn:aws:lambda:us-east-1:999999999999:function:func",
   "ResponseURL": "https://httpbin.org/put",
-  "StackId": "arn:aws:cloudformation:us-east-1:427380916706:stack/amcginlay-cert/9a083bb0-f3e3-11ed-baf0-0e3cc3fc9e57",
+  "StackId": "arn:aws:cloudformation:us-east-1:999999999999:stack/MyStack/guid",
   "RequestId": "dead",
-  "LogicalResourceId": "86e537f0-f347-11ed-a072-65bbe0026f84",
-  "PhysicalResourceId": "a3f5e3c0-f3e3-11ed-a072-65bbe0026f84",
+  "LogicalResourceId": "TLSPCCertificateResource",
+  "PhysicalResourceId": "deaddead-dead-dead-dead-deaddeaddead",
   "ResourceType": "Custom::TLSPCCertificate",
   "ResourceProperties":
     {
       "ServiceToken": "arn:aws:lambda:us-east-1:999999999999:function:func",
-
-      "BECAREFUL": "DON'T COMMIT REAL KEYS !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!",
-      "TLSPCAPIKey": "8220bb9b-ac1b-4c4c-874d-f5746c61638d",
-
+      "TLSPCAPIKey": "deaddead-dead-dead-dead-deaddeaddead",
       "Zone": "amcginlay-app\\Default",
-      "CommonName": "www171.example.com",
+      "CommonName": "www.example.com",
       "TargetS3Bucket": ""
     }
 }

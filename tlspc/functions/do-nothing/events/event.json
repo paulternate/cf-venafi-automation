@@ -1,6 +1,6 @@
 {
   "RequestType": "Create",
-  "ServiceToken": "arn:aws:lambda:us-east-1:999999999999:function:func",
+  "ServiceToken": "arn:aws:cloudformation:us-east-1:999999999999:stack/MyStack/guid",
   "ResponseURL": "https://httpbin.org/put",
   "StackId": "arn:aws:cloudformation:us-east-1:427380916706:stack/amcginlay-cert2/7ba93df0-f347-11ed-902d-0a92aa53567d",
   "RequestId": "dead",
@@ -10,9 +10,6 @@
   "ResourceProperties":
     {
       "ServiceToken": "arn:aws:lambda:us-east-1:999999999999:function:func",
-
-      "BECAREFUL": "DON'T COMMIT REAL KEYS !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!",
-      "TLSPCAPIKey": "8220bb9b-ac1b-4c4c-874d-f5746c61638d"
-
+      "TLSPCAPIKey": "deaddead-dead-dead-dead-deaddeaddead"
     }
 }
