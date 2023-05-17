@@ -43,10 +43,10 @@ Parameters:
     Default: www.example.com
   ValidityHours:
     Type: Number
-    Description: The number of hours for which any created/renewed certificate is considered valid
+    Description: The number of hours for which any created/renewed certificate is considered valid. Default is 90 days (2160hrs/24).
     ConstraintDescription: Must be a number >=1 but not exceed the amount governed by any Issuing Template policy
     MinValue: 1
-    Default: 1
+    Default: 2160
   TargetS3Bucket:
     Type: String
     Description: The name of a versioned S3 Bucket where your TLSPC Certificates will be deposited. Defaults to venafi-tlspc-certificates-${AWS::AccountId} when left blank. Check Lambda Function permissions before changing.
