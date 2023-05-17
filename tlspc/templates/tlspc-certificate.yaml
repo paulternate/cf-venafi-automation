@@ -71,8 +71,6 @@ Resources:
       RenewalTrigger: !Ref RenewalTrigger
 
 Outputs:
-  Message: 
-    Value: !GetAtt TLSPCCertificateResource.message
   LatestCertRequestId:
     Value: !GetAtt TLSPCCertificateResource.LatestCertRequestId
   LatestCertId:
