@@ -25,7 +25,7 @@ def get_parameters(event):
     api_key = str(event['ResourceProperties']['TLSPCAPIKey'])
     common_name = str(event['ResourceProperties']['CommonName'])
     zone = str(event['ResourceProperties']['Zone']) # e.g. 'my-app\\Default'
-    validity_hours = str(event['ResourceProperties']['ValidityHours'])
+    validity_hours = int(event['ResourceProperties']['ValidityHours'])
     target_s3_bucket = str(event['ResourceProperties']['TargetS3Bucket'])
     if not target_s3_bucket:
         target_s3_bucket = 'venafi-tlspc-certificates-' + get_aws_account()
@@ -104,7 +104,8 @@ def create_handler(event, context):
     ###########
     api_key, common_name, zone, validity_hours, target_s3_bucket = get_parameters(event)
     conn = venafi_connection(api_key=api_key)
-    request = CertificateRequest(common_name=common_name, validity_hours=validity_hours)
+    request = CertificateRequest(common_name=common_name)
+    request.validity_hours = validity_hours
     conn.request_cert(request, zone)
     cert = retreive_cert_with_retry(conn, request)
     logger.info('certificate retrieved')

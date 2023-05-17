@@ -13,6 +13,7 @@
       "TLSPCAPIKey": "deaddead-dead-dead-dead-deaddeaddead",
       "Zone": "amcginlay-app\\Default",
       "CommonName": "www.example.com",
+      "ValidityHours": "2160",
       "TargetS3Bucket": ""
     }
 }
