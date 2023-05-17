@@ -5,7 +5,7 @@ import json
 import urllib3
 import traceback
 import cfnresponse
-from vcert import (CertificateRequest, venafi_connection)
+from vcert import (CertificateRequest, venafi_connection, CSR_ORIGIN_SERVICE)
 import boto3 # https://github.com/psf/requests/issues/6443 (requests==2.28.1)
 import botocore
 
@@ -106,6 +106,8 @@ def create_handler(event, context):
     conn = venafi_connection(api_key=api_key)
     request = CertificateRequest(common_name=common_name)
     request.validity_hours = validity_hours
+    request.csr_origin = CSR_ORIGIN_SERVICE
+    request.key_password = api_key # re-using this for now
     conn.request_cert(request, zone)
     cert = retreive_cert_with_retry(conn, request)
     logger.info('certificate retrieved')
