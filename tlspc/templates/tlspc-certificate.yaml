@@ -51,7 +51,7 @@ Parameters:
   PrivateKeyPassphrase:
     Type: String
     Description: The encryption passphrase to use when downloading the certificate's private key
-    ConstraintDescription:
+    ConstraintDescription: 12 or more alpha-numeric characters
     AllowedPattern: ^[a-zA-Z0-9]{12,}$
     NoEcho: true
   TargetS3Bucket:
