@@ -52,7 +52,7 @@ Parameters:
     Description: The name of a versioned S3 Bucket where your TLSPC Certificates will be deposited. Defaults to venafi-tlspc-certificates-${AWS::AccountId} when left blank. Check Lambda Function permissions before changing.
     ConstraintDescription: Needs to remain blank or follow the S3 bucket naming convention
     AllowedPattern: ^(|[a-z0-9][a-z0-9\-]{1,61}[a-z0-9])$
-  RenewalTrigger:
+  UpdateTrigger:
     Type: String
     Description: PLEASE IGNORE - parameter is reserved for internal use
 
