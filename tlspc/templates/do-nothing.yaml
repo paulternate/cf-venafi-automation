@@ -1,5 +1,16 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Description: https://venafi-ecosystem.s3.amazonaws.com/tlspc/templates/do-nothing.yaml
+Metadata:
+  AWS::CloudFormation::Interface:
+    ParameterGroups:
+      - Label:
+          default: Credentials
+        Parameters:
+          - TLSPCAPIKey
+      - Label:
+          default: System
+        Parameters:
+          - UpdateTrigger
 
 Parameters:
   TLSPCAPIKey:
