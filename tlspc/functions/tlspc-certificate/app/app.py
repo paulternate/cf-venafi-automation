@@ -83,8 +83,8 @@ def store_cert_in_s3(target_s3_bucket, physical_resource_id, cert):
     latest_key = f'{latest_prefix}cert.pem'
     dated_key = f'{dated_prefix}cert.pem'
     s3 = boto3.client('s3')
-    s3.put_object_version(Body=cert.full_chain, Bucket=target_s3_bucket, Key=latest_key)
-    s3.put_object_version(Body=cert.full_chain, Bucket=target_s3_bucket, Key=dated_key)
+    s3.put_object(Body=cert.full_chain, Bucket=target_s3_bucket, Key=latest_key)
+    s3.put_object(Body=cert.full_chain, Bucket=target_s3_bucket, Key=dated_key)
     return f'https://s3.console.aws.amazon.com/s3/buckets/{target_s3_bucket}?prefix={latest_key}', f'https://s3.console.aws.amazon.com/s3/buckets/{target_s3_bucket}?prefix={dated_key}'
 
 def create_handler(event, context):
