@@ -13,6 +13,7 @@ Metadata:
           default: Credentials
         Parameters:
           - TLSPCAPIKey
+          - PrivateKeyPassphrase
       - Label:
           default: Certificate Storage
         Parameters:
@@ -47,6 +48,12 @@ Parameters:
     ConstraintDescription: Must be a number >=1 but not exceed the amount governed by any Issuing Template policy
     MinValue: 1
     Default: 2160
+  PrivateKeyPassphrase:
+    Type: String
+    Description: The encryption passphrase to use when downloading the certificate's private key
+    ConstraintDescription:
+    AllowedPattern: ^[a-zA-Z0-9]{12,}$
+    NoEcho: true
   TargetS3Bucket:
     Type: String
     Description: The name of a versioned S3 Bucket where your TLSPC Certificates will be deposited. Defaults to venafi-tlspc-certificates-${AWS::AccountId} when left blank. Check Lambda Function permissions before changing.
@@ -75,6 +82,7 @@ Resources:
       Zone: !Ref Zone
       CommonName: !Ref CommonName
       ValidityHours: !Ref ValidityHours
+      PrivateKeyPassphrase: !Ref PrivateKeyPassphrase
       TargetS3Bucket: !Ref TargetS3Bucket
       UpdateTrigger: !Ref UpdateTrigger # reference required for update/change assessment
 

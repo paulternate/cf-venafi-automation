@@ -26,10 +26,11 @@ def get_parameters(event):
     common_name = str(event['ResourceProperties']['CommonName'])
     zone = str(event['ResourceProperties']['Zone']) # e.g. 'my-app\\Default'
     validity_hours = int(event['ResourceProperties']['ValidityHours'])
+    private_key_passphrase = str(event['ResourceProperties']['PrivateKeyPassphrase'])
     target_s3_bucket = str(event['ResourceProperties']['TargetS3Bucket'])
     if not target_s3_bucket:
         target_s3_bucket = 'venafi-tlspc-certificates-' + get_aws_account()
-    return api_key, common_name, zone, validity_hours, target_s3_bucket
+    return api_key, common_name, zone, validity_hours, private_key_passphrase, target_s3_bucket
 
 def redact_sensitive_info(json_data, sensitive_key, redacted_value='***'):
     data = json.loads(json_data)
@@ -104,12 +105,12 @@ def create_handler(event, context):
     ###########
     # code here
     ###########
-    api_key, common_name, zone, validity_hours, target_s3_bucket = get_parameters(event)
+    api_key, common_name, zone, validity_hours, private_key_passphrase, target_s3_bucket = get_parameters(event)
     conn = venafi_connection(api_key=api_key)
     request = CertificateRequest(common_name=common_name)
     request.validity_hours = validity_hours
     request.csr_origin = CSR_ORIGIN_SERVICE
-    request.key_password = api_key # re-using api_key for now (plan to introduce PrivateKeyPassphrase param)
+    request.key_password = private_key_passphrase
     conn.request_cert(request, zone)
     cert = retreive_cert_with_retry(conn, request)
     logger.info('certificate retrieved')
@@ -130,7 +131,7 @@ def update_handler(event, context):
     ###########
     # code here
     ###########
-    api_key, common_name, _, _, target_s3_bucket = get_parameters(event)
+    api_key, common_name, _, _, _, target_s3_bucket = get_parameters(event)
     latest_cert_request_id = get_stack_output_value(event, 'LatestCertRequestId')
     conn = venafi_connection(api_key=api_key)
 
@@ -160,7 +161,7 @@ def delete_handler(event, context):
     ###########
     # code here
     ###########
-    api_key, _, _, _, _ = get_parameters(event)
+    api_key, _, _, _, _, _ = get_parameters(event)
     latest_cert_id = get_stack_output_value(event, 'LatestCertId')
     logger.info('latest_cert_id: ' + latest_cert_id)
     payload = {
