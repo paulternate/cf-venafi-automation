@@ -82,16 +82,11 @@ def get_cert_id(api_key, request_id):
     return data.get('certificateIds')[0]
 
 def store_cert_in_s3(target_s3_bucket, physical_resource_id, cert):
-    date_prefix = datetime.utcnow().strftime("%Y/%m/%d/%H/%M/%S/")
-    latest_prefix = f'LATEST/{physical_resource_id}/'
-    dated_prefix = f'{date_prefix}{physical_resource_id}/'    
-    latest_key = f'{latest_prefix}cert.pem'
-    dated_key = f'{dated_prefix}cert.pem'
+    key = f'{physical_resource_id}/cert.pem'
     s3 = boto3.client('s3')
-    s3.put_object(Body=cert.full_chain, Bucket=target_s3_bucket, Key=latest_key)
-    s3.put_object(Body=cert.full_chain, Bucket=target_s3_bucket, Key=dated_key)
+    s3.put_object(Body=cert.full_chain, Bucket=target_s3_bucket, Key=key)
     aws_region = get_aws_region()
-    return f'https://s3.console.aws.amazon.com/s3/buckets/{target_s3_bucket}?region={aws_region}&prefix={latest_key}', f'https://s3.console.aws.amazon.com/s3/buckets/{target_s3_bucket}?region={aws_region}&prefix={dated_key}'
+    return f'https://s3.console.aws.amazon.com/s3/buckets/{target_s3_bucket}?region={aws_region}&prefix={key}'
 
 def create_handler(event, context):
     responseData = {}
@@ -107,14 +102,13 @@ def create_handler(event, context):
     cert = retreive_cert_with_retry(conn, request)
     logger.info('certificate retrieved')
 
-    s3_url_latest, s3_url_dated = store_cert_in_s3(target_s3_bucket, request.id, cert)
+    s3_url= store_cert_in_s3(target_s3_bucket, request.id, cert)
     logger.info('objects stored')
     ###########
     responseData['PhysicalResourceId'] = request.id
     responseData['LatestCertRequestId'] = request.id
     responseData['LatestCertId'] = request.cert_guid
-    responseData['S3URLLatest'] = s3_url_latest
-    responseData['S3URLDated'] = s3_url_dated
+    responseData['S3URL'] = s3_url
     responseData['message'] = requestInfo
     return responseData
 
@@ -140,14 +134,13 @@ def update_handler(event, context):
     cert_id = get_cert_id(api_key, request.id)
     logger.info('renewed certificate retrieved')
 
-    s3_url_latest, s3_url_dated = store_cert_in_s3(target_s3_bucket, physical_resource_id, cert) # physical_resource_id used to ensure consistency with first CR (version history)
+    s3_url = store_cert_in_s3(target_s3_bucket, physical_resource_id, cert) # physical_resource_id used to ensure consistency with first CR (version history)
     logger.info('objects stored')
     ###########
     responseData['PhysicalResourceId'] = physical_resource_id # fix PhysicalResourceId to first CR, to CFN happy
     responseData['LatestCertRequestId'] = request.id
     responseData['LatestCertId'] = cert_id # should be able to use request.cert_guid, but ¯\_(ツ)_/¯
-    responseData['S3URLLatest'] = s3_url_latest
-    responseData['S3URLDated'] = s3_url_dated
+    responseData['S3URL'] = s3_url
     responseData['message'] = requestInfo
     return responseData
 

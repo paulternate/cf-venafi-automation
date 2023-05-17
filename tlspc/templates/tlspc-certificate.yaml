@@ -77,7 +77,5 @@ Outputs:
     Value: !GetAtt TLSPCCertificateResource.LatestCertRequestId
   LatestCertId:
     Value: !GetAtt TLSPCCertificateResource.LatestCertId
-  S3URLLatest:
-    Value: !GetAtt TLSPCCertificateResource.S3URLLatest
-  S3URLDated:
-    Value: !GetAtt TLSPCCertificateResource.S3URLDated
+  S3URL:
+    Value: !GetAtt TLSPCCertificateResource.S3URL
