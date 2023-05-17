@@ -8,6 +8,7 @@ Metadata:
         Parameters:
           - Zone
           - CommonName
+          - ValidityHours
       - Label:
           default: Credentials
         Parameters:
@@ -40,9 +41,15 @@ Parameters:
     ConstraintDescription: For example www.example.com
     AllowedPattern: (?!-)[a-zA-Z0-9-.]{1,63}(?<!-)
     Default: www.example.com
+  ValidityHours:
+    Type: Number
+    Description: The number of hours for which any created/renewed certificate is considered valid
+    ConstraintDescription: Must be a number >=1 but not exceed the amount governed by any Issuing Template policy
+    MinValue: 1
+    Default: 1
   TargetS3Bucket:
     Type: String
-    Description: The name of a versioned S3 Bucket where your TLSPC Certificates will be deposited. Defaults to venafi-tlspc-certificates-${AWS::AccountId} when left blank.
+    Description: The name of a versioned S3 Bucket where your TLSPC Certificates will be deposited. Defaults to venafi-tlspc-certificates-${AWS::AccountId} when left blank. Check Lambda Function permissions before changing.
     ConstraintDescription: Needs to remain blank or follow the S3 bucket naming convention
     AllowedPattern: ^(|[a-z0-9][a-z0-9\-]{1,61}[a-z0-9])$
   RenewalTrigger:
@@ -67,6 +74,7 @@ Resources:
       TLSPCAPIKey: !Ref TLSPCAPIKey
       Zone: !Ref Zone
       CommonName: !Ref CommonName
+      ValidityHours: !Ref ValidityHours
       TargetS3Bucket: !Ref TargetS3Bucket
       RenewalTrigger: !Ref RenewalTrigger
 
