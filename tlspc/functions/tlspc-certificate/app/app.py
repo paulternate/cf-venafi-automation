@@ -25,7 +25,7 @@ def get_parameters(event):
     api_key = str(event['ResourceProperties']['TLSPCAPIKey'])
     common_name = str(event['ResourceProperties']['CommonName'])
     zone = str(event['ResourceProperties']['Zone']) # e.g. 'my-app\\Default'
-    validity_hours = None if event['ResourceProperties']['ValidityHours'] == 0 else int(event['ResourceProperties']['ValidityHours'])
+    validity_hours = None if int(event['ResourceProperties']['ValidityHours']) == 0 else int(event['ResourceProperties']['ValidityHours'])
     private_key_passphrase = str(event['ResourceProperties']['PrivateKeyPassphrase'])
     target_s3_bucket = str(event['ResourceProperties']['TargetS3Bucket'])
     if not target_s3_bucket:
