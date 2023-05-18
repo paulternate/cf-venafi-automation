@@ -4,11 +4,10 @@
 
 To successfully complete this workshop you will need the following:
 
-- Access to the "AWS Single Sign-on" (SSO) tile via https://venafi.okta.com/
-- A minimum of "Basic" access to one of the following AWS accounts via SSO:
+- Access to the "AWS Single Sign-on" (SSO) tile via https://venafi.okta.com/ with a minimum of "Basic" access to one of the following AWS accounts via SSO:
   - "venafi-se" (aka "Venafi SE")
   - "venafi-ps" (aka "AWS-PS")
-  - Any personal account not belonging to Venafi/Jetstack (SSO not a requirement)
+- Any personal account not belonging to Venafi
 - To complete these exercises using the "us-east-1" AWS region, simply because it's tried and tested there
 - Access, via either your own domain or the company shared one, to TLSPC at https://ui.venafi.cloud/
 - For the purpose of automated CSR generation, at least one VSatellite instance should be active at https://ui.venafi.cloud/vsatellites
