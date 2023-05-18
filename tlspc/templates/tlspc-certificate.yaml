@@ -75,7 +75,7 @@ Resources:
       Runtime: python3.10
       Environment:
         Variables:
-          TARGET_STACK_ID: ${AWS::StackName}
+          TARGET_STACK_ID: !Sub ${AWS::StackName}
   TLSPCCertificateFunction:
     Type: AWS::Lambda::Function
     Properties:
