@@ -1,12 +1,13 @@
 import logging
 import time
-from datetime import datetime
+import datetime
+import isodate
 import json
 import urllib3
 import traceback
 import cfnresponse
 from vcert import (CertificateRequest, venafi_connection, CSR_ORIGIN_SERVICE)
-import boto3 # https://github.com/psf/requests/issues/6443 (requests==2.28.1)
+import boto3
 import botocore
 
 logger = logging.getLogger()
@@ -21,11 +22,47 @@ def get_aws_region():
     session = botocore.session.Session()
     return session.get_config_variable('region')
 
+def get_template_validity_hours(api_key, zone):
+    logger.info('getting template_id')
+    application_name = zone.split('\\')[0]
+    response = http.request(
+        'GET',
+        'https://api.venafi.cloud/outagedetection/v1/applications',
+        headers={
+            'accept': 'application/json',
+            'tppl-api-key': api_key
+        })
+    guid = next((data["applications"][i]["certificateIssuingTemplateAliasIdMap"][template_name] for i in range(len(data["applications"])) if data["applications"][i]["name"] == application_name and template_name in data["applications"][i]["certificateIssuingTemplateAliasIdMap"]), None)
+
+
+
+
+
+    logger.info('getting template_id')
+    response = http.request(
+        'GET',
+        'https://api.venafi.cloud/v1/certificateissuingtemplates',
+        headers={
+            'accept': 'application/json',
+            'tppl-api-key': api_key
+        })
+    cert_authority = zone.split('\\')[1]
+    iso_validity_period = next(
+        (t['product']['validityPeriod'] for t in json.loads(response.data.decode('utf-8'))['certificateIssuingTemplates']
+            if t['name'] == issuing_template_name and t['certificateAuthority'] == cert_authority),
+        None
+    )
+    validity_duration = isodate.parse_duration(iso_validity_period)
+    validity_hours = validity_duration.total_seconds() / 3600
+    return validity_hours
+
 def get_parameters(event):
     api_key = str(event['ResourceProperties']['TLSPCAPIKey'])
     common_name = str(event['ResourceProperties']['CommonName'])
     zone = str(event['ResourceProperties']['Zone']) # e.g. 'my-app\\Default'
-    validity_hours = None if event['ResourceProperties']['ValidityHours'] == 0 else int(event['ResourceProperties']['ValidityHours'])
+    validity_hours = int(event['ResourceProperties']['ValidityHours'])
+    if validity_hours == 0:
+        validity_hours = get_template_validity_hours(api_key, zone)
     private_key_passphrase = str(event['ResourceProperties']['PrivateKeyPassphrase'])
     target_s3_bucket = str(event['ResourceProperties']['TargetS3Bucket'])
     if not target_s3_bucket:

@@ -53,6 +53,17 @@
                     "PYDEVD_WARN_SLOW_RESOLVE_TIMEOUT": "600"
                 }
             }
+        },
+        {
+            "name": "Python: Current File",
+            "type": "python",
+            "request": "launch",
+            "program": "${file}",
+            "console": "integratedTerminal",
+            "justMyCode": "false",
+            "env": {
+                "sTARGET_STACK_ID": "arn:aws:cloudformation:us-east-1:427380916706:stack/do-nothing/9668a4b0-f4bd-11ed-9c52-0a52e8185fa9"
+            }
         }
     ]
 }

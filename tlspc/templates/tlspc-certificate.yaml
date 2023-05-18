@@ -44,10 +44,10 @@ Parameters:
     Default: www.example.com
   ValidityHours:
     Type: Number
-    Description: The number of hours for which any created/renewed certificate is considered valid. Default is 90 days (2160hrs/24).
-    ConstraintDescription: Must be a number >=1 but not exceed the amount governed by any Issuing Template policy
-    MinValue: 1
-    Default: 2160
+    Description: The number of hours for which any created/renewed certificate is considered valid. Zero indicates that Issuing Template's Validity will be adopted.
+    ConstraintDescription: A positive number not exceeding the Issuing Template's Validity
+    MinValue: 0
+    Default: 0
   PrivateKeyPassphrase:
     Type: String
     Description: The encryption passphrase to use when downloading the certificate's private key
