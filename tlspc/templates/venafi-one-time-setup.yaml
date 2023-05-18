@@ -53,3 +53,17 @@ Resources:
             Resource: '*'
       Roles:
         - !Ref VenafiLambdaBasicExecutionRole
+
+  VenafiLambdaLambdaPolicy:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyName: VenafiLambdaLambdaPolicy
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Action:
+              - lambda:InvokeFunction
+            Resource: '*'
+      Roles:
+        - !Ref VenafiLambdaBasicExecutionRole
