@@ -1,7 +1,7 @@
 import os
 import json
 import traceback
-import boto3 # https://github.com/psf/requests/issues/6443 (requests==2.28.1)
+import boto3
 
 def lambda_handler(event, context):
     stack_id = os.getenv("TARGET_STACK_ID")
