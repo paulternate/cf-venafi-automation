@@ -51,6 +51,6 @@ Resources:
             Action:
               - cloudformation:DescribeStacks
               - cloudformation:UpdateStack
-            Resource: *
+            Resource: '*'
       Roles:
         - !Ref VenafiLambdaBasicExecutionRole
