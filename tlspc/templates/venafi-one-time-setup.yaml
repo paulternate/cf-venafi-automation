@@ -39,3 +39,18 @@ Resources:
             Resource: !Sub arn:aws:s3:::${VenafiTLSPCCertificatesBucket}/*
       Roles:
         - !Ref VenafiLambdaBasicExecutionRole
+
+  VenafiLambdaCloudFormationPolicy:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyName: VenafiLambdaCloudFormationPolicy
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Action:
+              - cloudformation:DescribeStacks
+              - cloudformation:UpdateStack
+              Resource: *
+      Roles:
+        - !Ref VenafiLambdaBasicExecutionRole

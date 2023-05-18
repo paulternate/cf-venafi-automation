@@ -62,7 +62,7 @@
             "console": "integratedTerminal",
             "justMyCode": "false",
             "env": {
-                "sTARGET_STACK_ID": "arn:aws:cloudformation:us-east-1:427380916706:stack/do-nothing/9668a4b0-f4bd-11ed-9c52-0a52e8185fa9"
+                "TARGET_STACK_ID": "arn:aws:cloudformation:us-east-1:427380916706:stack/amcginlay-cert-7718/b9f260e0-f57d-11ed-9fa9-12bb237a89b1"
             }
         }
     ]
