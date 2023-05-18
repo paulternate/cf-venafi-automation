@@ -1,17 +1,28 @@
 import os
-import json
+import datetime
 import traceback
 import boto3
 
 def lambda_handler(event, context):
     stack_id = os.getenv("TARGET_STACK_ID")
     cloudformation = boto3.client('cloudformation')
-    # response = cloudformation.describe_stacks(StackName=stack_id)
-    # json_data = json.loads(response)
-    # return json.dumps(json_data, indent=2)
-    response = None
+    timestamp = datetime.datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%S")
     try:
-        response = cloudformation.describe_stacks(StackName=stack_id)
+        response = cloudformation.update_stack(
+            StackName=stack_id,
+            UsePreviousTemplate=True,
+            Parameters=[
+                {
+                    'ParameterKey': 'TLSPCAPIKey',
+                    'UsePreviousValue': True
+                },
+                {
+                    'ParameterKey': 'UpdateTrigger',
+                    'ParameterValue': timestamp
+                }
+            ]
+        )
+        response = None
     except Exception as e:
         response = traceback.format_exc()
     finally:
