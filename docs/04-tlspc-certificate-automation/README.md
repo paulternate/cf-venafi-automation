@@ -23,6 +23,8 @@ aws cloudformation create-stack \
   --parameters \
     ParameterKey=Zone,ParameterValue=amcginlay-app\\Default \
     ParameterKey=CommonName,ParameterValue=www${RandomKey}.example.com \
+    ParameterKey=ValidityHours,ParameterValue=0 \
+    ParameterKey=RenewalHours,ParameterValue=1 \
     ParameterKey=TLSPCAPIKey,ParameterValue=${TLSPCAPIKey} \
     ParameterKey=PrivateKeyPassphrase,ParameterValue=${PrivateKeyPassphrase} \
     ParameterKey=TargetS3Bucket,ParameterValue= \
@@ -34,6 +36,8 @@ aws cloudformation update-stack \
   --parameters \
     ParameterKey=Zone,UsePreviousValue=true \
     ParameterKey=CommonName,UsePreviousValue=true \
+    ParameterKey=ValidityHours,UsePreviousValue=true \
+    ParameterKey=RenewalHours,UsePreviousValue=true \
     ParameterKey=TLSPCAPIKey,UsePreviousValue=true \
     ParameterKey=PrivateKeyPassphrase,UsePreviousValue=true \
     ParameterKey=TargetS3Bucket,UsePreviousValue=true \
