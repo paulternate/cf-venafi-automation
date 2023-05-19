@@ -4,24 +4,28 @@
 TLSPCAPIKey=<API_KEY_FROM_TLSPC>
 PrivateKeyPassphrase=<PRIVATE_KEY_PASSPHRASE>
 
+STACK_BASE_NAME=xyz
+APP_STACK_NAME=${STACK_BASE_NAME}-app
+CERT_STACK_NAME=${STACK_BASE_NAME}-cert
+
 # tlspc-application
 aws cloudformation create-stack \
-  --stack-name amcginlay-app \
+  --stack-name ${APP_STACK_NAME} \
   --template-url https://venafi-ecosystem.s3.amazonaws.com/tlspc/templates/tlspc-application.yaml \
   --parameters \
-    ParameterKey=AppName,ParameterValue=amcginlay-app \
-    ParameterKey=AppDescription,ParameterValue=amcginlay-app \
+    ParameterKey=AppName,ParameterValue=${APP_STACK_NAME} \
+    ParameterKey=AppDescription,ParameterValue=${APP_STACK_NAME} \
     ParameterKey=IssuingTemplateName,ParameterValue=Default \
     ParameterKey=CertificateAuthority,ParameterValue=BUILTIN \
     ParameterKey=TLSPCAPIKey,ParameterValue=${TLSPCAPIKey}
 
-# tlspc-certificate
+# tlspc-certificate (create)
 RandomKey=${RANDOM} && \
 aws cloudformation create-stack \
-  --stack-name amcginlay-cert-${RandomKey} \
+  --stack-name ${CERT_STACK_NAME}-${RandomKey} \
   --template-url https://venafi-ecosystem.s3.amazonaws.com/tlspc/templates/tlspc-certificate.yaml \
   --parameters \
-    ParameterKey=Zone,ParameterValue=amcginlay-app\\Default \
+    ParameterKey=Zone,ParameterValue=${APP_STACK_NAME}\\Default \
     ParameterKey=CommonName,ParameterValue=www${RandomKey}.example.com \
     ParameterKey=ValidityHours,ParameterValue=0 \
     ParameterKey=RenewalHours,ParameterValue=1 \
@@ -30,8 +34,9 @@ aws cloudformation create-stack \
     ParameterKey=TargetS3Bucket,ParameterValue= \
     ParameterKey=UpdateTrigger,ParameterValue=
 
+# tlspc-certificate (update)
 aws cloudformation update-stack \
-  --stack-name amcginlay-cert-${RandomKey} \
+  --stack-name ${CERT_STACK_NAME}-${RandomKey} \
   --use-previous-template \
   --parameters \
     ParameterKey=Zone,UsePreviousValue=true \
