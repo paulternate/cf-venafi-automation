@@ -4,6 +4,18 @@
 TLSPCAPIKey=<API_KEY_FROM_TLSPC>
 PrivateKeyPassphrase=<PRIVATE_KEY_PASSPHRASE>
 
+# tlspc-application
+aws cloudformation create-stack \
+  --stack-name amcginlay-app \
+  --template-url https://venafi-ecosystem.s3.amazonaws.com/tlspc/templates/tlspc-application.yaml \
+  --parameters \
+    ParameterKey=AppName,ParameterValue=amcginlay-app \
+    ParameterKey=AppDescription,ParameterValue=amcginlay-app \
+    ParameterKey=IssuingTemplateName,ParameterValue=Default \
+    ParameterKey=CertificateAuthority,ParameterValue=BUILTIN \
+    ParameterKey=TLSPCAPIKey,ParameterValue=${TLSPCAPIKey}
+
+# tlspc-certificate
 RandomKey=${RANDOM} && \
 aws cloudformation create-stack \
   --stack-name amcginlay-cert-${RandomKey} \
