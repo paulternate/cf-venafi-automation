@@ -9,6 +9,7 @@ Metadata:
           - Zone
           - CommonName
           - ValidityHours
+          - RenewalHours
       - Label:
           default: Credentials
         Parameters:
@@ -48,6 +49,12 @@ Parameters:
     ConstraintDescription: A positive number not exceeding the Issuing Template's Validity
     MinValue: 0
     Default: 0
+  RenewalHours:
+    Type: Number
+    Description: The interval in hours between certificate renewal requests. To protect from outages caused by certificate RenewalHours should be less than ValidityHours.
+    ConstraintDescription: A positive number ideally less than ValidityHours
+    MinValue: 1
+    Default: 1
   PrivateKeyPassphrase:
     Type: String
     Description: The encryption passphrase to use when downloading the certificate's private key
@@ -76,6 +83,15 @@ Resources:
       Environment:
         Variables:
           TARGET_STACK_ID: !Sub ${AWS::StackName}
+  VenafiStackUpdaterSchedule:
+    Type: AWS::Scheduler::Schedule
+    Properties:
+      ScheduleExpression: !Sub rate(${RenewalHours} hours)
+      FlexibleTimeWindow:
+        Mode: "OFF"
+      Target:
+        Arn: !GetAtt VenafiStackUpdater.Arn
+        RoleArn: !Sub arn:aws:iam::${AWS::AccountId}:role/VenafiLambdaBasicExecutionRole
   TLSPCCertificateFunction:
     Type: AWS::Lambda::Function
     Properties:
