@@ -71,28 +71,6 @@ Parameters:
     Description: PLEASE IGNORE - parameter is reserved for internal use
 
 Resources:
-  VenafiStackUpdater:
-    Type: AWS::Lambda::Function
-    Properties:
-      Code:
-        S3Bucket: !Sub venafi-ecosystem-${AWS::Region}
-        S3Key: tlspc/functions/venafi-stack-updater.zip
-      Handler: app.lambda_handler
-      Role: !Sub arn:aws:iam::${AWS::AccountId}:role/VenafiLambdaBasicExecutionRole
-      Runtime: python3.10
-      DependsOn: !Ref TLSPCCertificateResource
-      Environment:
-        Variables:
-          STACK_ID: !Sub ${AWS::StackName}
-  VenafiStackUpdaterSchedule:
-    Type: AWS::Scheduler::Schedule
-    Properties:
-      ScheduleExpression: !Sub rate(${RenewalHours} hours)
-      FlexibleTimeWindow:
-        Mode: "OFF"
-      Target:
-        Arn: !GetAtt VenafiStackUpdater.Arn
-        RoleArn: !Sub arn:aws:iam::${AWS::AccountId}:role/VenafiLambdaBasicExecutionRole
   TLSPCCertificateFunction:
     Type: AWS::Lambda::Function
     Properties:
@@ -114,7 +92,29 @@ Resources:
       PrivateKeyPassphrase: !Ref PrivateKeyPassphrase
       TargetS3Bucket: !Ref TargetS3Bucket
       UpdateTrigger: !Ref UpdateTrigger # reference required for update/change assessment
-
+  VenafiStackUpdater:
+    Type: AWS::Lambda::Function
+    DependsOn: TLSPCCertificateResource
+    Properties:
+      Code:
+        S3Bucket: !Sub venafi-ecosystem-${AWS::Region}
+        S3Key: tlspc/functions/venafi-stack-updater.zip
+      Handler: app.lambda_handler
+      Role: !Sub arn:aws:iam::${AWS::AccountId}:role/VenafiLambdaBasicExecutionRole
+      Runtime: python3.10
+      Environment:
+        Variables:
+          STACK_ID: !Sub ${AWS::StackName}
+  VenafiStackUpdaterSchedule:
+    Type: AWS::Scheduler::Schedule
+    Properties:
+      ScheduleExpression: !Sub rate(${RenewalHours} hours)
+      FlexibleTimeWindow:
+        Mode: "OFF"
+      Target:
+        Arn: !GetAtt VenafiStackUpdater.Arn
+        RoleArn: !Sub arn:aws:iam::${AWS::AccountId}:role/VenafiLambdaBasicExecutionRole
+  
 Outputs:
   LatestCertRequestId:
     Value: !GetAtt TLSPCCertificateResource.LatestCertRequestId
