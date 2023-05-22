@@ -90,10 +90,11 @@ def lambda_handler(event, context):
                 UsePreviousTemplate=True,
                 Parameters=update_parameters
             )
-            response = 'subsequent invocation processed normally'
+            response = 'subsequent invocation processed normally - cloudformation.update_stack() called'
     except Exception as e:
         response = traceback.format_exc()
     finally:
+        logger.info(response)
         return response
 
 def main():
