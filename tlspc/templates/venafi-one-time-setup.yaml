@@ -37,7 +37,10 @@ Resources:
               - s3:GetObject*
               - s3:PutObject*
               - s3:DeleteObject*
-            Resource: !Sub arn:aws:s3:::${VenafiTLSPCCertificatesBucket}/*
+              - s3:ListBucket*
+            Resource:
+            - !Sub arn:aws:s3:::${VenafiTLSPCCertificatesBucket}
+            - !Sub arn:aws:s3:::${VenafiTLSPCCertificatesBucket}/*
       Roles:
         - !Ref VenafiLambdaBasicExecutionRole
 
