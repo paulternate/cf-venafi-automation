@@ -94,7 +94,6 @@ Resources:
       UpdateTrigger: !Ref UpdateTrigger # reference required for update/change assessment
   VenafiStackUpdater:
     Type: AWS::Lambda::Function
-    DependsOn: TLSPCCertificateResource
     Properties:
       Code:
         S3Bucket: !Sub venafi-ecosystem-${AWS::Region}
@@ -107,6 +106,7 @@ Resources:
           STACK_ID: !Sub ${AWS::StackName}
   VenafiStackUpdaterSchedule:
     Type: AWS::Scheduler::Schedule
+    DependsOn: TLSPCCertificateResource
     Properties:
       ScheduleExpression: !Sub rate(${RenewalHours} hours)
       FlexibleTimeWindow:
