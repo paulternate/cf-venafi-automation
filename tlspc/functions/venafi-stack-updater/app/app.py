@@ -1,9 +1,13 @@
+import logging
+import json
 import os
 import datetime
 import traceback
 import boto3
 from botocore.exceptions import ClientError
 
+logger = logging.getLogger()
+logger.setLevel(logging.INFO)
 cloudformation = boto3.client('cloudformation')
 s3 = boto3.client('s3')
 
@@ -54,6 +58,9 @@ def write_stack_marker(target_s3_bucket, stack_id):
 def lambda_handler(event, context):
     target_s3_bucket = os.getenv("TARGET_S3_BUCKET")
     stack_id = os.getenv("STACK_ID")
+    logger.info('event:\n' + json.dumps(event))
+    logger.info('target_s3_bucket: ' + target_s3_bucket)
+    logger.info('stack_id: ' + stack_id)
     try:
         if not stack_marker_present(target_s3_bucket, stack_id):
             write_stack_marker(target_s3_bucket, stack_id)
