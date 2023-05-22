@@ -83,7 +83,6 @@ Resources:
       Environment:
         Variables:
           STACK_ID: !Sub ${AWS::StackName}
-          TARGET_S3_BUCKET: !Sub ${TargetS3Bucket}
   VenafiStackUpdaterSchedule:
     Type: AWS::Scheduler::Schedule
     Properties:
