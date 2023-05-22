@@ -122,5 +122,7 @@ Outputs:
     Value: !GetAtt TLSPCCertificateResource.LatestCertId
   TargetS3Bucket:
     Value: !GetAtt TLSPCCertificateResource.TargetS3Bucket
+  ValidityHours:
+    Value: !GetAtt TLSPCCertificateResource.ValidityHours
   S3URL:
     Value: !GetAtt TLSPCCertificateResource.S3URL
