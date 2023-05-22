@@ -122,7 +122,6 @@ def create_handler(event, context):
     responseData['LatestCertRequestId'] = request.id
     responseData['LatestCertId'] = request.cert_guid
     responseData['TargetS3Bucket'] = target_s3_bucket
-    responseData['ValidityHours'] = validity_hours
     responseData['S3URL'] = s3_url
     return responseData
 
@@ -133,7 +132,7 @@ def update_handler(event, context):
     ###########
     # code here
     ###########
-    api_key, common_name, _, validity_hours, _, target_s3_bucket = get_parameters(event)
+    api_key, common_name, _, _, _, target_s3_bucket = get_parameters(event)
     latest_cert_request_id = get_stack_output_value(event, 'LatestCertRequestId')
     conn = venafi_connection(api_key=api_key)
 
@@ -154,7 +153,6 @@ def update_handler(event, context):
     responseData['LatestCertRequestId'] = request.id
     responseData['LatestCertId'] = cert_id # should be able to use request.cert_guid, but ¯\_(ツ)_/¯
     responseData['TargetS3Bucket'] = target_s3_bucket
-    responseData['ValidityHours'] = validity_hours
     responseData['S3URL'] = s3_url
     return responseData
 
