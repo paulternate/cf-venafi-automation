@@ -81,17 +81,16 @@ def lambda_handler(event, context):
     logger.info('stack_id: ' + stack_id)
     try:
         if not is_stack_marker_present(target_s3_bucket, stack_id):
-            logger.info('first invocation being skipped')
             write_stack_marker(target_s3_bucket, stack_id)
+            response = 'first invocation skipped'
         else:
-            logger.info('subsequent invocation being processed normally')
             update_parameters = build_update_parameters(stack_id)
             response = cloudformation.update_stack(
                 StackName=stack_id,
                 UsePreviousTemplate=True,
                 Parameters=update_parameters
             )
-            response = None
+            response = 'subsequent invocation processed normally'
     except Exception as e:
         response = traceback.format_exc()
     finally:
