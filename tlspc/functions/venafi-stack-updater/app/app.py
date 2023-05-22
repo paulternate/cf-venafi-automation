@@ -34,7 +34,16 @@ def build_update_parameters(stack_id):
                 })
     return update_parameters
 
-def stack_marker_present(target_s3_bucket, stack_id):
+def wait_for_stack_create_complete(stack_id):
+    # Outputs are not set until after Stack has completed
+    response = cloudformation.describe_stacks(StackName=stack_id)
+    stack_status = response['Stacks'][0]['StackStatus']
+    if stack_status == 'CREATE_IN_PROGRESS':
+        logger.info('waiting for stack creation to complete ...')
+        waiter = cloudformation.get_waiter("stack_create_complete")
+        waiter.wait(stack_id)
+
+def is_stack_marker_present(target_s3_bucket, stack_id):
     try:
         object_prefix = 'stacks/'
         s3.head_object(Bucket=target_s3_bucket, Key=f'{object_prefix}{stack_id}.txt')
@@ -54,6 +63,7 @@ def get_stack_outputs(stack_id):
     return response['Stacks'][0]['Outputs']
 
 def get_stack_output_value(stack_id, output_key):
+    wait_for_stack_create_complete(stack_id)
     stack_outputs = get_stack_outputs(stack_id)
     return next((o['OutputValue'] for o in stack_outputs if o['OutputKey'] == output_key), None)
 
@@ -70,9 +80,11 @@ def lambda_handler(event, context):
     logger.info('target_s3_bucket: ' + target_s3_bucket)
     logger.info('stack_id: ' + stack_id)
     try:
-        if not stack_marker_present(target_s3_bucket, stack_id):
+        if not is_stack_marker_present(target_s3_bucket, stack_id):
+            logger.info('first invocation being skipped')
             write_stack_marker(target_s3_bucket, stack_id)
         else:
+            logger.info('subsequent invocation being processed normally')
             update_parameters = build_update_parameters(stack_id)
             response = cloudformation.update_stack(
                 StackName=stack_id,
