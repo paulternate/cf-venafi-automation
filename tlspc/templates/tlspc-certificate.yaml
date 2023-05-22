@@ -80,6 +80,7 @@ Resources:
       Handler: app.lambda_handler
       Role: !Sub arn:aws:iam::${AWS::AccountId}:role/VenafiLambdaBasicExecutionRole
       Runtime: python3.10
+      DependsOn: !Ref TLSPCCertificateResource
       Environment:
         Variables:
           STACK_ID: !Sub ${AWS::StackName}
