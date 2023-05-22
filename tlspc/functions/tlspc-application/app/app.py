@@ -82,8 +82,9 @@ def build_payload(app_name, app_description, issuing_template_name, owner_id, te
 
 def create_handler(event, context):
     responseData = {}
-    requestInfo = 'RequestType: Create'
-    logger.info(requestInfo)
+    logger.info('RequestType: Create')
+    ###########
+    # code here
     ###########
     api_key, app_name, app_description, issuing_template_name, cert_authority = get_parameters(event)
     owner_id = get_current_user_id(api_key)
@@ -102,14 +103,15 @@ def create_handler(event, context):
     logger.info('response:\n' + json.dumps(response.data.decode('utf-8')))
     ###########
     responseData['PhysicalResourceId'] = json.loads(response.data.decode('utf-8'))['applications'][0]['id']
-    responseData['Message'] = requestInfo
+    responseData['IssuingTemplateId'] = template_id
     return responseData
 
 def update_handler(event, context):
     responseData = {}
-    requestInfo = 'RequestType: Update'
-    logger.info(requestInfo)
+    logger.info('RequestType: Update')
     physical_resource_id = get_physical_resource_id(event)
+    ###########
+    # code here
     ###########
     api_key, app_name, app_description, issuing_template_name, cert_authority = get_parameters(event)
     owner_id = get_current_user_id(api_key)
@@ -129,14 +131,15 @@ def update_handler(event, context):
     logger.info('response:\n' + json.dumps(response.data.decode('utf-8')))
     ###########
     responseData['PhysicalResourceId'] = physical_resource_id # failure to do this will trigger a delete
-    responseData['Message'] = requestInfo
+    responseData['IssuingTemplateId'] = template_id
     return responseData
 
 def delete_handler(event, context):
     responseData = {}
-    requestInfo = 'RequestType: Delete'
-    logger.info(requestInfo)
+    logger.info('RequestType: Delete')
     physical_resource_id = get_physical_resource_id(event)
+    ###########
+    # code here
     ###########
     api_key, _, _, _, _ = get_parameters(event)
     logger.info('physical_resource_id:' + physical_resource_id)
@@ -151,7 +154,6 @@ def delete_handler(event, context):
     logger.info('response:\n' + json.dumps(response.data.decode('utf-8')))
     ###########
     responseData['PhysicalResourceId'] = physical_resource_id
-    responseData['Message'] = requestInfo
     return responseData
 
 def lambda_handler(event, context):

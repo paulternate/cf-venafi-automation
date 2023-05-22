@@ -69,5 +69,5 @@ Resources:
       CertificateAuthority: !Ref CertificateAuthority
 
 Outputs:
-  Message:
-    Value: !GetAtt TLSPCApplicationResource.Message
+  IssuingTemplateId:
+    Value: !GetAtt TLSPCApplicationResource.IssuingTemplateId
