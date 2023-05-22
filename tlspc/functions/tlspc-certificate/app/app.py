@@ -121,6 +121,7 @@ def create_handler(event, context):
     responseData['PhysicalResourceId'] = request.id
     responseData['LatestCertRequestId'] = request.id
     responseData['LatestCertId'] = request.cert_guid
+    responseData['TargetS3Bucket'] = target_s3_bucket
     responseData['S3URL'] = s3_url
     return responseData
 
@@ -151,6 +152,7 @@ def update_handler(event, context):
     responseData['PhysicalResourceId'] = physical_resource_id # fix PhysicalResourceId to first CR, to CFN happy
     responseData['LatestCertRequestId'] = request.id
     responseData['LatestCertId'] = cert_id # should be able to use request.cert_guid, but ¯\_(ツ)_/¯
+    responseData['TargetS3Bucket'] = target_s3_bucket
     responseData['S3URL'] = s3_url
     return responseData
 
