@@ -56,7 +56,7 @@ def get_stack_outputs(event):
     cloudformation = boto3.client('cloudformation')
     response = cloudformation.describe_stacks(StackName=stack_id)
     outputs = response['Stacks'][0]['Outputs']
-    logger.info('outputs:\n' + json.dumps(outputs))
+    logger.info('stack_outputs:\n' + json.dumps(outputs))
     return outputs
 
 def get_stack_output_value(event, output_key):
@@ -129,7 +129,7 @@ def create_handler(event, context):
     request.key_password = private_key_passphrase
     conn.request_cert(request, zone)
     cert = retreive_cert_with_retry(conn, request)
-    logger.info('certificate retrieved')
+    logger.info(f'certificate retrieved: request.id={request.id} request.cert_guid={request.cert_guid}')
 
     s3_url= store_cert_in_s3(target_s3_bucket, request.id, common_name, cert, event['StackId'], request.id)
     logger.info('objects stored')
@@ -155,12 +155,12 @@ def update_handler(event, context):
     request = CertificateRequest(cert_id=latest_cert_request_id)
     conn.renew_cert(request)
     cert_id = get_cert_id(api_key, request.id)
-    logger.info('certificate renewed')
+    logger.info(f'certificate renewed: request.id={request.id} cert_id={cert_id}')
 
     # after conn.renew_cert, request.cert_guid is only set after a successful call to conn.retrieve_cert() ... unless you're in AWS! (see get_cert_id())
     cert = retreive_cert_with_retry(conn, request)
     cert_id = get_cert_id(api_key, request.id)
-    logger.info('renewed certificate retrieved')
+    logger.info(f'renewed certificate retrieved: request.id={request.id} cert_id={cert_id}')
 
     s3_url = store_cert_in_s3(target_s3_bucket, physical_resource_id, common_name, cert, event['StackId'], request.id) # physical_resource_id used to ensure consistency with first CR (version history)
     logger.info('objects stored')
