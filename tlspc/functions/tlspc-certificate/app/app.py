@@ -64,7 +64,7 @@ def get_stack_output_value(event, output_key):
     return next((o['OutputValue'] for o in stack_outputs if o['OutputKey'] == output_key), None)
 
 def retreive_cert_with_retry(conn, request):
-    max_attempts = 5
+    max_attempts = 8
     retry_delay = 2
     for attempt in range(1, max_attempts + 1):
         try:
