@@ -10,7 +10,7 @@ All Key Material (i.e. Certificates and Private Keys) generated via TLSPC will b
 Timely Certificate renewal prevents outages.
 In TLSPC, this is achieved by cloning and resubmitting the latest CR.
 Over time, this sequence of CRs builds to create an audit trail for your Certificates.
-In this exercise, you will employ the use of the Amazon EventBridge Scheduler to ensure that Certificate renewals take place before the latest Certificate expires.
+In this exercise, you will employ the use of the Amazon EventBridge Scheduler to automate this process, ensuring that Certificate renewals always take place before the latest Certificate expires.
 
 ## TLSPCApplication Templates and Functions
 
