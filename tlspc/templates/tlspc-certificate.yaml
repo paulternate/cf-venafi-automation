@@ -103,7 +103,7 @@ Resources:
       Runtime: python3.10
       Environment:
         Variables:
-          STACK_ID: !Sub ${AWS::StackName}
+          STACK_ID: !Sub ${AWS::StackId}
   VenafiStackUpdaterSchedule:
     Type: AWS::Scheduler::Schedule
     DependsOn: TLSPCCertificateResource
