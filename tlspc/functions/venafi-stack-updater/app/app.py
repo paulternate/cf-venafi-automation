@@ -43,10 +43,14 @@ def wait_for_stack_create_complete(stack_id):
         waiter = cloudformation.get_waiter("stack_create_complete")
         waiter.wait(stack_id)
 
+def get_shortened_stack_id(stack_id):
+    return stack_id.split('/', 1)[1]
+
 def is_stack_marker_present(target_s3_bucket, stack_id):
     try:
         object_prefix = 'stacks/'
-        s3.head_object(Bucket=target_s3_bucket, Key=f'{object_prefix}{stack_id}.txt')
+        shortened_stack_id = get_shortened_stack_id(stack_id)
+        s3.head_object(Bucket=target_s3_bucket, Key=f'{object_prefix}{shortened_stack_id}.txt')
     except ClientError as e:
         if e.response['Error']['Code'] == '404':
             return False
@@ -56,7 +60,8 @@ def is_stack_marker_present(target_s3_bucket, stack_id):
 
 def write_stack_marker(target_s3_bucket, stack_id):
     object_prefix = f'stacks/'
-    s3.put_object(Bucket=target_s3_bucket, Key=f'{object_prefix}{stack_id}.txt', Body='for system usage, do not delete')
+    shortened_stack_id = get_shortened_stack_id(stack_id)
+    s3.put_object(Bucket=target_s3_bucket, Key=f'{object_prefix}{shortened_stack_id}.txt', Body='for system usage, do not delete')
 
 def get_stack_outputs(stack_id):
     response = cloudformation.describe_stacks(StackName=stack_id)
@@ -80,14 +85,13 @@ def lambda_handler(event, context):
     logger.info('target_s3_bucket: ' + target_s3_bucket)
     logger.info('stack_id: ' + stack_id)
     try:
-        shortened_stack_id = stack_id.split('/', 1)[1]
-        if not is_stack_marker_present(target_s3_bucket, shortened_stack_id):
-            write_stack_marker(target_s3_bucket, shortened_stack_id)
+        if not is_stack_marker_present(target_s3_bucket, stack_id):
+            write_stack_marker(target_s3_bucket, stack_id)
             response = 'first invocation skipped'
         else:
-            update_parameters = build_update_parameters(shortened_stack_id)
+            update_parameters = build_update_parameters(stack_id)
             response = cloudformation.update_stack(
-                StackName=shortened_stack_id,
+                StackName=stack_id,
                 UsePreviousTemplate=True,
                 Parameters=update_parameters
             )
