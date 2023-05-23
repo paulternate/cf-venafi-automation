@@ -11,7 +11,7 @@ The Venafi Ecosystem Workshop for Tech Training 2023 is accessible [here](docs/R
 TLSPCAPIKey=<API_KEY_FROM_TLSPC>
 PrivateKeyPassphrase=<PRIVATE_KEY_PASSPHRASE>
 
-STACK_BASE_NAME=xyz
+STACK_BASE_NAME=elvispresley                  # <--- CONFIGURE THIS TO SUIT
 APP_STACK_NAME=${STACK_BASE_NAME}-app
 CERT_STACK_NAME=${STACK_BASE_NAME}-cert
 
