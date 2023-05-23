@@ -55,7 +55,9 @@ def get_stack_outputs(event):
     stack_id = event['StackId']
     cloudformation = boto3.client('cloudformation')
     response = cloudformation.describe_stacks(StackName=stack_id)
-    return response['Stacks'][0]['Outputs']
+    outputs = response['Stacks'][0]['Outputs']
+    logger.info('outputs:\n' + json.dumps(outputs))
+    return outputs
 
 def get_stack_output_value(event, output_key):
     stack_outputs = get_stack_outputs(event)
