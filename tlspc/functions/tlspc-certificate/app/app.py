@@ -100,7 +100,7 @@ def get_cert_id(api_key, request_id):
     return data.get('certificateIds')[0]
 
 def store_cert_in_s3(target_s3_bucket, physical_resource_id, common_name, cert, stack_id, cert_request_id):
-    object_prefix = f'certs/{physical_resource_id}/'
+    object_prefix = f'certs/{common_name}/{physical_resource_id}/'
     s3 = boto3.client('s3')
     s3.put_object(Bucket=target_s3_bucket, Key=f'{object_prefix}{common_name}.cert', Body=cert.full_chain)
     s3.put_object(Bucket=target_s3_bucket, Key=f'{object_prefix}{common_name}.key', Body=cert.key)
