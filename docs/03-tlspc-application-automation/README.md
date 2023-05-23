@@ -6,12 +6,12 @@ In this section you will use CloudFormation (sometimes abbreviated to CFN, or ju
 
 ## TLSPCApplication Templates and Functions
 
-This exercise will make use of two objects stored in a publicly accessible S3 bucket.
+This exercise will make use of two objects stored in a publicly accessible (read-only) S3 bucket.
 They are as follows:
 
 | Type | Description | S3 | Source |
 | - | - | - | - |
-| Template | Orchestrates the lifecycle of a TLSPCApplication Custom Resource which references the Function (deployed simultaneously) | https://venafi-ecosystem.s3.amazonaws.com/tlspc/templates/tlspc-application.yaml | [View](../../tlspc/templates/tlspc-application.yaml)  |
+| Template | Orchestrates the lifecycle of a TLSPCApplication Custom Resource which references the Function | https://venafi-ecosystem.s3.amazonaws.com/tlspc/templates/tlspc-application.yaml | [View](../../tlspc/templates/tlspc-application.yaml)  |
 | Function | Implements the Create/Update/Delete operations required by the TLSPCApplication Custom Resource | https://venafi-ecosystem.s3.amazonaws.com/tlspc/functions/tlspc-application.zip | [View](../../tlspc/functions/tlspc-application/app/app.py) |
 
 ## A note on Defaults and warning messages
@@ -20,9 +20,9 @@ Unless otherwise stated, all console settings should be left in their **DEFAULT*
 
 Any warning banners which appear in the AWS Console during these steps are typically caused by policy restrictions in the target AWS account and can be safely **IGNORED**.
 
-## Creating your Stack
+## Creating your Application Stack
 
-The following steps will register your Application in TLSPC.
+The following steps will model your Application requirements in a Cloudformation Stack and realize these inside TLSPC.
 This Application will be used later to create certificates.
 
 1. Navigate to https://us-east-1.console.aws.amazon.com/cloudformation/home
@@ -33,11 +33,11 @@ This Application will be used later to create certificates.
    ```
    then click "Next"
 1. On the "Specify stack details" page:
-   - Set **"Stack name"** to something uniquely identifiable for **yourself, plus today's date**.
+   - Set **"Stack name"** to something uniquely identifiable for **yourself**, plus the letters "-app".
      Stack name can include letters (A-Z and a-z), numbers (0-9), and dashes (-).
-     For Example, John Lennon could use
+     For example, John Lennon could use
      ```
-     johnlennon-23-06-01
+     johnlennon-app
      ```
    - Set **"AppName"** to the **same value** you just used for the "Stack name"
    - Set **"AppDescription"** to
@@ -63,9 +63,11 @@ If your TLSPC environment has this Issuing Template renamed or is somehow missin
 
 After ~30 secs, the stack will reach a "Status" of "CREATE_COMPLETE".
 
+## Reviewing your results
+
 At this point your newly created TLSPC Application will become visible at https://ui.venafi.cloud/certificate-issuance/applications
 
-## Reviewing and updating your Stack
+## Updating your Application Stack
 
 The following steps will update your Application in TLSPC.
 In doing so, you will familiarize yourself with the process for updating Stacks in CloudFormation.
