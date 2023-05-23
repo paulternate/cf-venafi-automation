@@ -63,13 +63,27 @@ def get_stack_output_value(event, output_key):
 
 def retreive_cert_with_retry(conn, request):
     max_attempts = 5
-    for i in range(max_attempts):
-        time.sleep(4)
-        logger.info('retreive_cert_with_retry: attempt: '+ str(i))
-        cert = conn.retrieve_cert(request)
-        if cert is not None:
-            return cert
-    raise Exception(f"Function {function.__name__} failed after {max_attempts} attempts")
+    retry_delay = 2
+    for attempt in range(1, max_attempts + 1):
+        try:
+            cert = conn.retrieve_cert(request)
+            if cert is not None:
+                break
+        except Exception as e:
+            logger.info(f'retreive_cert_with_retry() - attempt {attempt} failed with exception: {str(e)}')
+            
+        if attempt == max_attempts:
+            logger.info('retreive_cert_with_retry() - max attempts reached. Exiting...')
+            break
+        
+        logger.info(f'retreive_cert_with_retry() - retrying in {retry_delay} seconds...')
+        time.sleep(retry_delay)
+        retry_delay *= 2
+        
+    if cert is None:
+        raise Exception('retreive_cert_with_retry() - failed to retrieve cert after maximum attempts.')
+    
+    return cert
 
 def get_cert_id(api_key, request_id):
     # the VCert SDK call to conn.retrieve_cert() works fine locally (via SAM) but once deployed into AWS the value for request.cert_guid was ALWAYS null ¯\_(ツ)_/¯
