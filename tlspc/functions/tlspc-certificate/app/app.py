@@ -66,6 +66,7 @@ def get_stack_output_value(event, output_key):
 def retreive_cert_with_retry(conn, request):
     max_attempts = 8
     retry_delay = 2
+    cert = None
     for attempt in range(1, max_attempts + 1):
         try:
             cert = conn.retrieve_cert(request)
