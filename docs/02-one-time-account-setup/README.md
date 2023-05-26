@@ -11,7 +11,7 @@ We can address this in each AWS account by pre-configuring an IAM Role for Lambd
 
 **Answer: probably nothing.**
 
-If you're using a Venafi/Jetstack AWS account today then the fix has likely been applied already so the following action is **not required** and you can move straight on with the [first exercise](../03-tlspc-create-application/README.md).
+If you're using a Venafi/Jetstack AWS account today then the fix has likely been applied already so the following action is **not required** and you can move straight on with the [first exercise](../03-tlspc-application-automation/README.md).
 
 For anyone else, assuming you have the elevated rights required in your AWS account, you will need to apply this fix via CloudFormation.
 
