@@ -50,7 +50,7 @@ def is_stack_marker_present(target_s3_bucket, stack_id):
     try:
         object_prefix = 'stacks/'
         shortened_stack_id = get_shortened_stack_id(stack_id)
-        s3.head_object(Bucket=target_s3_bucket, Key=f'{object_prefix}{shortened_stack_id}.txt')
+        s3.head_object(Bucket=target_s3_bucket, Key=f'{object_prefix}{shortened_stack_id}/invocation-marker.txt')
     except ClientError as e:
         if e.response['Error']['Code'] == '404':
             return False
@@ -61,7 +61,7 @@ def is_stack_marker_present(target_s3_bucket, stack_id):
 def write_stack_marker(target_s3_bucket, stack_id):
     object_prefix = f'stacks/'
     shortened_stack_id = get_shortened_stack_id(stack_id)
-    s3.put_object(Bucket=target_s3_bucket, Key=f'{object_prefix}{shortened_stack_id}.txt', Body='for system usage, do not delete')
+    s3.put_object(Bucket=target_s3_bucket, Key=f'{object_prefix}{shortened_stack_id}/invocation-marker.txt', Body='for system usage, do not delete')
 
 def get_stack_outputs(stack_id):
     response = cloudformation.describe_stacks(StackName=stack_id)
