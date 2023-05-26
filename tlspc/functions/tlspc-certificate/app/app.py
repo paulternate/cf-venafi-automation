@@ -150,9 +150,9 @@ def set_latest_cert_request_id_s3(target_s3_bucket, event, request_id):
     logger.info(f'latest_cert_request_id objects saved to s3: target_s3_bucket={target_s3_bucket} object_prefix={object_prefix} request_id={request_id}')
 
 
-def get_latest_cert_request_id(event):
+def get_latest_cert_request_id(target_s3_bucket, event):
     value_from_outputs = get_stack_output_value(event, 'LatestCertRequestId')
-    value_from_s3 = get_latest_cert_request_id_s3(event)
+    value_from_s3 = get_latest_cert_request_id_s3(target_s3_bucket, event)
     if (value_from_outputs or "") != (value_from_s3 or ""):
         # This situation indicates that the previous Stack Update resulted in failure.
         # This can happen when TLSPC fails to retrieve a certificate within 12 minutes of its renewal.
@@ -199,7 +199,7 @@ def update_handler(event, context):
     # code here
     ###########
     api_key, common_name, _, _, _, target_s3_bucket = get_parameters(event)
-    latest_cert_request_id = get_latest_cert_request_id(event)
+    latest_cert_request_id = get_latest_cert_request_id(target_s3_bucket, event)
     conn = venafi_connection(api_key=api_key)
 
     request = CertificateRequest(cert_id=latest_cert_request_id)
