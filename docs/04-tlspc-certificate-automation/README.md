@@ -10,7 +10,7 @@ All Key Material (i.e. Certificates and Private Keys) generated via TLSPC will b
 Timely Certificate renewal prevents outages.
 In TLSPC, this is achieved by cloning and resubmitting the latest CR.
 Over time, this sequence of CRs builds to create an audit trail for your Certificates.
-In this exercise, you will employ the use of the Amazon EventBridge Scheduler to automate this process, ensuring that Certificate renewals always take place before the latest Certificate expires.
+In this exercise, you will employ the use of the Amazon EventBridge Scheduler to automate this process, ensuring that Certificate renewals always take place before the current latest Certificate expires. 
 
 ## TLSPCApplication Templates and Functions
 
@@ -21,7 +21,7 @@ They are as follows:
 | - | - | - | - |
 | Template | Orchestrates the lifecycle of a TLSPCCertificate Custom Resource which references the Function. | https://venafi-ecosystem.s3.amazonaws.com/tlspc/templates/tlspc-certificate.yaml | [View](../../tlspc/templates/tlspc-certificate.yaml)  |
 | Function | Implements the Create/Update/Delete operations required by the TLSPCCertificate Custom Resource | https://venafi-ecosystem.s3.amazonaws.com/tlspc/functions/tlspc-certificate.zip | [View](../../tlspc/functions/tlspc-certificate/app/app.py) |
-| Function | Invokes the Update method of this Stack. The frequency of invocation is determined by this Function's associated EventBridge Schedule | https://venafi-ecosystem.s3.amazonaws.com/tlspc/functions/venafi-stack-updater.zip | [View](../../tlspc/functions/venafi-stack-updater/app/app.py) |
+| Function | A dedicated instance of the `venafi-stack-updater` Function is pre-configured to invoke the Update method of this Stack. The frequency of invocation is determined by the associated EventBridge Schedule which is also deployed by the Template | https://venafi-ecosystem.s3.amazonaws.com/tlspc/functions/venafi-stack-updater.zip | [View](../../tlspc/functions/venafi-stack-updater/app/app.py) |
 
 ## A note on Defaults and warning messages
 
@@ -75,9 +75,9 @@ The following steps will model your Certificate Request requirements in a Cloudf
      ```
    - Set **"TLSPCAPIKey"** to whatever value is provided to you at https://ui.venafi.cloud/platform-settings/user-preferences?key=api-keys
    - Use **"PrivateKeyPassphrase"** to specify a password for encrypting the private key.
-     Set this to something extremely difficult to guess, such as
+     Set this to something extremely difficult 😉 to guess, such as
      ```
-     SuperSecret123! 😉
+     SuperSecret123!
      ```
    - **"TargetS3Bucket"** is the name of a versioned S3 Bucket where your TLSPC Certificates will be deposited.
      The Venafi One-Time Setup Template ensures that a default Bucket, named `venafi-tlspc-certificates-${AWS::AccountId}`, is available in your AWS account.
@@ -109,6 +109,6 @@ Follow these instructions to view your newly created Certificate in S3.
 
 ## Updating your Certificate Stack
 
-TODO
+TODO ...
 
 Next: [Main Menu](../README.md) | [05. TLSPC Issuing Template Automation](../05-tlspc-issuing-template-automation/README.md)

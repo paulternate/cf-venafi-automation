@@ -1,4 +1,4 @@
-# 01. Requirements, Terminology and Caveats
+# 01. Requirements, Terminology and Disclaimers
 
 ## Requirements
 
@@ -27,7 +27,7 @@ The following table covers a few terms which you'll see in this workshop and the
 | Lambda | A compute service provided by AWS that allows you to run your code without having to provision or manage EC2 instances. Unlike EC2, Lambda only charges you for the time that your code is running. |
 | Function | A piece of code uploaded to AWS Lambda which comes into existence and executes in response to specific events. Lambda Function instances are short-lived and stateless so they often use S3 for their persistence requirements. Lambda Functions are typically, but not exclusively, written in Python or NodeJS and can be invoked from Custom Resources. |
 
-## Caveats
+## Disclaimers
 
 The Ecosystem team would like to clarify that this solution is by no means the finished article.
 Coverage of the TLSPC API does not extend too far at this point and features you might expect to see will be missing.
