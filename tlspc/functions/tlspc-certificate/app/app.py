@@ -8,6 +8,7 @@ import cfnresponse
 from vcert import (CertificateRequest, venafi_connection, CSR_ORIGIN_SERVICE)
 import boto3 # https://github.com/psf/requests/issues/6443 (requests==2.28.1)
 import botocore
+from botocore.exceptions import ClientError
 
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
@@ -60,11 +61,14 @@ def get_stack_outputs(event):
     return outputs
 
 def get_stack_output_value(event, output_key):
-    stack_outputs = get_stack_outputs(event)
-    return next((o['OutputValue'] for o in stack_outputs if o['OutputKey'] == output_key), None)
+    try:
+        stack_outputs = get_stack_outputs(event)
+        return next((o['OutputValue'] for o in stack_outputs if o['OutputKey'] == output_key), None)
+    except:
+        return None
 
 def retreive_cert_with_retry(conn, request):
-    timeout = 720
+    timeout = 720 # 12 mins (Lambda itself has a hard limit at 15 mins)
     interval = 15
     start_time = time.time()
     attempt = 0
@@ -118,6 +122,44 @@ def store_cert_in_s3(target_s3_bucket, physical_resource_id, common_name, cert, 
     aws_region = get_aws_region()
     return f'https://s3.console.aws.amazon.com/s3/buckets/{target_s3_bucket}?region={aws_region}&prefix={object_prefix}'
 
+def get_shortened_stack_id(stack_id):
+    return stack_id.split('/', 1)[1]
+
+def get_latest_cert_request_id_s3(target_s3_bucket, event):
+    try:
+        object_prefix = 'stacks/'
+        stack_id = event['StackId']
+        shortened_stack_id = get_shortened_stack_id(stack_id)
+        s3 = boto3.client('s3')
+        response = s3.get_object(Bucket=target_s3_bucket, Key=f'{object_prefix}{shortened_stack_id}/latest_cert_request_id.txt')
+        return response['Body'].read().decode('utf-8')
+    except ClientError as e:
+        if e.response['Error']['Code'] == '404':
+            return None
+        else:
+            raise
+
+def set_latest_cert_request_id_s3(target_s3_bucket, event, request_id):
+    object_prefix = 'stacks/'
+    stack_id = event['StackId']
+    shortened_stack_id = get_shortened_stack_id(stack_id)
+    s3 = boto3.client('s3')
+    s3.put_object(Bucket=target_s3_bucket, Key=f'{object_prefix}{shortened_stack_id}/latest_cert_request_id.txt', Body=request_id)
+
+def get_latest_cert_request_id(event):
+    value_from_outputs = get_stack_output_value(event, 'LatestCertRequestId')
+    value_from_s3 = get_latest_cert_request_id_s3(event)
+    if (value_from_outputs or "") != (value_from_s3 or ""):
+        # This situation indicates that the previous Stack Update resulted in failure.
+        # This can happen when TLSPC fails to retrieve a certificate within 12 minutes of its renewal.
+        # This results in the Stack Update being rolled back (standard CFN behaviour we're powerless to adjust)
+        # When this happens it reverts the Stack Output for LatestCertRequestId to an OLD/INVALID value which thereafter causes incessant Stack Update failures.
+        # The error is: "20908: Only existing certificate with CURRENT version can be specified. OLD versions are not supported".
+        # The value_from_s3 is more resilient than the Stack Output for LatestCertRequestId and avoids this fate, so value_from_s3 now takes precedent.
+        # The 20908 error is (hopefully) now avoided, but it's still worth logging ... for nostalgia? ;)
+        logger.info(f'previous cert request ids do not match (continuing): value_from_outputs={value_from_outputs} value_from_s3={value_from_s3}')
+    return value_from_s3 if value_from_s3 is not None else value_from_outputs
+
 def create_handler(event, context):
     responseData = {}
     logger.info('RequestType: Create')
@@ -131,6 +173,7 @@ def create_handler(event, context):
     request.csr_origin = CSR_ORIGIN_SERVICE
     request.key_password = private_key_passphrase
     conn.request_cert(request, zone)
+    set_latest_cert_request_id_s3(event, request.id) # important to record this in case next steps fail/timeout
     cert = retreive_cert_with_retry(conn, request)
     logger.info(f'certificate retrieved: request.id={request.id} request.cert_guid={request.cert_guid}')
 
@@ -152,11 +195,12 @@ def update_handler(event, context):
     # code here
     ###########
     api_key, common_name, _, _, _, target_s3_bucket = get_parameters(event)
-    latest_cert_request_id = get_stack_output_value(event, 'LatestCertRequestId')
+    latest_cert_request_id = get_latest_cert_request_id(event)
     conn = venafi_connection(api_key=api_key)
 
     request = CertificateRequest(cert_id=latest_cert_request_id)
     conn.renew_cert(request)
+    set_latest_cert_request_id_s3(event, request.id) # important to record this in case next steps fail/timeout
     cert_id = get_cert_id(api_key, request.id)
     logger.info(f'certificate renewed: request.id={request.id} cert_id={cert_id}')
 
