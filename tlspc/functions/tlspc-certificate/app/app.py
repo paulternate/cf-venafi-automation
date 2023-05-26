@@ -64,27 +64,29 @@ def get_stack_output_value(event, output_key):
     return next((o['OutputValue'] for o in stack_outputs if o['OutputKey'] == output_key), None)
 
 def retreive_cert_with_retry(conn, request):
-    max_attempts = 9
-    retry_delay = 2
+    timeout = 720
+    interval = 15
+    start_time = time.time()
+    attempt = 0
     cert = None
-    for attempt in range(1, max_attempts + 1):
+    while True:
         try:
+            attempt += 1
+            logger.info(f'retreive_cert_with_retry() - attempt {attempt}')
             cert = conn.retrieve_cert(request)
             if cert is not None:
                 break
         except Exception as e:
             logger.info(f'retreive_cert_with_retry() - attempt {attempt} failed with exception: {str(e)}')
-            
-        if attempt == max_attempts:
-            logger.info('retreive_cert_with_retry() - max attempts reached. Exiting...')
+
+        elapsed_time = time.time() - start_time
+        if elapsed_time >= timeout:
             break
         
-        logger.info(f'retreive_cert_with_retry() - retrying in {retry_delay} seconds...')
-        time.sleep(retry_delay)
-        retry_delay *= 2
+        time.sleep(interval)
         
     if cert is None:
-        raise Exception('retreive_cert_with_retry() - failed to retrieve cert after maximum attempts.')
+        raise Exception('retreive_cert_with_retry() - failed to retrieve cert within {timeout} seconds.')
     
     return cert
 
