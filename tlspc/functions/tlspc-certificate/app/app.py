@@ -173,7 +173,7 @@ def create_handler(event, context):
     request.csr_origin = CSR_ORIGIN_SERVICE
     request.key_password = private_key_passphrase
     conn.request_cert(request, zone)
-    set_latest_cert_request_id_s3(event, request.id) # important to record this in case next steps fail/timeout
+    set_latest_cert_request_id_s3(target_s3_bucket, event, request.id) # important to record this in case next steps fail/timeout
     cert = retreive_cert_with_retry(conn, request)
     logger.info(f'certificate retrieved: request.id={request.id} request.cert_guid={request.cert_guid}')
 
@@ -200,7 +200,7 @@ def update_handler(event, context):
 
     request = CertificateRequest(cert_id=latest_cert_request_id)
     conn.renew_cert(request)
-    set_latest_cert_request_id_s3(event, request.id) # important to record this in case next steps fail/timeout
+    set_latest_cert_request_id_s3(target_s3_bucket, event, request.id) # important to record this in case next steps fail/timeout
     cert_id = get_cert_id(api_key, request.id)
     logger.info(f'certificate renewed: request.id={request.id} cert_id={cert_id}')
 
