@@ -62,7 +62,7 @@ The following steps will model your Certificate Request requirements in a Cloudf
      www.georgeharrison.com
      ```
    - **"ValidityHours"** is the number of hours your certificates should be considered valid.
-     A Zero "0" here indicates you are willing to inherit this setting from the Zone.
+     A Zero "0" here indicates you are willing to inherit this setting from the Zone's Issuing Template.
      Leave this setting unchanged, at
      ```
      0
