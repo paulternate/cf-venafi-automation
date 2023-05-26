@@ -132,7 +132,9 @@ def get_latest_cert_request_id_s3(target_s3_bucket, event):
         shortened_stack_id = get_shortened_stack_id(stack_id)
         s3 = boto3.client('s3')
         response = s3.get_object(Bucket=target_s3_bucket, Key=f'{object_prefix}{shortened_stack_id}/latest_cert_request_id.txt')
-        return response['Body'].read().decode('utf-8')
+        request_id = response['Body'].read().decode('utf-8')
+        logger.info(f'latest_cert_request_id objects read from s3: target_s3_bucket={target_s3_bucket} object_prefix={object_prefix} request_id={request_id}')
+        return request_id
     except ClientError as e:
         if e.response['Error']['Code'] == '404':
             return None
@@ -145,6 +147,8 @@ def set_latest_cert_request_id_s3(target_s3_bucket, event, request_id):
     shortened_stack_id = get_shortened_stack_id(stack_id)
     s3 = boto3.client('s3')
     s3.put_object(Bucket=target_s3_bucket, Key=f'{object_prefix}{shortened_stack_id}/latest_cert_request_id.txt', Body=request_id)
+    logger.info(f'latest_cert_request_id objects saved to s3: target_s3_bucket={target_s3_bucket} object_prefix={object_prefix} request_id={request_id}')
+
 
 def get_latest_cert_request_id(event):
     value_from_outputs = get_stack_output_value(event, 'LatestCertRequestId')
