@@ -140,7 +140,7 @@ After ~30 secs, the Stack will reach a "Status" of "UPDATE_COMPLETE".
 
 ## Reviewing your post-renewal results (TLSPC)
 
-Using the instructions presented earlier in this exercise (see "Reviewing your results (TLSPC)") follow the instructions to view your updated Certificate in TLSPC.
+Using the instructions presented earlier in this exercise (see [Reviewing your results (TLSPC)](#reviewing-your-results-tlspc)) follow the instructions to view your updated Certificate in TLSPC.
 
 This time you will observe that there are two Certificates for your Application, but one is now listed as **"(old)"**.
 This indicates a successful renewal.
@@ -149,7 +149,7 @@ This indicates a successful renewal.
 
 NOTE: To get the most benefit from these exercises, we recommend the use of Versioned S3 Buckets. If the Stacks you create in the exercise use the Bucket created by the One-Time Account Setup, this is taken care of for you.
 
-Using the instructions presented earlier in this exercise (see "Reviewing your results (S3)") follow the instructions to view your updated Certificate in S3.
+Using the instructions presented earlier in this exercise (see [Reviewing your results (S3)](#reviewing-your-results-s3)) follow the instructions to view your updated Certificate in S3.
 
 1. You should see before you two files (`.cert` and `.key`) which match the CommonName of your certificate and contain its key material.
 1. **This time**, click through on the blue link for the `.cert` file.
