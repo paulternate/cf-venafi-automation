@@ -43,4 +43,3 @@ Resources:
       ServiceToken: !GetAtt TLSPCPolicyFunction.Arn
       Zone: !Ref Zone
       TLSPCAPIKey: !Ref TLSPCAPIKey
-      UpdateTrigger: !Ref UpdateTrigger # reference required for update/change assessment
