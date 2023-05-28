@@ -4,6 +4,10 @@ Metadata:
   AWS::CloudFormation::Interface:
     ParameterGroups:
       - Label:
+          default: Policy Properties
+        Parameters:
+          - Zone
+      - Label:
           default: Credentials
         Parameters:
           - TLSPCAPIKey
@@ -19,6 +23,12 @@ Parameters:
     ConstraintDescription: TLSPCAPIKey must be structured as xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx and contain only lowercase hex-letters and numbers
     AllowedPattern: "[a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12}"
     NoEcho: true
+  Zone:
+    Type: String
+    Description: Zones are logical organizational units used for managing digital certificates
+    ConstraintDescription: Typical form is <AppName>\<IssuingTemplateAlias>
+    AllowedPattern: ^.*\\.*$
+    Default: ExampleApp\Default
   UpdateTrigger:
     Type: String
     Description: PLEASE IGNORE - parameter is reserved for internal use
@@ -38,5 +48,6 @@ Resources:
     Type: Custom::DoNothing
     Properties:
       ServiceToken: !GetAtt TLSPCPolicyFunction.Arn
+      Zone: !Ref Zone
       TLSPCAPIKey: !Ref TLSPCAPIKey
       UpdateTrigger: !Ref UpdateTrigger # reference required for update/change assessment

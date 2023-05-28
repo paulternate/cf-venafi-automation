@@ -36,6 +36,26 @@
                 }
             }
         },
+
+        {
+            "type": "aws-sam",
+            "request": "direct-invoke",
+            "name": "tlspc-policy:Function",
+            "invokeTarget": {
+                "target": "template",
+                "templatePath": "${workspaceFolder}/tlspc/functions/tlspc-policy/template.yaml",
+                "logicalId": "Function"
+            },
+            "lambda": {
+                "payload": {
+                    "path": "${workspaceFolder}/tlspc/functions/tlspc-policy/events/event.json"
+                },
+                "environmentVariables": {
+                    "PYDEVD_WARN_SLOW_RESOLVE_TIMEOUT": "600"
+                }
+            }
+        },
+
         {
             "type": "aws-sam",
             "request": "direct-invoke",

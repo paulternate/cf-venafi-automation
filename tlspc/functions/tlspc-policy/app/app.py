@@ -4,6 +4,8 @@ import traceback
 import cfnresponse
 import urllib3
 import http
+from vcert import venafi_connection
+from vcert.policy.policy_spec import (PolicySpecification, Policy, Defaults)
 
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
@@ -27,15 +29,26 @@ def get_physical_resource_id(event):
     physical_resource_id=(str(event.get('PhysicalResourceId', None)))
     return physical_resource_id
 
+def get_parameters(event):
+    api_key = str(event['ResourceProperties']['TLSPCAPIKey'])
+    zone = str(event['ResourceProperties']['Zone'])
+    return api_key, zone
+
 def create_handler(event, context):
     responseData = {}
     logger.info('RequestType: Create')
     ###########
     # code here
     ###########
-
+    api_key, zone = get_parameters(event)
+    connector = venafi_connection(api_key=api_key)
+    ps = PolicySpecification()
+    ps.policy = Policy()
+    ps.defaults = Defaults()
+    connector.set_policy(zone, ps)
+    response = connector.get_policy(zone)
     ###########
-    responseData['PhysicalResourceId'] = "insert created physical resource id here!"
+    responseData['PhysicalResourceId'] = zone
     return responseData
 
 def update_handler(event, context):
