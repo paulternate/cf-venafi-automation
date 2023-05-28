@@ -61,7 +61,7 @@ This Application will be used later to create certificates.
 **NOTE**: A pristine TLSPC environment ships with the `Default` Issuing Template for the `Built-In CA`.
 If your TLSPC environment has this Issuing Template renamed or is somehow missing, choose an alternate `Built-In CA` Issuing Template from the list shown at https://ui.venafi.cloud/certificate-issuance/issuing-templates.
 
-After ~30 secs, the stack will reach a "Status" of "CREATE_COMPLETE".
+After ~30 secs, the Stack will reach a "Status" of "CREATE_COMPLETE".
 
 ## Reviewing your results
 
