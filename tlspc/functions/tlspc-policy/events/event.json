@@ -1,0 +1,15 @@
+{
+  "RequestType": "Create",
+  "ServiceToken": "arn:aws:cloudformation:us-east-1:999999999999:stack/MyStack/guid",
+  "ResponseURL": "https://httpbin.org/put",
+  "StackId": "arn:aws:cloudformation:us-east-1:427380916706:stack/amcginlay-pol/7ba93df0-f347-11ed-902d-0a92aa53567d",
+  "RequestId": "dead",
+  "LogicalResourceId": "TLSPCPolicyResource",
+  "PhysicalResourceId": "deaddead-dead-dead-dead-deaddeaddead",
+  "ResourceType": "Custom::TLSPCPolicy",
+  "ResourceProperties":
+    {
+      "ServiceToken": "arn:aws:lambda:us-east-1:999999999999:function:func",
+      "TLSPCAPIKey": "deaddead-dead-dead-dead-deaddeaddead"
+    }
+}

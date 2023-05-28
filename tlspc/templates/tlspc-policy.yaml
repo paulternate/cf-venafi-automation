@@ -1,0 +1,42 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: https://venafi-ecosystem.s3.amazonaws.com/tlspc/templates/tlspc-policy.yaml
+Metadata:
+  AWS::CloudFormation::Interface:
+    ParameterGroups:
+      - Label:
+          default: Credentials
+        Parameters:
+          - TLSPCAPIKey
+      - Label:
+          default: System
+        Parameters:
+          - UpdateTrigger
+
+Parameters:
+  TLSPCAPIKey:
+    Type: String
+    Description: From https://ui.venafi.cloud/platform-settings/user-preferences?key=api-keys
+    ConstraintDescription: TLSPCAPIKey must be structured as xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx and contain only lowercase hex-letters and numbers
+    AllowedPattern: "[a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12}"
+    NoEcho: true
+  UpdateTrigger:
+    Type: String
+    Description: PLEASE IGNORE - parameter is reserved for internal use
+
+Resources:
+  TLSPCPolicyFunction:
+    Type: AWS::Lambda::Function
+    Properties:
+      Code:
+        S3Bucket: !Sub venafi-ecosystem-${AWS::Region}
+        S3Key: tlspc/functions/tlspc-policy.zip
+      Handler: app.lambda_handler
+      Role: !Sub arn:aws:iam::${AWS::AccountId}:role/VenafiLambdaBasicExecutionRole
+      Runtime: python3.10
+      Timeout: 60
+  TLSPCPolicyResource:
+    Type: Custom::DoNothing
+    Properties:
+      ServiceToken: !GetAtt TLSPCPolicyFunction.Arn
+      TLSPCAPIKey: !Ref TLSPCAPIKey
+      UpdateTrigger: !Ref UpdateTrigger # reference required for update/change assessment
