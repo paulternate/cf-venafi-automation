@@ -11,10 +11,6 @@ Metadata:
           default: Credentials
         Parameters:
           - TLSPCAPIKey
-      - Label:
-          default: System
-        Parameters:
-          - UpdateTrigger
 
 Parameters:
   TLSPCAPIKey:
@@ -29,9 +25,6 @@ Parameters:
     ConstraintDescription: Typical form is <AppName>\<IssuingTemplateAlias>
     AllowedPattern: ^.*\\.*$
     Default: ExampleApp\Default
-  UpdateTrigger:
-    Type: String
-    Description: PLEASE IGNORE - parameter is reserved for internal use
 
 Resources:
   TLSPCPolicyFunction:
