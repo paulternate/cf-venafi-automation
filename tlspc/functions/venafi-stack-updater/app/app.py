@@ -59,7 +59,7 @@ def is_stack_marker_present(target_s3_bucket, stack_id):
     return True
 
 def write_stack_marker(target_s3_bucket, stack_id):
-    object_prefix = f'stacks/'
+    object_prefix = 'stacks/'
     shortened_stack_id = get_shortened_stack_id(stack_id)
     s3.put_object(Bucket=target_s3_bucket, Key=f'{object_prefix}{shortened_stack_id}/invocation-marker.txt', Body='for system usage, do not delete')
 

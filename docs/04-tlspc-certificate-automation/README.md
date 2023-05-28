@@ -93,10 +93,10 @@ After ~30 secs, the stack will reach a "Status" of "CREATE_COMPLETE".
 ## Reviewing your results (TLSPC)
 
 Follow these instructions to view your newly created Certificate in TLSPC.
-1. Navigate to https://ui.venafi.cloud/certificate-issuance/applications.
-1. Find and select the Application you created in the previous exercise.
-1. Click the **"View Certificates"** button.
-1. Locate the Certificate that matches the **"CommonName"** you provided earlier.
+1. Navigate to https://ui.venafi.cloud/certificate-issuance/applications
+1. Find and select the Application you created in the previous exercise
+1. Click the **"View Certificates"** button
+1. Locate the Certificate that matches the **"CommonName"** you provided earlier
 
 ## Reviewing your results (S3)
 
@@ -107,8 +107,56 @@ Follow these instructions to view your newly created Certificate in S3.
 1. Find the Output Key named **"S#URL"** and click the URL shown in its Value column
 1. You should see before you two files (`.cert` and `.key`) which match the CommonName of your certificate and contain its key material.
 
-## Updating your Certificate Stack
+## Updating your Certificate Stack (Renewals)
 
-TODO ...
+CFN Stacks can be "Created" and "Deleted" only once, but "Updated" as many times as you like.
+When you "Update" a regular CFN Stack it is typically because the template content or some parameters to the template need to be altered.
+In the world of Machine Identities there's a domain-specific operation type, called a **"Renewal"**.
+Renewals can be considered a form of "Soft-Update" in which the only material change to the inputs is the current date.
+When machine identities are not renewed in a timely manner, outages occur.
+
+The **"RenewalHours"** you specified above during Creation of the Certificate Stack determines when renewals happen but, as you don't have 60 days to wait around in this Workshop, you're going to simulate a renewal.
+
+The following steps will cause a Certificate renewal in TLSPC.
+
+1. Navigate to https://us-east-1.console.aws.amazon.com/cloudformation/home
+1. Find or search for your Stack using the name you provided earlier
+1. The Stack name is displayed as a blue hyperlink. Click this link now.
+1. Toward the top-right of the console you will see four buttons.
+   Locate the **"Update"** button and click it.
+1. On the "Update Stack" page, click "Next" to reuse the existing template
+1. Your intent for this Update operation is simply to renew the certificate so, technically, no parameter changes are required.
+   However CloudFormation will reject the Update until at least parameter is changed.
+   The parameter named **"UpdateTrigger"**, which serves no other functional purpose, exists to solve this problem.
+   Set **"UpdateTrigger"** to:
+   ```
+   Venafi Ecosystem Rocks!
+   ```
+1. Click "Next"
+1. Scroll to the foot of the "Configure stack options" page, then click "Next"
+1. Scroll to the foot of the "Review" page and finally click "Submit"
+
+After ~30 secs, the Stack will reach a "Status" of "UPDATE_COMPLETE".
+
+## Reviewing your post-renewal results (TLSPC)
+
+Using the instructions presented earlier in this exercise (see "Reviewing your results (TLSPC)") follow the instructions to view your updated Certificate in TLSPC.
+
+This time you will observe that there are two Certificates for your Application, but one is now listed as **"(old)"**.
+This indicates a successful renewal.
+
+## Reviewing your post-renewal results (S3)
+
+NOTE: To get the most benefit from these exercises, we recommend the use of Versioned S3 Buckets. If the Stacks you create in the exercise use the Bucket created by the One-Time Account Setup, this is taken care of for you.
+
+Using the instructions presented earlier in this exercise (see "Reviewing your results (S3)") follow the instructions to view your updated Certificate in S3.
+
+1. You should see before you two files (`.cert` and `.key`) which match the CommonName of your certificate and contain its key material.
+1. **This time**, click through on the blue link for the `.cert` file.
+1. You will observe three tabs: "Properties", "Permissions" and "Versions". Click **"Versions"**.
+
+The behavior seen here mimics that which you observed with the **"(old)"** Certificates in TLSPC.
+The default behavior in S3, which also mimics TLSPC, is to always fetch the current version.
+The archive of old versions are potentially useful for diagnostic or regulatory purposes, but can be pruned later as necessary.
 
 Next: [Main Menu](../README.md) | [05. TLSPC Issuing Template Automation](../05-tlspc-issuing-template-automation/README.md)
