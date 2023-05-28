@@ -24,7 +24,7 @@ Parameters:
     Description: Zones are logical organizational units used for managing digital certificates
     ConstraintDescription: Typical form is <AppName>\<IssuingTemplateAlias>
     AllowedPattern: ^.*\\.*$
-    Default: ExampleApp\Default
+    Default: phoenix-app\phoenix-builtin
 
 Resources:
   TLSPCPolicyFunction:
