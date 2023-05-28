@@ -31,7 +31,7 @@ Parameters:
     Description: The maximum number of days for which any created/renewed certificate is considered valid.
     ConstraintDescription: A positive, non zero number
     MinValue: 1
-    Default: 1
+    Default: 90
 
 
 Resources:
