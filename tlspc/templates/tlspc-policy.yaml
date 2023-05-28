@@ -46,7 +46,7 @@ Resources:
       Runtime: python3.10
       Timeout: 60
   TLSPCPolicyResource:
-    Type: Custom::DoNothing
+    Type: Custom::TLSPCPolicy
     Properties:
       ServiceToken: !GetAtt TLSPCPolicyFunction.Arn
       Zone: !Ref Zone
