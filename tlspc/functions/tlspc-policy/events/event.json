@@ -10,6 +10,7 @@
   "ResourceProperties":
     {
       "ServiceToken": "arn:aws:lambda:us-east-1:999999999999:function:func",
-      "TLSPCAPIKey": "deaddead-dead-dead-dead-deaddeaddead"
+      "TLSPCAPIKey": "deaddead-dead-dead-dead-deaddeaddead",
+      "Zone": "amcginlay-app\\amcginlay-pol"
     }
 }
