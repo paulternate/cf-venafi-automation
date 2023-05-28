@@ -156,7 +156,7 @@ Using the instructions presented earlier in this exercise (see "Reviewing your r
 1. You will observe three tabs: "Properties", "Permissions" and "Versions". Click **"Versions"**.
 
 The behavior seen here mimics that which you observed with the **"(old)"** Certificates in TLSPC.
-The default behavior in S3, which also mimics TLSPC, is to always fetch the current version.
-The archive of old versions are potentially useful for diagnostic or regulatory purposes, but can be pruned later as necessary.
+Like TLSPC, the **default** behavior in S3 is to always retrieve the current/latest version of any persisted object.
+The archive of "old" versions are potentially useful for diagnostic or regulatory purposes and can be pruned later as necessary.
 
 Next: [Main Menu](../README.md) | [05. TLSPC Issuing Template Automation](../05-tlspc-issuing-template-automation/README.md)
