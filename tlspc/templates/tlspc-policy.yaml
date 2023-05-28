@@ -7,6 +7,7 @@ Metadata:
           default: Policy Properties
         Parameters:
           - Zone
+          - MaxValidDays
       - Label:
           default: Credentials
         Parameters:
@@ -21,10 +22,17 @@ Parameters:
     NoEcho: true
   Zone:
     Type: String
-    Description: Zones are logical organizational units used for managing digital certificates
+    Description: Zones are logical organizational units used for managing digital certificates. Typical form is <AppName>\<IssuingTemplateAlias>.
     ConstraintDescription: Typical form is <AppName>\<IssuingTemplateAlias>
     AllowedPattern: ^.*\\.*$
     Default: phoenix-app\phoenix-builtin
+  MaxValidDays:
+    Type: Number
+    Description: The maximum number of days for which any created/renewed certificate is considered valid.
+    ConstraintDescription: A positive, non zero number
+    MinValue: 1
+    Default: 1
+
 
 Resources:
   TLSPCPolicyFunction:
@@ -42,4 +50,5 @@ Resources:
     Properties:
       ServiceToken: !GetAtt TLSPCPolicyFunction.Arn
       Zone: !Ref Zone
+      MaxValidDays: !Ref MaxValidDays
       TLSPCAPIKey: !Ref TLSPCAPIKey
