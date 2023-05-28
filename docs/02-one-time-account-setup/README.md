@@ -42,6 +42,8 @@ You will now be able to continue with the exercises in this workshop.
 NOTE: You ran the Template in the "us-east-1" region.
 For the purpose of this exercise, and to keep a long story short, it's probably best just to stick with this arrangement!
 
+NOTE: To get the most benefit from these exercises, we recommend the use of Versioned S3 Buckets. If the Stacks you create in the exercise use the Bucket created by this One-Time Stack, Versioning is enabled for you.
+
 <!-- if we need to regionalize these buckets (and setup replication) then we should do so with another template (or use CDK) in a manner similar to the "venafi-ecosystem" buckets -->
 
 Next: [Main Menu](../README.md) | [03. TLSPC Application Automation](../03-tlspc-application-automation/README.md)
