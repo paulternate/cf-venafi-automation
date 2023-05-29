@@ -12,14 +12,12 @@ TLSPCAPIKey=<API_KEY_FROM_TLSPC>
 PrivateKeyPassphrase=<PRIVATE_KEY_PASSPHRASE>
 STACK_BASE_NAME=elvispresley                  # <--- PERSONALIZE THIS TO SUIT
 
-ID=${RANDOM}
+ID=${RANDOM} # a "random" number to introduce uniqueness and avoid collisions
 ZONE=${STACK_BASE_NAME}-${ID}-app\\${STACK_BASE_NAME}-${ID}-cit
-POLICY_STACK_NAME=${STACK_BASE_NAME}-${ID}-policy
-CERT_STACK_NAME=${STACK_BASE_NAME}-${ID}-cert
 
 # tlspc-policy
 aws cloudformation create-stack \
-  --stack-name ${POLICY_STACK_NAME} \
+  --stack-name ${STACK_BASE_NAME}-${ID}-policy \
   --template-url https://venafi-ecosystem.s3.amazonaws.com/tlspc/templates/tlspc-policy.yaml \
   --parameters \
     ParameterKey=Zone,ParameterValue=${ZONE} \
@@ -29,7 +27,7 @@ aws cloudformation create-stack \
 
 # tlspc-certificate (create)
 aws cloudformation create-stack \
-  --stack-name ${CERT_STACK_NAME} \
+  --stack-name ${STACK_BASE_NAME}-${ID}-cert \
   --template-url https://venafi-ecosystem.s3.amazonaws.com/tlspc/templates/tlspc-certificate.yaml \
   --parameters \
     ParameterKey=Zone,ParameterValue=${ZONE} \
@@ -43,7 +41,7 @@ aws cloudformation create-stack \
 
 # tlspc-certificate (update)
 aws cloudformation update-stack \
-  --stack-name ${CERT_STACK_NAME}-${RandomKey} \
+  --stack-name ${STACK_BASE_NAME}-${ID}-cert \
   --use-previous-template \
   --parameters \
     ParameterKey=Zone,UsePreviousValue=true \
