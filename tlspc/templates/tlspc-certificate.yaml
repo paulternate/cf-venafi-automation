@@ -120,6 +120,8 @@ Outputs:
     Value: !GetAtt TLSPCCertificateResource.LatestCertRequestId
   LatestCertId:
     Value: !GetAtt TLSPCCertificateResource.LatestCertId
+  LatestCertExpiry:
+    Value: !GetAtt TLSPCCertificateResource.LatestCertExpiry
   TargetS3Bucket:
     Value: !GetAtt TLSPCCertificateResource.TargetS3Bucket
   S3URL:

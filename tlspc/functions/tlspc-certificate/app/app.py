@@ -105,6 +105,17 @@ def get_cert_id(api_key, request_id):
     data = json.loads(response.data.decode('utf-8'))
     return data.get('certificateIds')[0]
 
+def get_cert_expiry(api_key, cert_id):
+    response = http.request(
+        'GET',
+        'https://api.venafi.cloud/outagedetection/v1/certificates/' + cert_id,
+        headers={
+            'accept': 'application/json',
+            'tppl-api-key': api_key
+        })
+    data = json.loads(response.data.decode('utf-8'))
+    return str(data.get('validityEnd'))[:19] # only use the first 19 chars, as the rest are zeros.
+
 def store_cert_in_s3(target_s3_bucket, physical_resource_id, common_name, cert, stack_id, cert_request_id):
     object_prefix = f'certs/{common_name}/{physical_resource_id}/'
     s3 = boto3.client('s3')
@@ -178,7 +189,8 @@ def create_handler(event, context):
     conn.request_cert(request, zone)
     set_latest_cert_request_id_s3(target_s3_bucket, event, request.id) # important to record this in case next steps fail/timeout
     cert = retreive_cert_with_retry(conn, request)
-    logger.info(f'certificate retrieved: request.id={request.id} request.cert_guid={request.cert_guid}')
+    cert_expiry = get_cert_expiry(api_key, request.cert_guid)
+    logger.info(f'certificate retrieved: request.id={request.id} request.cert_guid={request.cert_guid} cert_expiry={cert_expiry}')
 
     s3_url= store_cert_in_s3(target_s3_bucket, request.id, common_name, cert, event['StackId'], request.id)
     logger.info('objects stored')
@@ -186,6 +198,7 @@ def create_handler(event, context):
     responseData['PhysicalResourceId'] = request.id
     responseData['LatestCertRequestId'] = request.id
     responseData['LatestCertId'] = request.cert_guid
+    responseData['LatestCertExpiry'] = cert_expiry
     responseData['TargetS3Bucket'] = target_s3_bucket
     responseData['S3URL'] = s3_url
     return responseData
@@ -210,7 +223,8 @@ def update_handler(event, context):
     # after conn.renew_cert, request.cert_guid is only set after a successful call to conn.retrieve_cert() ... unless you're in AWS! (see get_cert_id())
     cert = retreive_cert_with_retry(conn, request)
     cert_id = get_cert_id(api_key, request.id)
-    logger.info(f'renewed certificate retrieved: request.id={request.id} cert_id={cert_id}')
+    cert_expiry = get_cert_expiry(api_key, cert_id)
+    logger.info(f'renewed certificate retrieved: request.id={request.id} cert_id={cert_id} cert_expiry={cert_expiry}')
 
     s3_url = store_cert_in_s3(target_s3_bucket, physical_resource_id, common_name, cert, event['StackId'], request.id) # physical_resource_id used to ensure consistency with first CR (version history)
     logger.info('objects stored')
@@ -218,6 +232,7 @@ def update_handler(event, context):
     responseData['PhysicalResourceId'] = physical_resource_id # fix PhysicalResourceId to first CR, to CFN happy
     responseData['LatestCertRequestId'] = request.id
     responseData['LatestCertId'] = cert_id # should be able to use request.cert_guid, but ¯\_(ツ)_/¯
+    responseData['LatestCertExpiry'] = cert_expiry
     responseData['TargetS3Bucket'] = target_s3_bucket
     responseData['S3URL'] = s3_url
     return responseData
