@@ -93,7 +93,7 @@ def get_app_id(api_key, app_name):
 
 def build_policy_spec(event):
     max_valid_days = int(get_parameter(event, 'MaxValidDays'))
-    domains = [get_parameter(event, 'Domains')][0] # <--- why?!?!?
+    domains = get_parameter(event, 'Domains')
     domains_type = type(domains)
     domains_len = len(domains)
     logger.info(f'domains:{domains} domains_type:{domains_type} domains_len:{domains_len}')
