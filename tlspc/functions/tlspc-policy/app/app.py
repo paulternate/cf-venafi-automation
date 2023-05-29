@@ -6,6 +6,7 @@ import urllib3
 import http
 from vcert import venafi_connection
 from vcert.policy.policy_spec import (PolicySpecification, Policy, Defaults)
+import boto3
 
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
@@ -26,21 +27,77 @@ def redact_sensitive_info(json_data, sensitive_key, redacted_value='***'):
     return redacted_json
 
 def get_physical_resource_id(event):
-    physical_resource_id=(str(event.get('PhysicalResourceId', None)))
-    return physical_resource_id
+    return (str(event.get('PhysicalResourceId', None)))
 
-def build_policy_specification(event):
-    max_valid_days=int(event['ResourceProperties']['MaxValidDays'])
-    
-    policy_specification = PolicySpecification()
-    policy_specification.policy = Policy(
-        max_valid_days=max_valid_days if max_valid_days != 0 else None
-    )
-    policy_specification.defaults = Defaults()
-    return policy_specification
+def get_stack_outputs(event):
+    stack_id = event['StackId']
+    cloudformation = boto3.client('cloudformation')
+    response = cloudformation.describe_stacks(StackName=stack_id)
+    outputs = response['Stacks'][0]['Outputs']
+    logger.info('stack_outputs:\n' + json.dumps(outputs))
+    return outputs
+
+def get_stack_output_value(event, output_key):
+    try:
+        stack_outputs = get_stack_outputs(event)
+        return next((o['OutputValue'] for o in stack_outputs if o['OutputKey'] == output_key), None)
+    except:
+        return None
 
 def get_parameter(event, resource_property_key):
     return event['ResourceProperties'][resource_property_key]
+
+def get_api_key(event):
+    return str(get_parameter(event, 'TLSPCAPIKey'))
+
+def get_zone(event):
+    return str(get_parameter(event, 'Zone'))
+
+def parse_zone(zone):
+    segments = zone.split("\\")
+    return segments[0], segments[1] # app_name, cit_alias
+
+def get_cit_id(api_key, cit_alias):
+    logger.info('getting cit_id')
+    response = http.request(
+        'GET',
+        'https://api.venafi.cloud/v1/certificateissuingtemplates',
+        headers={
+            'accept': 'application/json',
+            'tppl-api-key': api_key
+        })
+    cit_id = next(
+        (t['id'] for t in json.loads(response.data.decode('utf-8'))['certificateIssuingTemplates']
+            if t['name'] == cit_alias),
+        None
+    )
+    return cit_id
+
+def get_app_id(api_key, app_name):
+    logger.info('getting app_id')
+    response = http.request(
+        'GET',
+        'https://api.venafi.cloud/outagedetection/v1/applications',
+        headers={
+            'accept': 'application/json',
+            'tppl-api-key': api_key
+        })
+    app_id = next(
+        (t['id'] for t in json.loads(response.data.decode('utf-8'))['applications']
+            if t['name'] == app_name),
+        None
+    )
+    return app_id
+
+def build_policy_specification(event):
+    max_valid_days=int(get_parameter(event, 'MaxValidDays'))
+    
+    policy_specification = PolicySpecification()
+    policy_specification.policy = Policy(
+        max_valid_days = max_valid_days if max_valid_days != 0 else None
+    )
+    policy_specification.defaults = Defaults()
+    return policy_specification
 
 def create_handler(event, context):
     responseData = {}
@@ -48,14 +105,18 @@ def create_handler(event, context):
     ###########
     # code here
     ###########
-    api_key = str(get_parameter(event, 'TLSPCAPIKey'))
-    zone = str(get_parameter(event, 'Zone'))
+    api_key = get_api_key(event)
+    zone = get_zone(event)
     policy_specification = build_policy_specification(event)
     connector = venafi_connection(api_key=api_key)
     connector.set_policy(zone, policy_specification)
-    response = connector.get_policy(zone)
+    app_name, cit_alias = parse_zone(zone)
+    cit_id = get_cit_id(api_key, cit_alias)
+    app_id = get_app_id(api_key, app_name)
+    # response = connector.get_policy(zone)
     ###########
-    responseData['PhysicalResourceId'] = zone
+    responseData['PhysicalResourceId'] = cit_id # "TLSPCPolicy" resource is represented by the CertificateIssuingTemplate itself
+    responseData['ApplicationId'] = app_id
     return responseData
 
 def update_handler(event, context):
@@ -77,6 +138,33 @@ def delete_handler(event, context):
     ###########
     # code here
     ###########
+    # application first, then issuing template (best effort, swallow all errors)
+    application_id = get_stack_output_value(event, 'ApplicationId')
+    api_key = get_api_key(event)
+    response = None
+    try:
+        response= http.request(
+            'DELETE',
+            f'https://api.venafi.cloud/outagedetection/v1/applications/{application_id}',
+            headers={
+                'accept': '*/*',
+                'tppl-api-key': api_key
+            }
+        )
+    except Exception as e:
+        logger.info(f'delete_handler() - continuing after failed app deletion attempt: application_id={application_id} response={response}')
+
+    try:
+        response= http.request(
+            'DELETE',
+            f'https://api.venafi.cloud/v1/certificateissuingtemplates/{physical_resource_id}',
+            headers={
+                'accept': '*/*',
+                'tppl-api-key': api_key
+            }
+        )
+    except Exception as e:
+        logger.info(f'delete_handler() - continuing after failed policy deletion attempt: physical_resource_id={physical_resource_id} response={response}')
 
     ###########
     responseData['PhysicalResourceId'] = physical_resource_id

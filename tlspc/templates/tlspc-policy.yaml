@@ -52,3 +52,7 @@ Resources:
       Zone: !Ref Zone
       MaxValidDays: !Ref MaxValidDays
       TLSPCAPIKey: !Ref TLSPCAPIKey
+
+Outputs:
+  ApplicationId:
+    Value: !GetAtt TLSPCPolicyResource.ApplicationId
