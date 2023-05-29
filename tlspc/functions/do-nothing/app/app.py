@@ -24,8 +24,7 @@ def redact_sensitive_info(json_data, sensitive_key, redacted_value='***'):
     return redacted_json
 
 def get_physical_resource_id(event):
-    physical_resource_id=(str(event.get('PhysicalResourceId', None)))
-    return physical_resource_id
+    return (str(event.get('PhysicalResourceId', None)))
 
 def create_handler(event, context):
     responseData = {}

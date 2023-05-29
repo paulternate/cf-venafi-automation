@@ -31,8 +31,7 @@ def redact_sensitive_info(json_data, sensitive_key, redacted_value='***'):
     return redacted_json
 
 def get_physical_resource_id(event):
-    physical_resource_id=(str(event.get('PhysicalResourceId', None)))
-    return physical_resource_id
+    return (str(event.get('PhysicalResourceId', None)))
 
 def get_template_id(api_key, issuing_template_name, cert_authority):
     logger.info('getting template_id')

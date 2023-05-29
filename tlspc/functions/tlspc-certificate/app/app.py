@@ -48,9 +48,8 @@ def redact_sensitive_info(json_data, sensitive_key, redacted_value='***'):
     return redacted_json
 
 def get_physical_resource_id(event):
-    # NOTE PhysicalResourceId represents the first CR (which changes upon renewals!)
-    physical_resource_id=(str(event.get('PhysicalResourceId', None)))
-    return physical_resource_id
+    # NOTE In this Function, PhysicalResourceId represents the very first CR in its series so it NEVER changes (a requirement for CFN to behave as expected)
+    return (str(event.get('PhysicalResourceId', None)))
 
 def get_stack_outputs(event):
     stack_id = event['StackId']
