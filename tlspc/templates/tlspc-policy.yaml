@@ -34,10 +34,10 @@ Parameters:
     MinValue: 1
     Default: 90
   Domains:
-    Type: String
+    Type: List<String>
     Description: A comma-separated list of domain names considered value in the context of this policy
     ConstraintDescription: A comma-separated list, for example "foo.com,bar.org"
-    AllowedPattern: ^([a-zA-Z0-9]+([\-]{1}[a-zA-Z0-9]+)*([\.]{1}[a-zA-Z0-9]+([\-]{1}[a-zA-Z0-9]+)*)*\,)*([a-zA-Z0-9]+([\-]{1}[a-zA-Z0-9]+)*([\.]{1}[a-zA-Z0-9]+([\-]{1}[a-zA-Z0-9]+)*)*)$
+    # AllowedPattern: ^([a-zA-Z0-9]+([\-]{1}[a-zA-Z0-9]+)*([\.]{1}[a-zA-Z0-9]+([\-]{1}[a-zA-Z0-9]+)*)*\,)*([a-zA-Z0-9]+([\-]{1}[a-zA-Z0-9]+)*([\.]{1}[a-zA-Z0-9]+([\-]{1}[a-zA-Z0-9]+)*)*)$
     Default: example.com
 
 Resources:

@@ -93,9 +93,9 @@ def get_app_id(api_key, app_name):
 
 def build_policy_spec(event):
     max_valid_days = int(get_parameter(event, 'MaxValidDays'))
-    domains = str(get_parameter(event, 'Domains'))
+    domains = [get_parameter(event, 'Domains')]
     
-    domains_array = [d.strip() for d in domains.split(',') if d]
+    # domains_array = [d.strip() for d in domains.split(',') if d]
     
     policy_spec = PolicySpecification()
     policy_spec.policy = Policy(
