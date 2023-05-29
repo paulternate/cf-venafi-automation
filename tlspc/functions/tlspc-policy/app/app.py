@@ -92,12 +92,15 @@ def get_app_id(api_key, app_name):
     return app_id
 
 def build_policy_spec(event):
-    max_valid_days=int(get_parameter(event, 'MaxValidDays'))
+    max_valid_days = int(get_parameter(event, 'MaxValidDays'))
+    domains = str(get_parameter(event, 'Domains'))
+    
+    domains_array = [d.strip() for d in domains.split(',') if d]
     
     policy_spec = PolicySpecification()
     policy_spec.policy = Policy(
-        max_valid_days = max_valid_days if max_valid_days != 0 else None # ,
-        # domains=['vfidev.com']
+        max_valid_days = max_valid_days if max_valid_days != 0 else None,
+        domains = domains_array
     )
     policy_spec.defaults = Defaults()
     return policy_spec
