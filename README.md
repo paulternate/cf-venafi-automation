@@ -24,7 +24,7 @@ aws cloudformation create-stack \
   --parameters \
     ParameterKey=Zone,ParameterValue=${ZONE} \
     ParameterKey=MaxValidDays,ParameterValue=91 \
-    ParameterKey=Domains,ParameterValue=\"example.com,example.net\" \
+    ParameterKey=Domains,ParameterValue=\"${STACK_BASE_NAME}.com,example.com\" \
     ParameterKey=TLSPCAPIKey,ParameterValue=${TLSPCAPIKey}
 
 # tlspc-certificate (create)
