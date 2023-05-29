@@ -121,8 +121,9 @@ def create_handler(event, context):
     logger.info(f'Created/Updated Issuing Template: cit_id={cit_id} policy_spec_data:\n{policy_spec_data}')
     ###########
     responseData['PhysicalResourceId'] = cit_id # "TLSPCPolicy" resource is represented by the CertificateIssuingTemplate itself
+    responseData['CertificateIssuingTemplateId'] = cit_id
     responseData['ApplicationId'] = app_id
-    responseData['Policy'] = policy_spec_data
+    responseData['CertificateIssuingTemplatePolicy'] = policy_spec_data
     return responseData
 
 def update_handler(event, context):

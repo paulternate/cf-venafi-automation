@@ -55,8 +55,8 @@ Resources:
 
 Outputs:
   CertificateIssuingTemplateId:
-    Value: !GetAtt TLSPCPolicyResource.PhysicalResourceId
+    Value: !GetAtt TLSPCPolicyResource.CertificateIssuingTemplateId
   ApplicationId:
     Value: !GetAtt TLSPCPolicyResource.ApplicationId
   Policy:
-    Value: !GetAtt TLSPCPolicyResource.Policy
+    Value: !GetAtt TLSPCPolicyResource.CertificateIssuingTemplatePolicy
