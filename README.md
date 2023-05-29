@@ -12,18 +12,17 @@ TLSPCAPIKey=<API_KEY_FROM_TLSPC>
 PrivateKeyPassphrase=<PRIVATE_KEY_PASSPHRASE>
 STACK_BASE_NAME=elvispresley                  # <--- PERSONALIZE THIS TO SUIT
 
-APP_STACK_NAME=${STACK_BASE_NAME}-app
+ZONE=${STACK_BASE_NAME}-app\\${STACK_BASE_NAME}-cit
+POLICY_STACK_NAME=${STACK_BASE_NAME}-policy
 CERT_STACK_NAME=${STACK_BASE_NAME}-cert
 
-# tlspc-application
+# tlspc-policy
 aws cloudformation create-stack \
-  --stack-name ${APP_STACK_NAME} \
-  --template-url https://venafi-ecosystem.s3.amazonaws.com/tlspc/templates/tlspc-application.yaml \
+  --stack-name ${POLICY_STACK_NAME} \
+  --template-url https://venafi-ecosystem.s3.amazonaws.com/tlspc/templates/tlspc-policy.yaml \
   --parameters \
-    ParameterKey=AppName,ParameterValue=${APP_STACK_NAME} \
-    ParameterKey=AppDescription,ParameterValue=${APP_STACK_NAME} \
-    ParameterKey=IssuingTemplateName,ParameterValue=Default \
-    ParameterKey=CertificateAuthority,ParameterValue=BUILTIN \
+    ParameterKey=Zone,ParameterValue=${ZONE} \
+    ParameterKey=MaxValidDays,ParameterValue=91 \
     ParameterKey=TLSPCAPIKey,ParameterValue=${TLSPCAPIKey}
 
 # tlspc-certificate (create)
@@ -32,7 +31,7 @@ aws cloudformation create-stack \
   --stack-name ${CERT_STACK_NAME}-${RandomKey} \
   --template-url https://venafi-ecosystem.s3.amazonaws.com/tlspc/templates/tlspc-certificate.yaml \
   --parameters \
-    ParameterKey=Zone,ParameterValue=${APP_STACK_NAME}\\Default \
+    ParameterKey=Zone,ParameterValue=${ZONE} \
     ParameterKey=CommonName,ParameterValue=www${RandomKey}.example.com \
     ParameterKey=ValidityHours,ParameterValue=0 \
     ParameterKey=RenewalHours,ParameterValue=1 \
