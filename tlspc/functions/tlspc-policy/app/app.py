@@ -103,12 +103,7 @@ def build_policy_spec(event):
     policy_spec.defaults = Defaults()
     return policy_spec
 
-def create_handler(event, context):
-    responseData = {}
-    logger.info('RequestType: Create')
-    ###########
-    # code here
-    ###########
+def create_or_update(event):
     api_key = get_api_key(event)
     zone = get_zone(event)
     policy_spec = build_policy_spec(event)
@@ -120,6 +115,15 @@ def create_handler(event, context):
     response = connector.get_policy(zone)
     policy_spec_data = pformat(parse_policy_spec(response))
     logger.info(f'Created/Updated Issuing Template: cit_id={cit_id} policy_spec_data:\n{policy_spec_data}')
+    return cit_id,app_id,policy_spec_data
+
+def create_handler(event, context):
+    responseData = {}
+    logger.info('RequestType: Create')
+    ###########
+    # code here
+    ###########
+    cit_id, app_id, policy_spec_data = create_or_update(event)
     ###########
     responseData['PhysicalResourceId'] = cit_id # "TLSPCPolicy" resource is represented by the CertificateIssuingTemplate itself
     responseData['CertificateIssuingTemplateId'] = cit_id
@@ -134,7 +138,7 @@ def update_handler(event, context):
     ###########
     # code here
     ###########
-
+    cit_id, app_id, policy_spec_data = create_or_update(event)
     ###########
     responseData['PhysicalResourceId'] = physical_resource_id # failure to do this will trigger a delete
     return responseData
