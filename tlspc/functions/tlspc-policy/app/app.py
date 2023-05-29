@@ -103,7 +103,7 @@ def build_policy_spec(event):
     policy_spec = PolicySpecification()
     policy_spec.policy = Policy(
         max_valid_days = max_valid_days if max_valid_days != 0 else None,
-        domains = domains_array
+        domains = domains
     )
     policy_spec.defaults = Defaults()
     return policy_spec
