@@ -35,10 +35,10 @@ Parameters:
     Default: 90
   Domains:
     Type: List<String>
-    Description: A comma-separated list of domain names considered value in the context of this policy
-    ConstraintDescription: A comma-separated list, for example "foo.com,bar.org"
+    Description: A list of domain names considered valid in the context of this policy
+    # ConstraintDescription: A comma-separated list, for example "foo.com bar.org"
     # AllowedPattern: ^([a-zA-Z0-9]+([\-]{1}[a-zA-Z0-9]+)*([\.]{1}[a-zA-Z0-9]+([\-]{1}[a-zA-Z0-9]+)*)*\,)*([a-zA-Z0-9]+([\-]{1}[a-zA-Z0-9]+)*([\.]{1}[a-zA-Z0-9]+([\-]{1}[a-zA-Z0-9]+)*)*)$
-    Default: example.com
+    Default: example.com example.net
 
 Resources:
   TLSPCPolicyFunction:
@@ -57,6 +57,7 @@ Resources:
       ServiceToken: !GetAtt TLSPCPolicyFunction.Arn
       Zone: !Ref Zone
       MaxValidDays: !Ref MaxValidDays
+      Domains: !Ref Domains
       TLSPCAPIKey: !Ref TLSPCAPIKey
 
 Outputs:
