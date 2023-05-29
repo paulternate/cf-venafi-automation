@@ -6,7 +6,7 @@ import urllib3
 import traceback
 import cfnresponse
 from vcert import (CertificateRequest, venafi_connection, CSR_ORIGIN_SERVICE)
-import boto3 # https://github.com/psf/requests/issues/6443 (requests==2.28.1)
+import boto3
 import botocore
 from botocore.exceptions import ClientError
 
