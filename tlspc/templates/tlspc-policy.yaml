@@ -36,9 +36,9 @@ Parameters:
   Domains:
     Type: List<String>
     Description: A list of domain names considered valid in the context of this policy
-    # ConstraintDescription: A comma-separated list, for example "foo.com bar.org"
-    # AllowedPattern: ^([a-zA-Z0-9]+([\-]{1}[a-zA-Z0-9]+)*([\.]{1}[a-zA-Z0-9]+([\-]{1}[a-zA-Z0-9]+)*)*\,)*([a-zA-Z0-9]+([\-]{1}[a-zA-Z0-9]+)*([\.]{1}[a-zA-Z0-9]+([\-]{1}[a-zA-Z0-9]+)*)*)$
-    Default: example.com example.net
+    ConstraintDescription: A comma-separated list, for example "foo.com,bar.org"
+    AllowedPattern: ^[a-zA-Z0-9]+([\-]{1}[a-zA-Z0-9]+)*([\.]{1}[a-zA-Z0-9]+([\-]{1}[a-zA-Z0-9]+)*)*$
+    Default: "example.com,example.net"
 
 Resources:
   TLSPCPolicyFunction:
