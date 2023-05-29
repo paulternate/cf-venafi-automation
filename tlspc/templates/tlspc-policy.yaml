@@ -54,6 +54,8 @@ Resources:
       TLSPCAPIKey: !Ref TLSPCAPIKey
 
 Outputs:
+  CertificateIssuingTemplateId:
+    Value: !GetAtt TLSPCPolicyResource.PhysicalResourceId
   ApplicationId:
     Value: !GetAtt TLSPCPolicyResource.ApplicationId
   Policy:
