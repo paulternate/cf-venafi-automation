@@ -29,11 +29,18 @@ def get_physical_resource_id(event):
     physical_resource_id=(str(event.get('PhysicalResourceId', None)))
     return physical_resource_id
 
-def get_parameters(event):
-    api_key = str(event['ResourceProperties']['TLSPCAPIKey'])
-    zone = str(event['ResourceProperties']['Zone'])
-    max_valid_days = str(event['ResourceProperties']['MaxValidDays'])
-    return api_key, zone, max_valid_days
+def build_policy_specification(event):
+    max_valid_days=int(event['ResourceProperties']['MaxValidDays'])
+    
+    policy_specification = PolicySpecification()
+    policy_specification.policy = Policy(
+        max_valid_days=max_valid_days if max_valid_days != 0 else None
+    )
+    policy_specification.defaults = Defaults()
+    return policy_specification
+
+def get_parameter(event, resource_property_key):
+    return event['ResourceProperties'][resource_property_key]
 
 def create_handler(event, context):
     responseData = {}
@@ -41,14 +48,11 @@ def create_handler(event, context):
     ###########
     # code here
     ###########
-    api_key, zone, max_valid_days = get_parameters(event)
+    api_key = str(get_parameter(event, 'TLSPCAPIKey'))
+    zone = str(get_parameter(event, 'Zone'))
+    policy_specification = build_policy_specification(event)
     connector = venafi_connection(api_key=api_key)
-    ps = PolicySpecification()
-    ps.policy = Policy(
-        max_valid_days=max_valid_days
-    )
-    ps.defaults = Defaults()
-    connector.set_policy(zone, ps)
+    connector.set_policy(zone, policy_specification)
     response = connector.get_policy(zone)
     ###########
     responseData['PhysicalResourceId'] = zone
