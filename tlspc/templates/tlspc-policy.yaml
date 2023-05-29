@@ -56,3 +56,5 @@ Resources:
 Outputs:
   ApplicationId:
     Value: !GetAtt TLSPCPolicyResource.ApplicationId
+  Policy:
+    Value: !GetAtt TLSPCPolicyResource.Policy

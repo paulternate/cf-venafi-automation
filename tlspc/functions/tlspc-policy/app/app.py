@@ -6,7 +6,9 @@ import urllib3
 import http
 from vcert import venafi_connection
 from vcert.policy.policy_spec import (PolicySpecification, Policy, Defaults)
+from vcert.parser.utils import parse_policy_spec
 import boto3
+from pprint import pformat
 
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
@@ -89,15 +91,16 @@ def get_app_id(api_key, app_name):
     )
     return app_id
 
-def build_policy_specification(event):
+def build_policy_spec(event):
     max_valid_days=int(get_parameter(event, 'MaxValidDays'))
     
-    policy_specification = PolicySpecification()
-    policy_specification.policy = Policy(
-        max_valid_days = max_valid_days if max_valid_days != 0 else None
+    policy_spec = PolicySpecification()
+    policy_spec.policy = Policy(
+        max_valid_days = max_valid_days if max_valid_days != 0 else None # ,
+        # domains=['vfidev.com']
     )
-    policy_specification.defaults = Defaults()
-    return policy_specification
+    policy_spec.defaults = Defaults()
+    return policy_spec
 
 def create_handler(event, context):
     responseData = {}
@@ -107,16 +110,19 @@ def create_handler(event, context):
     ###########
     api_key = get_api_key(event)
     zone = get_zone(event)
-    policy_specification = build_policy_specification(event)
+    policy_spec = build_policy_spec(event)
     connector = venafi_connection(api_key=api_key)
-    connector.set_policy(zone, policy_specification)
+    connector.set_policy(zone, policy_spec)
     app_name, cit_alias = parse_zone(zone)
     cit_id = get_cit_id(api_key, cit_alias)
     app_id = get_app_id(api_key, app_name)
-    # response = connector.get_policy(zone)
+    response = connector.get_policy(zone)
+    policy_spec_data = pformat(parse_policy_spec(response))
+    logger.info(f'Created/Updated Issuing Template: cit_id={cit_id} policy_spec_data:\n{policy_spec_data}')
     ###########
     responseData['PhysicalResourceId'] = cit_id # "TLSPCPolicy" resource is represented by the CertificateIssuingTemplate itself
     responseData['ApplicationId'] = app_id
+    responseData['Policy'] = policy_spec_data
     return responseData
 
 def update_handler(event, context):
