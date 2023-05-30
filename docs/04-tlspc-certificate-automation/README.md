@@ -159,4 +159,4 @@ The behavior seen here mimics that which you observed with the **"(old)"** Certi
 Like TLSPC, the **default** behavior in S3 is to always retrieve the current/latest version of any persisted object.
 The archive of "old" versions are potentially useful for diagnostic or regulatory purposes and can be pruned later as necessary.
 
-Next: [Main Menu](../README.md) | [05. TLSPC Issuing Template Automation](../05-tlspc-issuing-template-automation/README.md)
+Next: [Main Menu](../README.md)

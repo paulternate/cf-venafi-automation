@@ -8,6 +8,5 @@
 * [02. One-Time Account Setup](02-one-time-account-setup/README.md) (not required for Venafi/Jetstack accounts)
 
 ## Workshop Exercises
-* [03. TLSPC Application Automation](03-tlspc-application-automation/README.md)
+* [03. TLSPC Policy Automation](03-tlspc-policy-automation/README.md)
 * [04. TLSPC Certificate Automation](04-tlspc-certificate-automation/README.md)
-* [05. TLSPC Issuing Template Automation](05-tlspc-issuing-template-automation/README.md)

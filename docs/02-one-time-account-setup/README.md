@@ -46,4 +46,4 @@ NOTE: To get the most benefit from these exercises, we recommend the use of Vers
 
 <!-- if we need to regionalize these buckets (and setup replication) then we should do so with another template (or use CDK) in a manner similar to the "venafi-ecosystem" buckets -->
 
-Next: [Main Menu](../README.md) | [03. TLSPC Application Automation](../03-tlspc-application-automation/README.md)
+Next: [Main Menu](../README.md) | [03. TLSPC Policy Automation](../03-tlspc-policy-automation/README.md)
