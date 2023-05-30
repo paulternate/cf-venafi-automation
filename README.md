@@ -20,6 +20,7 @@ aws cloudformation create-stack \
   --stack-name ${STACK_BASE_NAME}-${ID}-policy \
   --template-url https://venafi-ecosystem.s3.amazonaws.com/tlspc/templates/tlspc-policy.yaml \
   --parameters \
+    ParameterKey=CertificateAuthority,ParameterValue="Built-In CA" \
     ParameterKey=Zone,ParameterValue=${ZONE} \
     ParameterKey=MaxValidDays,ParameterValue=91 \
     ParameterKey=Domains,ParameterValue=\"${STACK_BASE_NAME}.com,example.com\" \
