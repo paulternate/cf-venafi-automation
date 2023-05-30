@@ -10,13 +10,10 @@
   "ResourceProperties":
     {
       "ServiceToken": "arn:aws:lambda:us-east-1:999999999999:function:func",
-
-      "xTLSPCAPIKey": "deaddead-dead-dead-dead-deaddeaddead",
-      "TLSPCAPIKey": "9512bfec-aca8-4b0e-abf9-3b5ee42452a0",
-
-      "CertificateAuthority": "DEFAULT_CA",
-      "MaxValidDays": "0",
-      "Zone": "amcginlay998-app\\amcginlay998-cit",
+      "TLSPCAPIKey": "deaddead-dead-dead-dead-deaddeaddead",
+      "CertificateAuthority": "Built-In CA",
+      "MaxValidDays": "90",
+      "Zone": "amcginlay100-app\\amcginlay100-cit",
       "Domains": [
         "example.com",
         "elements.com"
