@@ -14,8 +14,12 @@
       "xTLSPCAPIKey": "deaddead-dead-dead-dead-deaddeaddead",
       "TLSPCAPIKey": "9512bfec-aca8-4b0e-abf9-3b5ee42452a0",
 
+      "CertificateAuthority": "DEFAULT_CA",
       "MaxValidDays": "0",
       "Zone": "amcginlay998-app\\amcginlay998-cit",
-      "Domains": "example.com, elements.com"
+      "Domains": [
+        "example.com",
+        "elements.com"
+      ]
     }
 }

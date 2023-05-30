@@ -94,9 +94,11 @@ def get_app_id(api_key, app_name):
 def build_policy_spec(event):
     max_valid_days = int(get_parameter(event, 'MaxValidDays'))
     domains = list(get_parameter(event, 'Domains'))
+    cert_auth = str(get_parameter(event, 'CertificateAuthority'))
     
     policy_spec = PolicySpecification()
     policy_spec.policy = Policy(
+        cert_auth = cert_auth if cert_auth != 'DEFAULT_CA' else None,
         max_valid_days = max_valid_days if max_valid_days != 0 else None,
         domains = domains
     )

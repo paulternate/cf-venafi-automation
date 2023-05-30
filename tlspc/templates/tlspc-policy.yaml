@@ -6,6 +6,7 @@ Metadata:
       - Label:
           default: Policy Properties
         Parameters:
+          - CertificateAuthority
           - Zone
           - MaxValidDays
           - Domains
@@ -21,12 +22,18 @@ Parameters:
     ConstraintDescription: TLSPCAPIKey must be structured as xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx and contain only lowercase hex-letters and numbers
     AllowedPattern: "[a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12}"
     NoEcho: true
+  CertificateAuthority:
+    Type: String
+    Description: Zones are logical organizational units used for managing digital certificates. Typical form is <AppName>\<CertificateIssuingTemplateAlias>.
+    ConstraintDescription: Currently restricted to DEFAULT_CA
+    AllowedPattern: "DEFAULT_CA"
+    Default: DEFAULT_CA
   Zone:
     Type: String
-    Description: Zones are logical organizational units used for managing digital certificates. Typical form is <AppName>\<IssuingTemplateAlias>.
-    ConstraintDescription: Typical form is <AppName>\<IssuingTemplateAlias>
+    Description: Zones are logical organizational units used for managing digital certificates. Typical form is <AppName>\<CertificateIssuingTemplateAlias>.
+    ConstraintDescription: Typical form is <AppName>\<CertificateIssuingTemplateAlias>
     AllowedPattern: ^.*\\.*$
-    Default: phoenix-app\phoenix-builtin
+    Default: phoenix-app\phoenix-cit
   MaxValidDays:
     Type: Number
     Description: The maximum number of days for which any created/renewed certificate is considered valid.
@@ -55,6 +62,7 @@ Resources:
     Type: Custom::TLSPCPolicy
     Properties:
       ServiceToken: !GetAtt TLSPCPolicyFunction.Arn
+      CertificateAuthority: !Ref CertificateAuthority
       Zone: !Ref Zone
       MaxValidDays: !Ref MaxValidDays
       Domains: !Ref Domains
