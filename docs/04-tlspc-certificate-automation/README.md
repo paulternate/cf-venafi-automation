@@ -47,7 +47,7 @@ The following steps will model your Certificate Request requirements in a Cloudf
      ```
      georgeharrison-cert
      ```
-   - A **"Zone"** is a logical organizational units used for managing digital certificates.
+   - A **"Zone"** is a logical organizational unit used for managing digital certificates.
      The typical form of a Zone is **AppName\IssuingTemplateAlias**.
      You already have a personalized Application from the previous exercise and this was mapped to the **"Default | BUILTIN"** Issuing Template using an Alias named **"Default"**.
      Carefully set this value to match your personal details.
