@@ -98,7 +98,7 @@ def build_policy_spec(event):
     
     policy_spec = PolicySpecification()
     policy_spec.policy = Policy(
-        cert_auth = cert_auth if cert_auth != 'DEFAULT_CA' else None,
+        cert_auth = cert_auth if cert_auth != 'Built-In CA' else None,
         max_valid_days = max_valid_days if max_valid_days != 0 else None,
         domains = domains
     )

@@ -24,10 +24,10 @@ Parameters:
     NoEcho: true
   CertificateAuthority:
     Type: String
-    Description: Zones are logical organizational units used for managing digital certificates. Typical form is <AppName>\<CertificateIssuingTemplateAlias>.
-    ConstraintDescription: Currently restricted to DEFAULT_CA
-    AllowedPattern: "DEFAULT_CA"
-    Default: DEFAULT_CA
+    Description: As shown at https://ui.venafi.cloud/certificate-issuance/certificate-authorities
+    ConstraintDescription: Currently restricted to Built-In CA
+    AllowedPattern: "Built-In CA"
+    Default: Built-In CA
   Zone:
     Type: String
     Description: Zones are logical organizational units used for managing digital certificates. Typical form is <AppName>\<CertificateIssuingTemplateAlias>.
