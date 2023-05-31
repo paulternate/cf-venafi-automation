@@ -1,4 +1,4 @@
-# 02. One-Time Account Setup
+# 02. One-Time AWS Account Setup
 
 ## What's this all about?
 
@@ -17,7 +17,7 @@ For anyone else, assuming you have the elevated rights required in your AWS acco
 
 If you're not sure, please consult your instructor.
 
-## The Venafi One-Time Setup Template
+## The Venafi One-Time AWS Setup Template
 
 | Type | Description | S3 | Source |
 | - | - | - | - |

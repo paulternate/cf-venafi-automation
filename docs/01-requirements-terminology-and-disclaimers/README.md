@@ -38,4 +38,4 @@ Or maybe you think we missed the point completely.
 Either way, we'd love to know.
 If customers are telling you they need something like this, but different in some way, let's work together to provide them with the tools they need to be "FastSecure".
 
-Next: [Main Menu](../README.md) | [02. One-Time Account Setup](../02-one-time-account-setup/README.md)
+Next: [Main Menu](../README.md) | [02. One-Time AWS Account Setup](../02-one-time-aws-account-setup/README.md)
