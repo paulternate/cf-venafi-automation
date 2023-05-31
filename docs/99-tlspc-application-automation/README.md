@@ -83,7 +83,7 @@ In doing so, you will familiarize yourself with the process for updating Stacks 
    - **Events** - Details the steps CloudFormation has taken to (one hopes) successfully translate your parameterized Template into a Stack.
    The Events tab is usually your first port of call when investigating CloudFormation failures.
    - **Resources** - A list of the resources (Native AWS and Custom) which CloudFormation created for you. You will observe that your Stack has one Lambda Function and one TLSPCApplication.
-   In the columm named Physical ID you will find a handy blue hyperlink to the Lambda function.
+   In the column  named Physical ID you will find a handy blue hyperlink to the Lambda function.
    The TLSPCApplication also has a collection of letters and numbers known as the Physical ID.
    **Ask yourself, what do you think this represents?**
    - **Outputs** - Outputs are selected informative results of successful runs. For example, if your stack creates a database entry CloudFormation could deposit a unique identifier here.
@@ -92,7 +92,6 @@ In doing so, you will familiarize yourself with the process for updating Stacks 
    - **Change sets** - This feature is beyond scope for today.
 1. In the upper-right portion of the screen you will see 4 buttons.
    Locate the "Update" button and click it.
-1. On the "Update stack" page, click "Next".
 1. On the "Update stack" page, click "Next".
 1. On the "Specify stack details" page:
    - Change **"AppDescription"** to
