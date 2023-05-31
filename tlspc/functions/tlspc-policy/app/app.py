@@ -143,6 +143,9 @@ def update_handler(event, context):
     cit_id, app_id, policy_spec_data = create_or_update(event)
     ###########
     responseData['PhysicalResourceId'] = physical_resource_id # failure to do this will trigger a delete
+    responseData['CertificateIssuingTemplateId'] = cit_id
+    responseData['ApplicationId'] = app_id
+    responseData['CertificateIssuingTemplatePolicy'] = policy_spec_data
     return responseData
 
 def delete_handler(event, context):
