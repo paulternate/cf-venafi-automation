@@ -165,4 +165,4 @@ After ~30 secs, the stack will reach a "Status" of "UPDATE_COMPLETE".
 
 Now, when you locate your CIT at https://ui.venafi.cloud/certificate-issuance/issuing-templates, it will display its new updated domain configuration.
 
-Next: [Main Menu](../README.md) | [04. TLSPC Certificate Automation](../03-tlspc-certificate-automation/README.md)
+Next: [Main Menu](../README.md) | [04. TLSPC Certificate Automation](../04-tlspc-certificate-automation/README.md)
