@@ -26,17 +26,16 @@ aws cloudformation create-stack \
     ParameterKey=Domains,ParameterValue=\"${STACK_BASE_NAME}.com,example.com\" \
     ParameterKey=TLSPCAPIKey,ParameterValue=${TLSPCAPIKey}
 
-# # tlspc-policy (update)
-#   awaiting fix ...
-# aws cloudformation update-stack \
-#   --stack-name ${STACK_BASE_NAME}-${ID}-policy \
-#   --template-url https://venafi-ecosystem.s3.amazonaws.com/tlspc/templates/tlspc-policy.yaml \
-#   --parameters \
-#     ParameterKey=CertificateAuthority,UsePreviousValue=true \
-#     ParameterKey=Zone,UsePreviousValue=true \
-#     ParameterKey=MaxValidDays,ParameterValue=92 \
-#     ParameterKey=Domains,UsePreviousValue=true \
-#     ParameterKey=TLSPCAPIKey,UsePreviousValue=true
+# tlspc-policy (update - MaxValidDays [91->92])
+aws cloudformation update-stack \
+  --stack-name ${STACK_BASE_NAME}-${ID}-policy \
+  --template-url https://venafi-ecosystem.s3.amazonaws.com/tlspc/templates/tlspc-policy.yaml \
+  --parameters \
+    ParameterKey=CertificateAuthority,UsePreviousValue=true \
+    ParameterKey=Zone,UsePreviousValue=true \
+    ParameterKey=MaxValidDays,ParameterValue=92 \
+    ParameterKey=Domains,UsePreviousValue=true \
+    ParameterKey=TLSPCAPIKey,UsePreviousValue=true
 
 # tlspc-certificate (create)
 aws cloudformation create-stack \
