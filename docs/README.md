@@ -1,4 +1,4 @@
-# Tech Training 2023 - Venafi Ecosystem Workshop
+# TLSPC CloudFormation Automation - Venafi Ecosystem Workshop
 
 ## Introduction
 * [00. Infrastructure As Code and AWS CloudFormation](00-iac-cloudformation/README.md)
