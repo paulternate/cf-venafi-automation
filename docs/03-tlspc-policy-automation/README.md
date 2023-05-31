@@ -163,6 +163,6 @@ In doing so, you will familiarize yourself with the process for updating Stacks 
 
 After ~30 secs, the stack will reach a "Status" of "UPDATE_COMPLETE".
 
-At this point your newly updated CIT will become visible at https://ui.venafi.cloud/certificate-issuance/applications
+Now, when you locate your CIT at https://ui.venafi.cloud/certificate-issuance/issuing-templates, it will display its new updated domain configuration.
 
 Next: [Main Menu](../README.md) | [04. TLSPC Certificate Automation](../03-tlspc-certificate-automation/README.md)
