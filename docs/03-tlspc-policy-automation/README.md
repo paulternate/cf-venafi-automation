@@ -27,7 +27,7 @@ Unless otherwise stated, all console settings should be left in their **DEFAULT*
 
 Any warning banners which appear in the AWS Console during these steps are typically caused by policy restrictions in the target AWS account and can be safely **IGNORED**.
 
-## Creating your Policy Stack
+## Creating your first Policy Stack (90 days)
 
 The following steps will model your Policy requirements in a Cloudformation Stack and realize these inside TLSPC.
 The resulting Application and CIT in TLSPC will be used later to create certificates.
@@ -44,15 +44,15 @@ The resulting Application and CIT in TLSPC will be used later to create certific
      Stack name can include letters (A-Z and a-z), numbers (0-9), and dashes (-).
      For example, John Lennon could use
      ```
-     johnlennon-policy
+     johnlennon-90day-policy
      ```
    - A **"Zone"** is a logical organizational unit used for managing digital certificates.
      The typical form of a Zone is **AppName\CertificateIssuingTemplateAlias**.
      As you can see this pairing aligns with the "Policy" definition described above.
      Set this value to match your personal details.
-     For example, adopting the `-app` suffix to represent the Appliction and the `-cit` suffix to represent the CIT, John Lennon could use
+     For example, adopting the `-app` suffix to represent the Appliction and the `-90day-cit` suffix to represent the CIT, John Lennon could use
      ```
-     johnlennon-app\johnlennon-cit
+     johnlennon-app\johnlennon-90day-cit
      ```
    - The **"CertificateAuthority"** is expected to match one of the entries displayed at https://ui.venafi.cloud/certificate-issuance/certificate-authorities.
      Leave this setting unchanged, at
@@ -73,25 +73,64 @@ The resulting Application and CIT in TLSPC will be used later to create certific
      ```
    - Set **"TLSPCAPIKey"** to whatever value is provided to you at https://ui.venafi.cloud/platform-settings/user-preferences?key=api-keys
    - Click "Next"
+1. **Double-check** for any mistakes in the above before moving on.
 1. Scroll to the foot of the "Configure stack options" page, then click "Next"
 1. Scroll to the foot of the "Review" page and finally click "Submit"
 
 After ~30 secs, the Stack will reach a "Status" of "CREATE_COMPLETE".
 
+## Before you ask, "Yeah, but what about X?" ...
+
+In its current form these templates miss off LOTS of important **policy properties**, such as CSR parameters, Key Algorithms and Extended Key Usage.
+This is intentional ... for now.
+
+Time constraints were a factor, but there's also an important question we seek an answer for.
+In the true spirit of Infrastructure As Code, it's reasonable to suggest that your Security team could/should just encapsulate ALL policy properties as a single JSON document which you then provide as a template parameter.
+This approach is obviously much more flexible and could foster greater consistency between environments, but it also makes input validation harder and greatly increases the number ways in which Stack Creation could fail.
+
+We're open to suggestion, so **please tell us what you think?**
+
+## Creating your second Policy Stack (60 days)
+
+This time you will create a policy with a **"MaxValidDays"** of 60.
+
+**Repeat** the previous section, changing only the following parameters.
+
+- Remembering that you're probably not named John Lennon 🙂, set **"Stack name"** to
+  ```
+  johnlennon-60day-policy
+  ```
+- Similarly, set **"Zone"** to something akin to
+  ```
+  johnlennon-app\johnlennon-60day-cit
+  ```
+- Set **"MaxValidDays"** to
+  ```
+  60
+  ```
+"Submit" this policy as you did previously.
+
+NOTE: the VCert logic takes the **"Zone"** and splits it into a pair of prospective resources, an Application and a CIT.
+As you Create your second Policy Stack, it recognizes that the Application resource already exists and re-uses it.
+On the other hand, the 60 day CIT resource does not exist so this is created as expected.
+As you will see next, this results in your **single** Application now having two CITs attached to it.
+
 ## Reviewing your results
 
-At this point your newly created pair of TLSPC resources will become visible at the following URLs.
+At this point your newly created TLSPC resources (1 Application and 2 CITs) will become visible at the following URLs.
 
-- **TLSPC Application** - https://ui.venafi.cloud/certificate-issuance/applications
 - **TLSPC Certificate Issuing Template** - https://ui.venafi.cloud/certificate-issuance/issuing-templates
+- **TLSPC Application** - https://ui.venafi.cloud/applications
 
-<!-- ## Updating your Application Stack
+Take a moment to click through on your Application and observe that both CITs are attached.
 
-The following steps will update your Application in TLSPC.
+## Updating a Policy Stack
+
+The following steps will update one of your CITs in TLSPC.
 In doing so, you will familiarize yourself with the process for updating Stacks in CloudFormation.
 
 1. Navigate to https://us-east-1.console.aws.amazon.com/cloudformation/home
-1. Find or search for your Stack using the name you provided earlier.
+1. Find or search for either of your Policy Stacks (60 or 90 day) using the name you provided earlier.
 1. The Stack name is displayed as a blue hyperlink.
    Click this link now.
 1. Take a moment to browse over tabs which are on display.
@@ -99,10 +138,11 @@ In doing so, you will familiarize yourself with the process for updating Stacks 
    - **Stack info** - This tab includes the system generated Stack ID. This is an example of an Amazon Resource Name (ARN) which is a system-generated identifier assigned to all AWS resources.
    These identifiers are universally unique within the AWS cloud.
    - **Events** - Details the steps CloudFormation has taken to (one hopes) successfully translate your parameterized Template into a Stack.
-   The Events tab is usually your first port of call when investigating CloudFormation failures.
-   - **Resources** - A list of the resources (Native AWS and Custom) which CloudFormation created for you. You will observe that your Stack has one Lambda Function and one TLSPCApplication.
-   In the columm named Physical ID you will find a handy blue hyperlink to the Lambda function.
-   The TLSPCApplication also has a collection of letters and numbers known as the Physical ID.
+   The Events tab is usually your first port of call for diagnostics when investigating CloudFormation failures.
+   - **Resources** - A list of the resources (Native AWS and Custom) which CloudFormation created for you. You will observe that your Stack has one Lambda Function and one TLSPCPolicy.
+   In the column named Physical ID you will find a handy blue hyperlink to the Lambda Function.
+   From the Lambda Function page, you can then navigate to its (CloudWatch) logs via the "Monitor" tab to gain further diagnostics when investigating failures.
+   The Physical ID for the TLSPCPolicy features a collection of letters and numbers.
    **Ask yourself, what do you think this represents?**
    - **Outputs** - Outputs are selected informative results of successful runs. For example, if your stack creates a database entry CloudFormation could deposit a unique identifier here.
    - **Parameters** - A copy of the Parameters used when the Stack was Created or Updated.
@@ -111,11 +151,11 @@ In doing so, you will familiarize yourself with the process for updating Stacks 
 1. In the upper-right portion of the screen you will see 4 buttons.
    Locate the "Update" button and click it.
 1. On the "Update stack" page, click "Next".
-1. On the "Update stack" page, click "Next".
 1. On the "Specify stack details" page:
-   - Change **"AppDescription"** to
+   - We stated previously that **"Domains"** is a list but we only provided a single element when the Stack was Created.
+     For Example, if you're John Lennon (and you're not! 🙂), you could now use comma-separated text to specify additional domains, such as
      ```
-     I updated this TLSPC application!
+     johnlennon.com,example.com
      ```
    - Click "Next"
 1. Scroll to the foot of the "Configure stack options" page, then click "Next"
@@ -123,6 +163,6 @@ In doing so, you will familiarize yourself with the process for updating Stacks 
 
 After ~30 secs, the stack will reach a "Status" of "UPDATE_COMPLETE".
 
-At this point your newly updated TLSPC Application will become visible at https://ui.venafi.cloud/certificate-issuance/applications -->
+At this point your newly updated CIT will become visible at https://ui.venafi.cloud/certificate-issuance/applications
 
-Next: [Main Menu](../README.md)
+Next: [Main Menu](../README.md) | [04. TLSPC Certificate Automation](../03-tlspc-certificate-automation/README.md)
