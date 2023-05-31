@@ -14,7 +14,7 @@ In this exercise, you will employ the use of the Amazon EventBridge Scheduler to
 
 ## TLSPCApplication Templates and Functions
 
-This exercise will make use of three objects stored in a publicly accessible (read-only) S3 bucket.
+TLSPCPolicy Stack Create/Update actions make use of three objects stored in a publicly accessible (read-only) S3 bucket.
 They are as follows:
 
 | Type | Description | S3 | Source |
@@ -82,8 +82,12 @@ The following steps will model your Certificate Request requirements in a Cloudf
    - **"TargetS3Bucket"** is the name of a versioned S3 Bucket where your TLSPC Certificates will be deposited.
      The Venafi One-Time Setup Template ensures that a default Bucket, named `venafi-tlspc-certificates-${AWS::AccountId}`, is available in your AWS account.
      For the purpose of this workshop, we advise that you leave this parameter **BLANK**.
+     ```
+     ```
    - **"UpdateTrigger"** is for internal use and only serves a non-functional purpose.
      We advise that you leave this parameter **BLANK**.
+     ```
+     ```
    - Click "Next"
 1. Scroll to the foot of the "Configure stack options" page, then click "Next"
 1. Scroll to the foot of the "Review" page and finally click "Submit"

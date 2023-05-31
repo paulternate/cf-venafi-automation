@@ -6,14 +6,14 @@ In this section you will use CloudFormation (sometimes abbreviated to CFN, or ju
 In this context a Policy is represented by a pair of TLSPC resources, as follows.
 
 - A **TLSPC Application** - A means to categorize policy-enforced collections of Certificate Requests and their Certificates.
-- A **TLSPC Certificate Issuing Template** (CIT) - Used to configure security policies that are enforced whenever new Certificates are issued.
-To enable a TLSPC CIT for use in policy enforcement it must first be associated with a TLSPC Application.
+- A **TLSPC Certificate Issuing Template** (CIT) - Used to configure security policies that are enforced whenever new Certificates are requested via TLSPC.
+To enable a TLSPC CIT for use in Certificate policy enforcement it must first be associated with a TLSPC Application.
 
 The choice to pair these resources under the term "Policy" was inspired by the implementation of VCert's [setpolicy](https://github.com/Venafi/vcert/blob/master/README-CLI-CLOUD.md#parameters-for-applying-certificate-policy) action, which condenses the functionality of the underlying resources down to their essential features.
 
 ## TLSPCPolicy Templates and Functions
 
-This exercise will make use of two objects stored in a publicly accessible (read-only) S3 bucket.
+TLSPCPolicy Stack Create/Update actions make use of two objects stored in a publicly accessible (read-only) S3 bucket.
 They are as follows:
 
 | Type | Description | S3 | Source |
