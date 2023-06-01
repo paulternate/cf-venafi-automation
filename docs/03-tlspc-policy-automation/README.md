@@ -23,7 +23,7 @@ They are as follows:
 
 ## A note on Defaults and warning messages
 
-Unless otherwise stated, all console settings should be left in their **DEFAULT** state.
+Unless otherwise stated, all AWS Console settings should be left in their **DEFAULT** state.
 
 Any warning banners which appear in the AWS Console during these steps are typically caused by policy restrictions in the target AWS Account and can be safely **IGNORED**.
 
@@ -111,9 +111,9 @@ This time you will create a policy with a **"MaxValidDays"** of 60.
 "Submit" this policy as you did previously.
 
 NOTE: the VCert logic takes the **"Zone"** and splits it into a pair of prospective resources, an Application and a CIT.
-As you Create your second Policy Stack, it recognizes that the Application resource already exists and re-uses it.
-On the other hand, the 60 day CIT resource does not exist so this is created as expected.
-As you will see next, this results in your **single** Application now having two CITs attached to it.
+As you Create your second Policy Stack, it recognizes that the **Application** resource already exists and re-uses it.
+On the other hand, the 60 day **CIT** resource does not exist so this is created as expected.
+As you will see next, this results in your **single** Application now having both CITs attached to it.
 
 ## Reviewing your results
 
@@ -122,7 +122,7 @@ At this point your newly created TLSPC resources (1 Application and 2 CITs) will
 - **TLSPC Certificate Issuing Template** - https://ui.venafi.cloud/certificate-issuance/issuing-templates
 - **TLSPC Application** - https://ui.venafi.cloud/applications
 
-Take a moment to click through on your Application and observe that both CITs are attached.
+Take a moment to click through on your Application to confirm that both CITs are attached.
 
 ## Updating a Policy Stack
 
@@ -130,33 +130,34 @@ The following steps will update one of your CITs in TLSPC.
 In doing so, you will familiarize yourself with the process for updating Stacks in CloudFormation.
 
 1. Navigate to https://us-east-1.console.aws.amazon.com/cloudformation/home
-1. Find or search for either of your Policy Stacks (60 or 90 day) using the name you provided earlier.
+1. Find or search for your **90 day** Policy Stack using the name you provided earlier.
 1. The Stack name is displayed as a blue hyperlink.
    Click this link now.
 1. Take a moment to browse over tabs which are on display.
    Here are some observations regarding these tabs.
-   - **Stack info** - This tab includes the system generated Stack ID. This is an example of an Amazon Resource Name (ARN) which is a system-generated identifier assigned to all AWS resources.
+   - **Stack info** - This tab includes the system generated Stack ID. This is an example of an [Amazon Resource Name](https://docs.aws.amazon.com/IAM/latest/UserGuide/reference-arns.html) (ARN) which is a system-generated identifier assigned to all AWS resources.
    These identifiers are universally unique within the AWS cloud.
    - **Events** - Details the steps CloudFormation has taken to (one hopes) successfully translate your parameterized Template into a Stack.
    The Events tab is usually your first port of call for diagnostics when investigating CloudFormation failures.
-   - **Resources** - A list of the resources (Native AWS and Custom) which CloudFormation created for you. You will observe that your Stack has one Lambda Function and one TLSPCPolicy.
+   - **Resources** - A list of the resources (Native AWS and Custom) which CloudFormation created for you. You will observe that your Stack has one native resource (Lambda Function) and one custom resource (TLSPCPolicy).
    In the column named Physical ID you will find a handy blue hyperlink to the Lambda Function.
-   From the Lambda Function page, you can then navigate to its (CloudWatch) logs via the "Monitor" tab to gain further diagnostics when investigating failures.
+   From the Lambda Function page, you can then navigate to its [CloudWatch](https://aws.amazon.com/cloudwatch) logs via the "Monitor" tab to gain further diagnostics when investigating failures.
    The Physical ID for the TLSPCPolicy features a collection of letters and numbers.
    **Ask yourself, what do you think this represents?**
    - **Outputs** - Outputs are selected informative results of successful runs. For example, if your stack creates a database entry CloudFormation could deposit a unique identifier here.
-   - **Parameters** - A copy of the Parameters used when the Stack was Created or Updated.
-   - **Template** - A copy of the Template used when the Stack was Created or Updated.
+   - **Parameters** - A transcript of the Parameters used when the Stack was Created or Updated.
+   - **Template** - A transcript of the Template used when the Stack was Created or Updated.
    - **Change sets** - This feature is beyond scope for today.
 1. In the upper-right portion of the screen you will see 4 buttons.
    Locate the "Update" button and click it.
 1. On the "Update stack" page, click "Next".
 1. On the "Specify stack details" page:
-   - We stated previously that **"Domains"** is a list but we only provided a single element when the Stack was Created.
+   - We stated previously that the **"Domains"** parameter is a list but we only provided a single element when the Stack was Created.
      For Example, if you're John Lennon (and you're not! 🙂), you could now use comma-separated text to specify additional domains, such as
      ```
      johnlennon.com,example.com
      ```
+     Go ahead and make a change similar to John.
    - Click "Next"
 1. Scroll to the foot of the "Configure stack options" page, then click "Next"
 1. Scroll to the foot of the "Review" page and finally click "Submit"
