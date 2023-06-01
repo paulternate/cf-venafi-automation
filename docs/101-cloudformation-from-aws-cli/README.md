@@ -87,4 +87,18 @@ aws cloudformation update-stack \
     ParameterKey=UpdateTrigger,ParameterValue=${RANDOM}
 ```
 
+### TLSPC Policy - Delete
+
+```
+aws cloudformation delete-stack \
+  --stack-name ${STACK_BASE_NAME}-${ID}-policy
+```
+
+### TLSPC Certificate - Delete
+
+```
+aws cloudformation delete-stack \
+  --stack-name ${STACK_BASE_NAME}-${ID}-cert
+```
+
 Next: [Main Menu](../README.md)
