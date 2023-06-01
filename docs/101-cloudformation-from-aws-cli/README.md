@@ -4,6 +4,7 @@
 
 The Stack Creation and Updates shown in this workshop can, of course, all be done via the [AWS CLI](https://aws.amazon.com/cli).
 The simplest way to gain access to the the CLI for your AWS Account is via [AWS CloudShell](https://aws.amazon.com/cloudshell).
+
 To access CloudShell, navigate to https://us-east-1.console.aws.amazon.com/cloudshell.
 This provides a Linux-based terminal environment with the CLI pre-installed, pre-configured and ready to go.
 
