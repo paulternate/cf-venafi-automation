@@ -73,7 +73,7 @@ The following steps will model your Certificate Request requirements in a Cloudf
      ```
      1440
      ```
-   - Set **"TLSPCAPIKey"** to whatever value is provided to you at https://ui.venafi.cloud/platform-settings/user-preferences?key=api-keys
+   - Set **"TLSPCAPIKey"** to whatever API Key value is provided to you at https://ui.venafi.cloud/platform-settings/user-preferences?key=api-keys
    - Use **"PrivateKeyPassphrase"** to specify a password for encrypting the private key.
      Set this to something extremely difficult 😉 to guess, such as
      ```

@@ -71,7 +71,7 @@ The resulting Application and CIT in TLSPC will be used later to create certific
      ```
      johnlennon.com
      ```
-   - Set **"TLSPCAPIKey"** to whatever value is provided to you at https://ui.venafi.cloud/platform-settings/user-preferences?key=api-keys
+   - Set **"TLSPCAPIKey"** to whatever API Key value is provided to you at https://ui.venafi.cloud/platform-settings/user-preferences?key=api-keys
    - Click "Next"
 1. **Double-check** for any mistakes in the above before moving on.
 1. Scroll to the foot of the "Configure stack options" page, then click "Next"

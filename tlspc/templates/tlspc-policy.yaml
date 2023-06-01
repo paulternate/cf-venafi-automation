@@ -18,7 +18,7 @@ Metadata:
 Parameters:
   TLSPCAPIKey:
     Type: String
-    Description: From https://ui.venafi.cloud/platform-settings/user-preferences?key=api-keys
+    Description: API Key from https://ui.venafi.cloud/platform-settings/user-preferences?key=api-keys
     ConstraintDescription: TLSPCAPIKey must be structured as xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx and contain only lowercase hex-letters and numbers
     AllowedPattern: "[a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12}"
     NoEcho: true
