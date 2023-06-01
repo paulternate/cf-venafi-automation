@@ -10,3 +10,6 @@
 ## Workshop Exercises
 * [03. TLSPC Policy Automation](03-tlspc-policy-automation/README.md)
 * [04. TLSPC Certificate Automation](04-tlspc-certificate-automation/README.md)
+
+## Appendices
+* [101. Appendix - CloudFormation from AWS CLI](101-cloudformation-from-aws-cli/README.md)
