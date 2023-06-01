@@ -2,16 +2,18 @@
 
 ## Requirements
 
-To successfully complete this workshop you will need the following:
+To successfully complete this workshop you will need:
 
-- ONE of the following:
+- To choose ONE of the following options:
   - **Option 1:** Access to the "AWS Single Sign-on" (SSO) tile via https://venafi.okta.com/ with a minimum of "Basic" access to one of the following AWS accounts via SSO:
     - "venafi-se" (aka "Venafi SE")
     - "venafi-ps" (aka "AWS-PS")
-  - **Option 2:** Any personal account not belonging to Venafi
-- To complete these exercises using the "us-east-1" AWS region, simply because it's tried and tested there
+  - **Option 2:** Access to the Jetstack AWS account with a minimum of "Basic" access
+    - https://jetstack-dev.signin.aws.amazon.com/console
+  - **Option 3:** Any other AWS account including personal accounts
+- To use the **"us-east-1"** AWS region, simply because it's tried and tested there
 - Access, via either your own domain or the company shared one, to TLSPC at https://ui.venafi.cloud/
-- For the purpose of automated CSR generation, at least one VSatellite instance should be active at https://ui.venafi.cloud/vsatellites
+- At least one VSatellite instance should as active at https://ui.venafi.cloud/vsatellites
 - The ability to distinguish between buses, stairs, bicycles and traffic lights! 😊
 
 ## Terminology
@@ -31,7 +33,7 @@ The following table covers a few terms which you'll see in this workshop and the
 
 The Ecosystem team would like to clarify that this solution is by no means the finished article.
 Coverage of the TLSPC API does not extend too far at this point and features you might expect to see will be missing.
-The primary motivation for putting this workshop together was to establish a proof of concept, have you experience what's possible first-hand and get you thinking about what types of third-party integrations are valuable.
+The primary motivation for putting this workshop together was to establish a proof of concept; to have you experience what's possible first-hand and get you thinking about what types of third-party integrations are valuable.
 
 Maybe you think the Ecosystem team should focus their automation and IaC integration efforts elsewhere.
 Or maybe you think we missed the point completely.
