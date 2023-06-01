@@ -2,15 +2,15 @@
 
 ## What you will learn
 
-In this section you will use CloudFormation to deploy a Custom Resource representing a Certificate Request (CR) in TLSPC.
-Each CR in TLSPC is tied to an Application, such as the one you created previously.
+In this section you will use CloudFormation to deploy a Custom Resource representing a [Certificate Request](https://en.wikipedia.org/wiki/Certificate_signing_request) (CR) in TLSPC.
+For the purpose of tracking and policy enforcement, each CR is associated to a Zone (defined in the previous exercise).
 Upon successful issuance, each CR will be paired with exactly one Certificate in TLSPC.
 All Key Material (i.e. Certificates and Private Keys) generated via TLSPC will be pulled into your AWS Account and persisted to an S3 Bucket.
 
 Timely Certificate renewal prevents outages.
-In TLSPC, this is achieved by cloning and resubmitting the latest CR.
-Over time, this sequence of CRs builds to create an audit trail for your Certificates.
-In this exercise, you will employ the use of the Amazon EventBridge Scheduler to automate this process, ensuring that Certificate renewals always take place before the current latest Certificate expires. 
+In TLSPC, [Certificate renewals](https://docs.venafi.cloud/vaas/certificates/renewing-a-certificate/) are typically achieved by cloning and resubmitting the most recent successful CR.
+Over time, this sequence of CRs and Certificates builds to create a useful audit trail.
+In this exercise, you will employ the use of the [Amazon EventBridge Scheduler](https://docs.aws.amazon.com/eventbridge/latest/userguide/scheduler.html) to automate the renewal process, ensuring that Certificate renewals always take place before the current latest Certificate expires.
 
 ## TLSPCApplication Templates and Functions
 
@@ -25,7 +25,7 @@ They are as follows:
 
 ## A note on Defaults and warning messages
 
-Unless otherwise stated, all console settings should be left in their **DEFAULT** state.
+Unless otherwise stated, all AWS Console settings should be left in their **DEFAULT** state.
 
 Any warning banners which appear in the AWS Console during these steps are typically caused by policy restrictions in the target AWS Account and can be safely **IGNORED**.
 
@@ -43,19 +43,21 @@ The following steps will model your Certificate Request requirements in a Cloudf
 1. On the "Specify stack details" page:
    - Set **"Stack name"** to something uniquely identifiable for **yourself**, plus the letters "-cert".
      Stack name can include letters (A-Z and a-z), numbers (0-9), and dashes (-).
-     For Example, George Harrison could use
+     For Example, John Lennon could use
      ```
-     georgeharrison-cert
+     johnlennon-cert
      ```
    - A **"Zone"** is a logical organizational unit used for managing digital certificates.
      The typical form of a Zone is **AppName\IssuingTemplateAlias**.
-     You already have a personalized Application from the previous exercise and this was mapped to the **"Default | BUILTIN"** Issuing Template using an Alias named **"Default"**.
-     Carefully set this value to match your personal details.
-     For example, George Harrison could use
+     You already have personalized "90 day" and "60 day" Zones from the previous exercise.
+     Carefully set this value to match your personalized "90 day" Zone.
+     For example, John Lennon could use
      ```
-     georgeharrison-app\Default
+     johnlennon-app\johnlennon-cit-90day
      ```
-   - Set **"CommonName"** the subject/domain of the target template.
+   - Set **"CommonName"** to the subject/domain of the target template.
+     
+     
      In non-prod environments there is no requirement to own the domain so we advise you to set this value to something uniquely identifiable for **yourself**.
      For Example, George Harrison could use
      ```
@@ -162,5 +164,13 @@ Using the instructions presented earlier in this exercise (see [Reviewing your r
 The behavior seen here mimics that which you observed with the **"(old)"** Certificates in TLSPC.
 Like TLSPC, the **default** behavior in S3 is to always retrieve the current/latest version of any persisted object.
 The archive of "old" versions are potentially useful for diagnostic or regulatory purposes and can be pruned later as necessary.
+
+## A note on Serverless Event Driven Architectures
+
+Try not to think of S3 as the "final" destination for your Certificates.
+
+You've already seen how the EventBridge Scheduler (think "Cloud Native [cron](https://en.wikipedia.org/wiki/Cron)") can be used to define periodic triggers for TLSPC Certificate renewals.
+The event of an object being deposited in an S3 Bucket can also be used as a trigger in the context of [Event Driven Architectures](https://aws.amazon.com/event-driven-architecture/) in AWS, so renewed Certificates can be immediately pushed out to wherever the AWS customer needs them.
+See this [blog article](https://aws.amazon.com/blogs/architecture/get-started-with-amazon-s3-event-driven-design-patterns/) for more info.
 
 Next: [Main Menu](../README.md)
