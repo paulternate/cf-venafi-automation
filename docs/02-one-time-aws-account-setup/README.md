@@ -29,12 +29,21 @@ If you're not sure, please consult your instructor.
 
 The following steps will enable Lambda Functions in the exercises to be successfully created.
 
-- Navigate to https://us-east-1.console.aws.amazon.com/cloudformation/home
-- Click on "Create stack", then click "With new resources (standard)"
-- On the "Create stack" page, under "Specify template", set "Amazon S3 URL" to `https://venafi-ecosystem.s3.amazonaws.com/tlspc/templates/venafi-cfn-setup.yaml`, then click "Next"
-- On the "Specify stack details" page, set "Stack name" to something appropriate, like, `venafi-cfn-setup`, then click "Next"
-- Scroll to the foot of the "Configure stack options" page, then click "Next"
-- Scroll to the foot of the "Review" page, check ✅ the "Capabilities" checkbox and finally click "Submit"
+1. Navigate to https://us-east-1.console.aws.amazon.com/cloudformation/home
+1. Click on "Create stack", then click "With new resources (standard)"
+1. On the "Create stack" page, under "Specify template", set **"Amazon S3 URL"** to
+   ```
+   https://venafi-ecosystem.s3.amazonaws.com/tlspc/templates/venafi-one-time-setup.yaml
+   ```
+   then click "Next"
+1. On the "Specify stack details" page:
+   - Set **"Stack name"** to
+   ```
+   venafi-one-time-setup
+   ```
+   - Click "Next"
+1. Scroll to the foot of the "Configure stack options" page, then click "Next"
+1. Scroll to the foot of the "Review" page, check ✅ the "Capabilities" checkbox and finally click "Submit"
 
 After ~30 secs, the Stack will reach a "Status" of "CREATE_COMPLETE".
 You will now be able to continue with the exercises in this workshop.
@@ -42,7 +51,7 @@ You will now be able to continue with the exercises in this workshop.
 NOTE: You ran the Template in the "us-east-1" region.
 For the purpose of this exercise, and to keep a long story short, it's probably best just to stick with this arrangement!
 
-NOTE: To get the most benefit from these exercises, we recommend the use of Versioned S3 Buckets. If the Stacks you create in the exercise use the Bucket created by this One-Time Stack, Versioning is enabled for you.
+NOTE: To get the most benefit from these exercises, we recommend the use of Versioned S3 Buckets. If the Stacks you create in the exercise use the default Bucket created by this One-Time Stack, then Versioning is enabled for you.
 
 <!-- if we need to regionalize these buckets (and setup replication) then we should do so with another template (or use CDK) in a manner similar to the "venafi-ecosystem" buckets -->
 
