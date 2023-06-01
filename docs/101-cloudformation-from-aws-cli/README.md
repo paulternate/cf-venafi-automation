@@ -13,19 +13,20 @@ Here's the CLI equivalent of some key steps you take in this workshop.
 ### Setup Variables
 
 ```
-STACK_BASE_NAME=johnlennon # <--- PERSONALIZE THIS TO SUIT
+STACK_BASE_NAME=johnlennon                                      # <--- PERSONALIZE THIS TO SUIT
 
 TLSPCAPIKey=<API_KEY_FROM_TLSPC>
 PrivateKeyPassphrase=<PRIVATE_KEY_PASSPHRASE>
 
 ID=${RANDOM}
-ZONE=${STACK_BASE_NAME}-${ID}-app\\${STACK_BASE_NAME}-${ID}-cit
+ZONE=${STACK_BASE_NAME}-${ID}-app\\${STACK_BASE_NAME}-${ID}-cit # <--- BACKSLASHES ESCAPED ('\\')
 ```
 
 NOTE: the ID variable is a "random" number used to introduce a degree of name uniqueness.
 This helps avoid name collisions and is useful when testing
 
 ### TLSPC Policy - Create
+
 ```
 aws cloudformation create-stack \
   --stack-name ${STACK_BASE_NAME}-${ID}-policy \
@@ -39,6 +40,7 @@ aws cloudformation create-stack \
 ```
 
 ### TLSPC Policy - Update (Domains)
+
 ```
 aws cloudformation update-stack \
   --stack-name ${STACK_BASE_NAME}-${ID}-policy \
@@ -52,6 +54,7 @@ aws cloudformation update-stack \
 ```
 
 ### TLSPC Certificate - Create
+
 ```
 aws cloudformation create-stack \
   --stack-name ${STACK_BASE_NAME}-${ID}-cert \
@@ -68,6 +71,7 @@ aws cloudformation create-stack \
 ```
 
 ### TLSPC Certificate - Update (Renewals)
+
 ```
 aws cloudformation update-stack \
   --stack-name ${STACK_BASE_NAME}-${ID}-cert \
