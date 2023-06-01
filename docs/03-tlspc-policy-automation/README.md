@@ -44,15 +44,15 @@ The resulting Application and CIT in TLSPC will be used later to create certific
      Stack name can include letters (A-Z and a-z), numbers (0-9), and dashes (-).
      For example, John Lennon could use
      ```
-     johnlennon-90day-policy
+     johnlennon-policy-90day
      ```
    - A **"Zone"** is a logical organizational unit used for managing digital certificates.
      The typical form of a Zone is **AppName\CertificateIssuingTemplateAlias**.
      As you can see this pairing aligns with the "Policy" definition described above.
      Set this value to match your personal details.
-     For example, adopting the `-app` suffix to represent the Appliction and the `-90day-cit` suffix to represent the CIT, John Lennon could use
+     For example, adopting the `-app` suffix to represent the Appliction and the `-cit-90day` suffix to represent the CIT, John Lennon could use
      ```
-     johnlennon-app\johnlennon-90day-cit
+     johnlennon-app\johnlennon-cit-90day
      ```
    - The **"CertificateAuthority"** is expected to match one of the entries displayed at https://ui.venafi.cloud/certificate-issuance/certificate-authorities.
      Leave this setting unchanged, at
@@ -98,11 +98,11 @@ This time you will create a policy with a **"MaxValidDays"** of 60.
 
 - Remembering that you're probably not named John Lennon 🙂, set **"Stack name"** to
   ```
-  johnlennon-60day-policy
+  johnlennon-policy-60day
   ```
 - Similarly, set **"Zone"** to something akin to
   ```
-  johnlennon-app\johnlennon-60day-cit
+  johnlennon-app\johnlennon-cit-60day
   ```
 - Set **"MaxValidDays"** to
   ```
