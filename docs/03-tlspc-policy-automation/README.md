@@ -94,20 +94,21 @@ We're open to suggestion, so **please tell us what you think?**
 
 This time you will create a policy with a **"MaxValidDays"** of 60.
 
-**Repeat** the previous section, changing only the following parameters.
+For convenience, here's that all-important template URL once more
+```
+https://venafi-ecosystem.s3.amazonaws.com/tlspc/templates/tlspc-policy.yaml
+```
 
-- Remembering that you're probably not named John Lennon 🙂, set **"Stack name"** to
-  ```
-  johnlennon-policy-60day
-  ```
-- Similarly, set **"Zone"** to something akin to
-  ```
-  johnlennon-app\johnlennon-cit-60day
-  ```
-- Set **"MaxValidDays"** to
-  ```
-  60
-  ```
+**Repeat** the previous section verbatim, except you need to change **every** occurance of the charcters "90days" to "60days".
+
+For example, remembering that you're probably not named John Lennon 🙂, he would make the following adjustments to the previous instructions.
+
+| Setting | Was previously | Now using |
+| - | - | - |
+| **Stack name** | johnlennon-policy-90day | johnlennon-policy-60day |
+| **Zone** | johnlennon-app\johnlennon-cit-90day | johnlennon-app\johnlennon-cit-60day |
+| **MaxValidDays** | 90 | 60 |
+
 "Submit" this policy as you did previously.
 
 NOTE: the VCert logic takes the **"Zone"** and splits it into a pair of prospective resources, an Application and a CIT.
@@ -151,13 +152,15 @@ In doing so, you will familiarize yourself with the process for updating Stacks 
 1. In the upper-right portion of the screen you will see 4 buttons.
    Locate the "Update" button and click it.
 1. On the "Update stack" page, click "Next".
+1. **Hey! You still awake? You're about to make that promised update.**
 1. On the "Specify stack details" page:
    - We stated previously that the **"Domains"** parameter is a list but we only provided a single element when the Stack was Created.
      For Example, if you're John Lennon (and you're not! 🙂), you could now use comma-separated text to specify additional domains, such as
      ```
      johnlennon.com,example.com
      ```
-     Go ahead and make a change similar to John.
+     Go ahead.
+     Be like John and make a similar change!
    - Click "Next"
 1. Scroll to the foot of the "Configure stack options" page, then click "Next"
 1. Scroll to the foot of the "Review" page and finally click "Submit"
