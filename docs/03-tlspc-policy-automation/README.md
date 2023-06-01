@@ -131,7 +131,7 @@ The following steps will update one of your CITs in TLSPC.
 In doing so, you will familiarize yourself with the process for updating Stacks in CloudFormation.
 
 1. Navigate to https://us-east-1.console.aws.amazon.com/cloudformation/home
-1. Find or search for your **90 day** Policy Stack using the name you provided earlier.
+1. **Carefully** search for your own **90 day** Policy Stack using the personalized Stack name you provided earlier.
 1. The Stack name is displayed as a blue hyperlink.
    Click this link now.
 1. Take a moment to browse over tabs which are on display.
