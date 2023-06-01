@@ -109,7 +109,7 @@ For example, remembering that you're probably not named John Lennon 🙂, he wou
 | **Zone** | **johnlennon-app\johnlennon-cit-60day** | johnlennon-app\johnlennon-cit-90day |
 | **MaxValidDays** | **60** | 90 |
 
-"Submit" this policy as you did previously.
+"Submit" your personalized "60day" Policy as you did previously.
 
 NOTE: the VCert logic takes the **"Zone"** and splits it into a pair of prospective resources, an Application and a CIT.
 As you Create your second Policy Stack, it recognizes that the **Application** resource already exists and re-uses it.
