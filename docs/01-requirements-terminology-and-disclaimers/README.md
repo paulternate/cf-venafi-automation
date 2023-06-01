@@ -11,7 +11,7 @@ To successfully complete this workshop you will need:
   - **Option 2:** Access to the Jetstack AWS account with a minimum of "Basic" access
     - https://jetstack-dev.signin.aws.amazon.com/console
   - **Option 3:** Any other AWS account including personal accounts
-- To use the **"us-east-1"** AWS region, simply because it's tried and tested there
+- To use the **"us-east-1"** [AWS region](https://aws.amazon.com/about-aws/global-infrastructure/regions_az/), simply because it's tried and tested there
 - Access, via either your own domain or the company shared one, to TLSPC at https://ui.venafi.cloud/
 - At least one VSatellite instance should as active at https://ui.venafi.cloud/vsatellites
 - The ability to distinguish between buses, stairs, bicycles and traffic lights! 😊
