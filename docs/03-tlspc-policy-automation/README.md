@@ -140,8 +140,7 @@ In doing so, you will familiarize yourself with the process for updating Stacks 
    Click this link now.
 1. Take a moment to browse over tabs which are on display.
    Here are some observations regarding these tabs.
-   - **Stack info** - This tab includes the system generated Stack ID. This is an example of an [Amazon Resource Name](https://docs.aws.amazon.com/IAM/latest/UserGuide/reference-arns.html) (ARN) which is a system-generated identifier assigned to all AWS resources.
-   These identifiers are universally unique within the AWS cloud.
+   - **Stack info** - This tab includes the system generated Stack ID. This is an example of an [ARN](https://docs.aws.amazon.com/IAM/latest/UserGuide/reference-arns.html).
    - **Events** - Details the steps CloudFormation has taken to (one hopes) successfully translate your parameterized Template into a Stack.
    The Events tab is usually your first port of call for diagnostics when investigating CloudFormation failures.
    - **Resources** - A list of the resources (Native AWS and Custom) which CloudFormation created for you. You will observe that your Stack has one native resource (Lambda Function) and one custom resource (TLSPCPolicy).
