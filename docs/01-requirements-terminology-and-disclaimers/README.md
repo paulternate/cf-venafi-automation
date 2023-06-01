@@ -22,12 +22,12 @@ The following table covers a few terms which you'll see in this workshop and the
 
 | Term  | Description |
 | - | - |
-| Template | The YAML or JSON file passed to CloudFormation which describes a collection of desired resources and their inter-dependencies. These resources are typically restricted to AWS, but not today! |
-| Stack | When you provide parameters to a Template and "run" it, CloudFormation will transform your collection of desired resources into live resources with unique identifiers. A transformed collection of resources is referred to as a Stack. |
-| EC2 | Amazon Elastic Compute Cloud (EC2) is the original AWS cloud computing service. It produces Virtual Machines which are billable regardless of their use. (You will not be using EC2) |
-| S3 | Amazon Simple Storage Service (S3) is a scalable cloud storage service providing unlimited and inexpensive storage and retrieval of data anywhere on the web. |
-| Lambda | A compute service provided by AWS that allows you to run your code without having to provision or manage EC2 instances. Unlike EC2, Lambda only charges you for the time that your code is running. |
-| Function | A piece of code uploaded to AWS Lambda which comes into existence and executes in response to specific events. Lambda Function instances are short-lived and stateless so they often use S3 for their persistence requirements. Lambda Functions are typically, but not exclusively, written in Python or NodeJS and can be invoked from Custom Resources. |
+| [Template](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/template-guide.html) | The YAML or JSON file passed to CloudFormation which describes a collection of desired resources and their inter-dependencies. These resources are typically restricted to AWS, but not today! |
+| [Stack](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/stacks.html) | When you provide parameters to a Template and "run" it, CloudFormation will transform your collection of desired resources into live resources with unique identifiers. A transformed collection of resources is referred to as a Stack. |
+| [EC2](https://aws.amazon.com/ec2) | Amazon Elastic Compute Cloud (EC2) is the original AWS cloud computing service. It produces Virtual Machines which are billable regardless of their use. (You will not be using EC2) |
+| [S3](https://aws.amazon.com/s3) | Amazon Simple Storage Service (S3) is a scalable cloud storage service providing unlimited and inexpensive storage and retrieval of data anywhere on the web. |
+| [Lambda](https://aws.amazon.com/lambda) | A compute service provided by AWS that allows you to run your code without having to provision or manage EC2 instances. Unlike EC2, Lambda only charges you for the time that your code is running. |
+| [Function](https://docs.aws.amazon.com/lambda/latest/dg/gettingstarted-concepts.html#gettingstarted-concepts-function) | A piece of code uploaded to AWS Lambda which comes into existence and executes in response to specific events. Lambda Function instances are short-lived and stateless so they often use S3 for their persistence requirements. Lambda Functions are typically, but not exclusively, written in Python or NodeJS and can be invoked from Custom Resources. |
 
 ## Disclaimers
 
