@@ -176,7 +176,7 @@ NOTE: the archive of "old" versions stored is S3 represents a potentially useful
 You should not think of S3 as the "final" destination for your Certificates.
 
 You've seen how the EventBridge Scheduler (think "Cloud Native [cron](https://en.wikipedia.org/wiki/Cron)") can be used to define periodic triggers for TLSPC Certificate renewals.
-This is an example of an [Event Driven Architectures](https://aws.amazon.com/event-driven-architecture/) in its simplest form.
+This is an example of an [Event Driven Architecture](https://aws.amazon.com/event-driven-architecture/) in its simplest form.
 
 Whenever a new object appears in an S3 Bucket an observable event occurs which can also be used to trigger further workloads.
 Workloads in these architectures are often deployed as Lambda Functions, so these solutions remain Serverless.
