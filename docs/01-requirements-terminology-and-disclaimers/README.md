@@ -23,8 +23,7 @@ The following table covers a few terms which you'll see in this workshop and the
 | Term  | Description |
 | - | - |
 | [Template](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/template-guide.html) | The YAML or JSON file passed to CloudFormation which describes a collection of desired resources and their inter-dependencies. These resources are typically restricted to AWS, but not today! |
-| [Stack](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/stacks.html) | When you provide a name and parameters to a Template you can then ask CloudFormation to "run" it for you.
-CloudFormation will transform your collection of desired resources into live resources with unique identifiers. A transformed collection of resources is referred to as a Stack. Stack names in AWS must be unique on a per Account+Region basis. |
+| [Stack](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/stacks.html) | When you provide a name and parameters to a Template you can then ask CloudFormation to "run" it for you. CloudFormation will transform your collection of desired resources into live resources with unique identifiers. A transformed collection of resources is referred to as a Stack. Stack names in AWS must be unique on a per Account+Region basis. |
 | [EC2](https://aws.amazon.com/ec2) | Amazon Elastic Compute Cloud (EC2) is the original AWS cloud computing service. It produces Virtual Machines which are billable regardless of their use. (You will not be using EC2) |
 | [S3](https://aws.amazon.com/s3) | Amazon Simple Storage Service (S3) is a scalable cloud storage service providing unlimited and inexpensive storage and retrieval of data anywhere on the web. |
 | [Lambda](https://aws.amazon.com/lambda) | A compute service provided by AWS that allows you to run your code without having to provision or manage EC2 instances. Unlike EC2, Lambda only charges you for the time that your code is running. |
