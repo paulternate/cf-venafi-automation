@@ -2,8 +2,8 @@
 
 ## What is Infrastructure As Code?
 
-Infrastructure as Code (IaC) is an approach to automating the management and provisioning of infrastructure resources using machine-readable definition files rather than manually configuring infrastructure components.
-It involves writing code in a high-level language, such as YAML, to define the desired infrastructure.
+[Infrastructure as Code](https://en.wikipedia.org/wiki/Infrastructure_as_code) (IaC) is an approach to automating the management and provisioning of infrastructure resources using machine-readable definition files rather than manually configuring infrastructure components.
+It involves writing code in a high-level language, such as [YAML](https://en.wikipedia.org/wiki/YAML), to define the desired infrastructure.
 Infrastructure declared this way can then be version-controlled, tested, and deployed in a reliable and consistent way.
 By defining IaC, developers and operations teams can collaborate more effectively and ensure that infrastructure is consistent across all environments.
 
@@ -13,10 +13,10 @@ By defining IaC, developers and operations teams can collaborate more effectivel
   <img src="../images/cfn.png" height="256" width="256" />
 </p>
 
-AWS CloudFormation is a service provided by Amazon Web Services (AWS) that allows users to define and deploy parameterized IaC templates into your AWS account.
-Each template is capable of managing large collections of interdependent AWS resources, including EC2 instances, S3 buckets, SQS queues, RDS databases and so on.
+[AWS CloudFormation](https://aws.amazon.com/cloudformation/) is a service provided by Amazon Web Services (AWS) that allows users to define and deploy parameterized IaC templates into your AWS account.
+Each template is capable of managing large collections of interdependent AWS resources, including [EC2](https://aws.amazon.com/ec2) instances, [S3](https://aws.amazon.com/s3) buckets, [SQS](https://aws.amazon.com/sqs) queues, [RDS](https://aws.amazon.com/rds) databases and so on.
 
-Terraform by Hashicorp is a platform-independent alternative to AWS CloudFormation.
+[Terraform](https://www.terraform.io/) by Hashicorp is a platform-independent alternative to AWS CloudFormation.
 
 ## What are Custom Resources?
 
@@ -24,8 +24,8 @@ Terraform by Hashicorp is a platform-independent alternative to AWS CloudFormati
   <img src="../images/iac.png" height="256" width="256" />
 </p>
 
-Custom Resources are a feature of AWS CloudFormation that allow users to extend CloudFormation functionality by adding custom code to their templates.
-This feature enables users to define new resource types, backed by serverless AWS Lambda functions, that are not natively supported by AWS CloudFormation.
+[Custom Resources](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/template-custom-resources.html) are a feature of AWS CloudFormation that allow users to extend CloudFormation functionality by adding custom code to their templates.
+This feature enables users to define new resource types, backed by [Serverless](https://aws.amazon.com/serverless) AWS [Lambda](https://aws.amazon.com/lambda) functions, that are not natively supported by AWS CloudFormation.
 Developers can define the code that will be executed when the Custom Resource is created, updated or deleted.
 
 ## Why is this important?
@@ -34,11 +34,11 @@ Developers can define the code that will be executed when the Custom Resource is
   <img src="../images/tlspc.png" height="256" width="256" />
 </p>
 
-The Venafi Ecosystem team is tasked with making the consumption of Venafi services as frictionless as possible.
-Imagine a Cloud Native company who is both a customer of AWS and a user of TLS Protect Cloud (TLSPC).
-They choose to use TLSPC over native AWS services such as ACM in order to benefit from its flexibility and policy enforcement.
+The [Venafi Ecosystem](https://marketplace.venafi.com/) team is tasked with making the consumption of Venafi services as frictionless as possible.
+Imagine a [Cloud Native](https://en.wikipedia.org/wiki/Cloud-native_computing) company who runs hundreds of EC2 instances and is a user of [TLS Protect Cloud](https://venafi.com/tls-protect/) (TLSPC).
+They choose to use TLSPC over native AWS services such as [AWS Certificate Manager](https://aws.amazon.com/certificate-manager/) (ACM) in order to benefit from its flexibility and policy enforcement.
 They need to mint certificates via TLSPC **before** activating their AWS compute resources.
 As such, TLSPC has become a deep-rooted dependency of their own infrastructure.
-The use of Custom Resources to represent TLSPC capabilities allows them to treat TLSPC as an extension of AWS, ensuring that policy-enforced X.509 certificates are delivered at the point of need, using familiar tools and best practice.
+The use of Custom Resources to represent TLSPC capabilities allows Venafi customers to treat TLSPC as an extension of AWS, ensuring that policy-enforced X.509 certificates are delivered at the point of need, using familiar tools and best practice.
 
 Next: [Main Menu](../README.md) | [01. Requirements, Terminology and Disclaimers](../01-requirements-terminology-and-disclaimers/README.md)
