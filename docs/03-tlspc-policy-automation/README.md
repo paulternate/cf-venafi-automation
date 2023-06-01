@@ -25,7 +25,7 @@ They are as follows:
 
 Unless otherwise stated, all console settings should be left in their **DEFAULT** state.
 
-Any warning banners which appear in the AWS Console during these steps are typically caused by policy restrictions in the target AWS account and can be safely **IGNORED**.
+Any warning banners which appear in the AWS Console during these steps are typically caused by policy restrictions in the target AWS Account and can be safely **IGNORED**.
 
 ## Creating your first Policy Stack (90 days)
 

@@ -5,12 +5,12 @@
 To successfully complete this workshop you will need:
 
 - Access to an [AWS Console](https://aws.amazon.com/console/) - choose ONE of the following options:
-  - **Option 1:** Access to the "AWS Single Sign-on" (SSO) tile via https://venafi.okta.com/ with a minimum of "Basic" access to one of the following AWS accounts via SSO:
+  - **Option 1:** Access to the "AWS Single Sign-on" (SSO) tile via https://venafi.okta.com/ with a minimum of "Basic" access to one of the following AWS Accounts via SSO:
     - "venafi-se" (aka "Venafi SE")
     - "venafi-ps" (aka "AWS-PS")
-  - **Option 2:** Access to the Jetstack AWS account with a minimum of "Basic" access
+  - **Option 2:** Access to the Jetstack AWS Account with a minimum of "Basic" access
     - https://jetstack-dev.signin.aws.amazon.com/console
-  - **Option 3:** Any other AWS account including personal accounts
+  - **Option 3:** Any other AWS Account including personal Accounts
 - To use the **"us-east-1"** [AWS region](https://aws.amazon.com/about-aws/global-infrastructure/regions_az/), simply because it's tried and tested there
 - Access, via either your own domain or the company shared one, to TLSPC at https://ui.venafi.cloud/
 - At least one VSatellite instance should as active at https://ui.venafi.cloud/vsatellites

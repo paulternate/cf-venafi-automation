@@ -5,15 +5,15 @@
 Security teams need to strike a balance between granting enough privilege for staff to do the job, whilst staying secure.
 Privilege escalation risks in AWS are contained by limiting what you're allowed to do, particularly with the [Identity and Access Management](https://aws.amazon.com/iam) (IAM) service.
 Such limits can impact the standard workflow used when creating and deploying Lambda functions.
-We can address this in each AWS account by pre-configuring an [IAM Role](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles.html) for Lambda to use, but someone with elevated rights will need to apply the fix.
+We can address this in each AWS Account by pre-configuring an [IAM Role](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles.html) for Lambda to use, but someone with elevated rights will need to apply the fix.
 
 ## What do I need to do?
 
 **Answer: probably nothing.**
 
-If you're using a Venafi/Jetstack AWS account today then the fix has likely been applied already so the following action is **not required** and you can move straight on with the [first exercise](../03-tlspc-policy-automation/README.md).
+If you're using a Venafi/Jetstack AWS Account today then the fix has likely been applied already so the following action is **not required** and you can move straight on with the [first exercise](../03-tlspc-policy-automation/README.md).
 
-For anyone else, assuming you have the **administrative/elevated rights** required in your AWS account, you will need to apply this fix via CloudFormation.
+For anyone else, assuming you have the **administrative/elevated rights** required in your AWS Account, you will need to apply this fix via CloudFormation.
 
 If you're not sure, please consult the support team.
 

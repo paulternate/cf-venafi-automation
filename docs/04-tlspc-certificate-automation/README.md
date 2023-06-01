@@ -5,7 +5,7 @@
 In this section you will use CloudFormation to deploy a Custom Resource representing a Certificate Request (CR) in TLSPC.
 Each CR in TLSPC is tied to an Application, such as the one you created previously.
 Upon successful issuance, each CR will be paired with exactly one Certificate in TLSPC.
-All Key Material (i.e. Certificates and Private Keys) generated via TLSPC will be pulled into your AWS account and persisted to an S3 Bucket.
+All Key Material (i.e. Certificates and Private Keys) generated via TLSPC will be pulled into your AWS Account and persisted to an S3 Bucket.
 
 Timely Certificate renewal prevents outages.
 In TLSPC, this is achieved by cloning and resubmitting the latest CR.
@@ -27,7 +27,7 @@ They are as follows:
 
 Unless otherwise stated, all console settings should be left in their **DEFAULT** state.
 
-Any warning banners which appear in the AWS Console during these steps are typically caused by policy restrictions in the target AWS account and can be safely **IGNORED**.
+Any warning banners which appear in the AWS Console during these steps are typically caused by policy restrictions in the target AWS Account and can be safely **IGNORED**.
 
 ## Creating your Certificate Stack
 
@@ -80,7 +80,7 @@ The following steps will model your Certificate Request requirements in a Cloudf
      SuperSecret123!
      ```
    - **"TargetS3Bucket"** is the name of a versioned S3 Bucket where your TLSPC Certificates will be deposited.
-     The Venafi One-Time Setup Template ensures that a default Bucket, named `venafi-tlspc-certificates-${AWS::AccountId}`, is available in your AWS account.
+     The Venafi One-Time Setup Template ensures that a default Bucket, named `venafi-tlspc-certificates-${AWS::AccountId}`, is available in your AWS Account.
      For the purpose of this workshop, we advise that you leave this parameter **BLANK**.
      ```
      ```

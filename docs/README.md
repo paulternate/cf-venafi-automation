@@ -5,7 +5,7 @@
 
 ## Technical Orientation
 * [01. Requirements, Terminology and Disclaimers](01-requirements-terminology-and-disclaimers/README.md)
-* [02. One-Time AWS Account Setup](02-one-time-aws-account-setup/README.md) (not required for Venafi/Jetstack accounts)
+* [02. One-Time AWS Account Setup](02-one-time-aws-account-setup/README.md) (not required for Venafi/Jetstack Accounts)
 
 ## Workshop Exercises
 * [03. TLSPC Policy Automation](03-tlspc-policy-automation/README.md)

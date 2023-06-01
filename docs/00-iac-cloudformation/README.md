@@ -13,7 +13,7 @@ By defining IaC, developers and operations teams can collaborate more effectivel
   <img src="../images/cfn.png" height="256" width="256" />
 </p>
 
-[AWS CloudFormation](https://aws.amazon.com/cloudformation/) is a service provided by Amazon Web Services (AWS) that allows users to define and deploy parameterized IaC templates into your AWS account.
+[AWS CloudFormation](https://aws.amazon.com/cloudformation/) is a service provided by Amazon Web Services (AWS) that allows users to define and deploy parameterized IaC templates into your AWS Account.
 Each template is capable of managing large collections of interdependent AWS resources, including compute resources such as [EC2](https://aws.amazon.com/ec2) instances, [S3](https://aws.amazon.com/s3) buckets, [SQS](https://aws.amazon.com/sqs) queues, [RDS](https://aws.amazon.com/rds) databases and so on.
 
 [Terraform](https://www.terraform.io/) by Hashicorp is a platform-independent alternative to AWS CloudFormation.
