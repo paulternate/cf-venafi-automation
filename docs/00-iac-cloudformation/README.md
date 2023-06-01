@@ -2,7 +2,7 @@
 
 ## What is Infrastructure As Code?
 
-[Infrastructure as Code](https://en.wikipedia.org/wiki/Infrastructure_as_code) (IaC) is an approach to automating the management and provisioning of infrastructure resources using machine-readable definition files rather than manually configuring infrastructure components.
+[Infrastructure as Code](https://en.wikipedia.org/wiki/Infrastructure_as_code) (IaC) is an approach to **automating** the management and provisioning of infrastructure resources using machine-readable definition files rather than manually configuring infrastructure components.
 It involves writing code in a high-level language, such as [YAML](https://en.wikipedia.org/wiki/YAML), to define the desired infrastructure.
 Infrastructure declared this way can then be version-controlled, tested, and deployed in a reliable and consistent way.
 By defining IaC, developers and operations teams can collaborate more effectively and ensure that infrastructure is consistent across all environments.
