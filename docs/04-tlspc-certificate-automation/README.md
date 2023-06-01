@@ -175,8 +175,11 @@ NOTE: the archive of "old" versions stored is S3 represents a potentially useful
 
 You should not think of S3 as the "final" destination for your Certificates.
 
-You've already seen how the EventBridge Scheduler (think "Cloud Native [cron](https://en.wikipedia.org/wiki/Cron)") can be used to define periodic triggers for TLSPC Certificate renewals.
-The event of any object being deposited in an S3 Bucket can also be used to define a trigger in the context of [Event Driven Architectures](https://aws.amazon.com/event-driven-architecture/), so renewed Certificates can be immediately pushed out to wherever the AWS customer needs them.
+You've seen how the EventBridge Scheduler (think "Cloud Native [cron](https://en.wikipedia.org/wiki/Cron)") can be used to define periodic triggers for TLSPC Certificate renewals.
+This is an example of an [Event Driven Architectures](https://aws.amazon.com/event-driven-architecture/) in its simplest form.
+
+Whenever a new object appears in an S3 Bucket an observable event occurs which can also be used to trigger more work to be done.
+With a couple more resources in place, renewed Certificates in S3 could easily be forwarded to wherever the AWS customer needs them to be.
 See this [blog article](https://aws.amazon.com/blogs/architecture/get-started-with-amazon-s3-event-driven-design-patterns/) for more info.
 
 Next: [Main Menu](../README.md)
