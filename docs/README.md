@@ -11,5 +11,12 @@
 * [03. TLSPC Policy Automation](03-tlspc-policy-automation/README.md)
 * [04. TLSPC Certificate Automation](04-tlspc-certificate-automation/README.md)
 
+## Teardown
+A polite reminder to Delete ALL your Stacks after this workshop is complete.
+Navigate to https://us-east-1.console.aws.amazon.com/cloudformation/home, enter your personalized identifier in the "Filter by stack name" field, and hit "Enter".
+If you completed the workshop, you should locate **THREE** Stacks.
+Select **each** of your Stacks one at a time and click the **"Delete"** button.
+The order of deletion is not important and you needn't wait for any operation to complete before commencing the next.
+
 ## Appendices
 * [101. Appendix - CloudFormation from AWS CLI](101-cloudformation-from-aws-cli/README.md)
