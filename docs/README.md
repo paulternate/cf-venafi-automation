@@ -13,9 +13,9 @@
 
 ## Teardown
 
-**IMPORTANT** please do not delete any Stacks which you were not responsible for creating.
-
 A polite reminder to Delete ALL of your Stacks after this workshop is complete.
+
+**IMPORTANT** please do not delete any Stacks which you were not responsible for creating.
 
 - Navigate to https://us-east-1.console.aws.amazon.com/cloudformation/home
 - **Carefully** enter your personalized identifier in the "Filter by stack name" field, and hit "Enter".
