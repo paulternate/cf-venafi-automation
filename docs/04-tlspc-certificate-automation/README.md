@@ -55,13 +55,11 @@ The following steps will model your Certificate Request requirements in a Cloudf
      ```
      johnlennon-app\johnlennon-cit-90day
      ```
-   - Set **"CommonName"** to the subject/domain of the target template.
-     
-     
-     In non-prod environments there is no requirement to own the domain so we advise you to set this value to something uniquely identifiable for **yourself**.
-     For Example, George Harrison could use
+   - You will recall that Wildcards are currently supported by the domains listed in in your CITs.
+     **Carefully** set **"CommonName"** on the TLSPC Certificate to be a subdomain thereof.
+     For Example, John Lennon set his "90 day" domain to `johnlennon.com` so he could use
      ```
-     www.georgeharrison.com
+     www.johnlennon.com
      ```
    - **"ValidityHours"** is the number of hours your certificates should be considered valid.
      A Zero "0" here indicates you are willing to inherit this setting from the Zone's Issuing Template.
@@ -81,8 +79,8 @@ The following steps will model your Certificate Request requirements in a Cloudf
      ```
      SuperSecret123!
      ```
-   - **"TargetS3Bucket"** is the name of a versioned S3 Bucket where your TLSPC Certificates will be deposited.
-     The Venafi One-Time Setup Template ensures that a default Bucket, named `venafi-tlspc-certificates-${AWS::AccountId}`, is available in your AWS Account.
+   - **"TargetS3Bucket"** is the name of a Versioned S3 Bucket where your TLSPC Certificates will be deposited.
+     The Venafi One-Time Setup Template ensures that the default Bucket for your Account, named `venafi-tlspc-certificates-${AWS::AccountId}`, is available.
      For the purpose of this workshop, we advise that you leave this parameter **BLANK**.
      ```
      ```
