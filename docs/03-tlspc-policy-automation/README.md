@@ -103,11 +103,11 @@ https://venafi-ecosystem.s3.amazonaws.com/tlspc/templates/tlspc-policy.yaml
 
 For example, remembering that you're probably not named John Lennon 🙂, he would make the following adjustments to the previous instructions.
 
-| Setting | Was previously | Now using |
+| Setting | NOW USING | (was previously) |
 | - | - | - |
-| **Stack name** | johnlennon-policy-90day | johnlennon-policy-60day |
-| **Zone** | johnlennon-app\johnlennon-cit-90day | johnlennon-app\johnlennon-cit-60day |
-| **MaxValidDays** | 90 | 60 |
+| **Stack name** | **johnlennon-policy-60day** | johnlennon-policy-90day |
+| **Zone** | **johnlennon-app\johnlennon-cit-60day** | johnlennon-app\johnlennon-cit-90day |
+| **MaxValidDays** | **60** | 90 |
 
 "Submit" this policy as you did previously.
 
