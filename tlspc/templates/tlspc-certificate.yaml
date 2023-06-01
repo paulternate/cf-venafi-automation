@@ -33,10 +33,10 @@ Parameters:
     NoEcho: true
   Zone:
     Type: String
-    Description: Zones are logical organizational units used for managing digital certificates
+    Description: Zones are logical organizational units used for managing digital certificates. Typical form is <AppName>\<CertificateIssuingTemplateAlias>.
     ConstraintDescription: Typical form is <AppName>\<IssuingTemplateAlias>
     AllowedPattern: ^.*\\.*$
-    Default: ExampleApp\Default
+    Default: phoenix-app\phoenix-cit
   CommonName:
     Type: String
     Description: The subject/domain of the certificate
@@ -45,16 +45,16 @@ Parameters:
     Default: www.example.com
   ValidityHours:
     Type: Number
-    Description: The number of hours for which any created/renewed certificate is considered valid. Zero indicates that Issuing Template's Validity will be adopted.
-    ConstraintDescription: A positive number not exceeding the Issuing Template's Validity
+    Description: The number of hours for which any created/renewed certificate is considered valid. Zero indicates that the underlying CIT's Validity will be adopted and unit-converted.
+    ConstraintDescription: A positive number not exceeding the CIT's Validity
     MinValue: 0
     Default: 0
   RenewalHours:
     Type: Number
-    Description: The interval in hours between certificate renewal requests. To protect from outages caused by certificate expiry RenewalHours should be less than ValidityHours.
-    ConstraintDescription: A positive number ideally less than ValidityHours
+    Description: The interval in hours between certificate renewal requests. To protect from outages caused by certificate expiry, the value for RenewalHours should be less than the resolved value of ValidityHours. (1440hrs=60days)
+    ConstraintDescription: A positive number ideally less than the resolved value of ValidityHours
     MinValue: 1
-    Default: 1
+    Default: 1440
   PrivateKeyPassphrase:
     Type: String
     Description: The encryption passphrase to use when downloading the certificate's private key
