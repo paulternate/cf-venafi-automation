@@ -125,6 +125,10 @@ At this point your newly created TLSPC resources (1 Application and 2 CITs) will
 
 Take a moment to click through on your Application to confirm that both CITs are attached.
 
+NOTE: [Wildcard DNS records](https://en.wikipedia.org/wiki/Wildcard_DNS_record) are implicitly supported by the **current incarnation** of the TLSPC Policy template.
+This means that when we specify the domain `exmaple.com`, the CIT will happily validate Certificates for both `www.example.com` and `app.example.com`.
+Whilst you will take advantage of this configuration in the next exercise it should be noted that this may not be suitable for production environments.
+
 ## Updating a Policy Stack
 
 The following steps will update one of your CITs in TLSPC.
