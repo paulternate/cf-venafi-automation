@@ -179,7 +179,8 @@ You've seen how the EventBridge Scheduler (think "Cloud Native [cron](https://en
 This is an example of an [Event Driven Architectures](https://aws.amazon.com/event-driven-architecture/) in its simplest form.
 
 Whenever a new object appears in an S3 Bucket an observable event occurs which can also be used to trigger more work to be done.
-With a couple more resources in place, renewed Certificates in S3 could easily be forwarded to wherever the AWS customer needs them to be.
+Such architectures are often coded as Lambda Functions.
+With a couple more resources in place, your renewed Certificates in S3 could easily be forwarded to wherever you, the AWS customer, need them to be.
 See this [blog article](https://aws.amazon.com/blogs/architecture/get-started-with-amazon-s3-event-driven-design-patterns/) for more info.
 
 Next: [Main Menu](../README.md)
