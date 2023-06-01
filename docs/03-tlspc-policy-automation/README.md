@@ -99,7 +99,7 @@ For convenience, here's that all-important template URL once more
 https://venafi-ecosystem.s3.amazonaws.com/tlspc/templates/tlspc-policy.yaml
 ```
 
-**Repeat** the previous section verbatim, except you need to change **every** occurance of the charcters "90days" to "60days".
+**Repeat** the previous section word-for-word, except you need to change **every** occurrence of the characters "90" to **"60"**.
 
 For example, remembering that you're probably not named John Lennon 🙂, he would make the following adjustments to the previous instructions.
 
