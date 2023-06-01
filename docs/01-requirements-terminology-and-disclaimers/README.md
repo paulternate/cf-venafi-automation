@@ -4,7 +4,7 @@
 
 To successfully complete this workshop you will need:
 
-- To choose ONE of the following options:
+- Access to an [AWS Console](https://aws.amazon.com/console/) - choose ONE of the following options:
   - **Option 1:** Access to the "AWS Single Sign-on" (SSO) tile via https://venafi.okta.com/ with a minimum of "Basic" access to one of the following AWS accounts via SSO:
     - "venafi-se" (aka "Venafi SE")
     - "venafi-ps" (aka "AWS-PS")
