@@ -69,7 +69,7 @@ The following steps will model your Certificate Request requirements in a Cloudf
      ```
    - **"RenewalHours"** is the interval in hours between certificate renewal requests.
      To protect from outages caused by certificate expiry, this value should be a number lower than the Validity period.
-     The Validity period on this cert is likely to be the equivalent of 90 days, so set this value to 60 days, which converted to hours is
+     The Validity period on this cert is likely to be the equivalent of 90 days, so set this value to 60 days, which **converted to hours** is
      ```
      1440
      ```
