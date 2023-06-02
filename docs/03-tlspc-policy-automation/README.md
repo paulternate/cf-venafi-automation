@@ -29,7 +29,7 @@ Unless otherwise stated, all AWS Console settings should be left in their **DEFA
   <img src="../images/soft-errors.png" />
 </p>
 
-Any red banners in the AWS Console which may appear in the AWS Console during these steps (shown above) are typically caused by policy restrictions in the AWS Account.
+Any red banners which appear in the AWS Console during these steps (shown above) are typically caused by policy restrictions in the AWS Account.
 These "soft" errors will not prohibit you from clicking the "Submit" button and can be safely **IGNORED**.
 
 ## Creating your first Policy Stack (90 days)
