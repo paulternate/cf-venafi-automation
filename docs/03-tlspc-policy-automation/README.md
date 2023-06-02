@@ -6,8 +6,10 @@ In this section you will use CloudFormation (sometimes abbreviated to CFN, or ju
 In this context a Policy is represented by a pair of TLSPC resources, as follows.
 
 - A **TLSPC Application** - A means to categorize policy-enforced collections of Certificate Requests and their Certificates.
+  Applications in TLSPC are shown at https://ui.venafi.cloud/applications.
 - A **TLSPC Certificate Issuing Template** (CIT) - Used to configure security policies that are enforced whenever new Certificates are requested via TLSPC.
-To enable a TLSPC CIT for use in Certificate policy enforcement it must first be associated with a TLSPC Application.
+  To enable a TLSPC CIT for use in Certificate policy enforcement it must first be associated with a TLSPC Application.
+  CITs in TLSPC are shown at https://ui.venafi.cloud/certificate-issuance/issuing-templates.
 
 The choice to pair these resources under the term "Policy" was inspired by the implementation of VCert's [setpolicy](https://github.com/Venafi/vcert/blob/master/README-CLI-CLOUD.md#parameters-for-applying-certificate-policy) action, which condenses the functionality of the underlying resources down to their essential features.
 
@@ -132,11 +134,23 @@ At this point your newly created TLSPC resources (1 Application and 2 CITs) will
 - **TLSPC Certificate Issuing Template** - https://ui.venafi.cloud/certificate-issuance/issuing-templates
 - **TLSPC Application** - https://ui.venafi.cloud/applications
 
-Take a moment to click through on your Application to confirm that both CITs are attached.
+Take a moment to find or search for your Application.
+Click on the Application name which shows as a blue hyperlink and confirm the following:
+
+- No Certificates exist.
+- Both CITs are attached
+
+<p align="center">
+  <img src="../images/tlspc-app-zero-certs.png" />
+</p>
 
 NOTE: [Wildcard DNS records](https://en.wikipedia.org/wiki/Wildcard_DNS_record) are implicitly supported by the **current incarnation** of the TLSPC Policy template.
-This means that when we specify the domain `exmaple.com`, the CIT will happily validate Certificates for both `www.example.com` and `app.example.com`.
+This means that when we specify the domain `example.com`, the CIT will happily validate Certificates for both `www.example.com` and `app.example.com`.
 Whilst you will take advantage of this configuration in the next exercise it should be noted that this may not be suitable for production environments.
+
+<p align="center">
+  <img src="../images/tlspc-cit-wildcards.png" />
+</p>
 
 ## Updating a Policy Stack
 

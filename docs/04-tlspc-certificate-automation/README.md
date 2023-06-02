@@ -12,6 +12,18 @@ In TLSPC, [Certificate renewals](https://docs.venafi.cloud/vaas/certificates/ren
 Over time, this sequence of CRs and Certificates builds to create a useful audit trail.
 In this exercise, you will employ the use of the [Amazon EventBridge Scheduler](https://docs.aws.amazon.com/eventbridge/latest/userguide/scheduler.html) to automate the renewal process, ensuring that Certificate renewals always take place before the current latest Certificate expires.
 
+In other words, your end goal is to avoid seeing this dialog again ...
+
+<p align="center">
+  <img src="../images/no-more-manual-renewals.png" />
+</p>
+
+... whilst putting an end to at-risk Certificates appearing in the [TLSPC Dashboard](https://ui.venafi.cloud/certificate-issuance/dashboard)
+
+<p align="center">
+  <img src="../images/high-and-medium-risk.png" />
+</p>
+
 ## TLSPCApplication Templates and Functions
 
 TLSPCPolicy Stack Create/Update actions make use of three objects stored in a publicly accessible (read-only) S3 bucket.
@@ -23,11 +35,16 @@ They are as follows:
 | Function | Implements the Create/Update/Delete operations required by the TLSPCCertificate Custom Resource | https://venafi-ecosystem.s3.amazonaws.com/tlspc/functions/tlspc-certificate.zip | [View](../../tlspc/functions/tlspc-certificate/app/app.py) |
 | Function | A dedicated instance of the `venafi-stack-updater` Function is pre-configured to invoke the Update method of this Stack. The frequency of invocation is determined by the associated EventBridge Schedule which is also deployed by the Template | https://venafi-ecosystem.s3.amazonaws.com/tlspc/functions/venafi-stack-updater.zip | [View](../../tlspc/functions/venafi-stack-updater/app/app.py) |
 
-## A note on Defaults and warning messages
+## A note on Defaults and "soft" errors
 
 Unless otherwise stated, all AWS Console settings should be left in their **DEFAULT** state.
 
-Any warning banners which appear in the AWS Console during these steps are typically caused by policy restrictions in the target AWS Account and can be safely **IGNORED**.
+<p align="center">
+  <img src="../images/soft-errors.png" />
+</p>
+
+Any red banners which appear in the AWS Console during these steps (shown above) are typically caused by policy restrictions in the AWS Account.
+These "soft" errors will not prohibit you from clicking the "Submit" button and can be safely **IGNORED**.
 
 ## Creating your Certificate Stack
 
@@ -107,6 +124,10 @@ Follow these instructions to view your newly created Certificate in TLSPC.
    Click directly on this number.
 1. You will see the Certificate that matches the **"CommonName"** you provided earlier
 
+<p align="center">
+  <img src="../images/certs-one.png" />
+</p>
+
 ## Reviewing your results (S3)
 
 Follow these instructions to view your newly created Certificate in S3.
@@ -115,6 +136,14 @@ Follow these instructions to view your newly created Certificate in S3.
 1. Locate the Outputs tab and select it
 1. Find the Output Key named **"S3URL"** and click the URL shown in its Value column to take you through to the AWS Console's S3 page.
 1. You will see two files here (`.cert` and `.key`) which match the CommonName of your certificate and contain its key material.
+
+<p align="center">
+  <img src="../images/s3-url.png" />
+</p>
+
+<p align="center">
+  <img src="../images/s3-cert-and-key.png" />
+</p>
 
 ## Updating your Certificate Stack (Renewals)
 
@@ -132,7 +161,7 @@ NOTE: **manual** renewals are a legitimate use case, and a useful tool if any of
 The following CloudFormation steps will cause a **manual** Certificate renewal in TLSPC.
 
 1. Navigate to https://us-east-1.console.aws.amazon.com/cloudformation/home
-1. Find or search for your Stack using the name you provided earlier
+1. Find or search for your Stack using the name you provided earlier.
 1. The Stack name is displayed as a blue hyperlink. Click this link now.
 1. Toward the top-right of the console you will see four buttons.
    Locate the **"Update"** button and click it.
@@ -163,6 +192,10 @@ This time, the Certificates column for your Application will show the number "2"
 Click this link to reveal that one of the two Certificates is now considered **"(old)"**.
 This indicates a successful renewal.
 
+<p align="center">
+  <img src="../images/certs-two.png" />
+</p>
+
 ## Reviewing your post-renewal results (S3)
 
 NOTE: To get the most benefit from these exercises, we recommend the use of Versioned S3 Buckets. If the Stacks you create in the exercise use the Bucket created by the One-Time AWS Account Setup, this is taken care of for you.
@@ -176,10 +209,17 @@ Using the instructions presented earlier in this exercise (see [Reviewing your r
 The behavior seen here mimics that which you observed with the **"(old)"** Certificates in TLSPC.
 Like TLSPC, the **default** behavior in S3 is to always retrieve the current/latest version of any persisted object.
 
+<p align="center">
+  <img src="../images/s3-cert-versions.png" />
+</p>
 
 NOTE: the archive of "old" versions stored is S3 represents a potentially useful diagnostic or regulatory tool, however you should also consider periodically pruning them.
 
 ## A note on Serverless Event Driven Architectures
+
+<p align="center">
+  <img src="../images/lambda.png" height="256" width="256" />
+</p>
 
 You should not think of S3 as the "final" destination for your Certificates.
 
