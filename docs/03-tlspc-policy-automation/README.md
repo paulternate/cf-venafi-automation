@@ -21,11 +21,16 @@ They are as follows:
 | Template | Orchestrates the lifecycle of a TLSPCPolicy Custom Resource which references the Function | https://venafi-ecosystem.s3.amazonaws.com/tlspc/templates/tlspc-policy.yaml | [View](../../tlspc/templates/tlspc-policy.yaml)  |
 | Function | Implements the Create/Update/Delete operations required by the TLSPCPolicy Custom Resource | https://venafi-ecosystem.s3.amazonaws.com/tlspc/functions/tlspc-policy.zip | [View](../../tlspc/functions/tlspc-policy/app/app.py) |
 
-## A note on Defaults and warning messages
+## A note on Defaults and "soft" errors
 
 Unless otherwise stated, all AWS Console settings should be left in their **DEFAULT** state.
 
-Any warning banners which appear in the AWS Console during these steps are typically caused by policy restrictions in the target AWS Account and can be safely **IGNORED**.
+<p align="center">
+  <img src="../images/soft-errors.png" />
+</p>
+
+Any red banners in the AWS Console which may appear in the AWS Console during these steps (shown above) are typically caused by policy restrictions in the AWS Account.
+These "soft" errors will not prohibit you from clicking the "Submit" button and can be safely **IGNORED**.
 
 ## Creating your first Policy Stack (90 days)
 
