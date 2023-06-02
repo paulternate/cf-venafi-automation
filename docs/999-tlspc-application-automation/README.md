@@ -61,6 +61,10 @@ This Application will be used later to create certificates.
 **NOTE**: A pristine TLSPC environment ships with the `Default` Issuing Template for the `Built-In CA`.
 If your TLSPC environment has this Issuing Template renamed or is somehow missing, choose an alternate `Built-In CA` Issuing Template from the list shown at https://ui.venafi.cloud/certificate-issuance/issuing-templates.
 
+<p align="center">
+  <img src="../images/cfn-create-complete.png" />
+</p>
+
 After ~30 secs, the Stack will reach a "Status" of "CREATE_COMPLETE".
 
 ## Reviewing your results
@@ -101,6 +105,10 @@ In doing so, you will familiarize yourself with the process for updating Stacks 
    - Click "Next"
 1. Scroll to the foot of the "Configure stack options" page, then click "Next"
 1. Scroll to the foot of the "Review" page and finally click "Submit"
+
+<p align="center">
+  <img src="../images/cfn-update-complete.png" />
+</p>
 
 After ~30 secs, the stack will reach a "Status" of "UPDATE_COMPLETE".
 

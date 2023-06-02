@@ -45,6 +45,10 @@ The following steps will enable Lambda Functions in the exercises to be successf
 1. Scroll to the foot of the "Configure stack options" page, then click "Next"
 1. Scroll to the foot of the "Review" page, check ✅ the "Capabilities" checkbox and finally click "Submit"
 
+<p align="center">
+  <img src="../images/cfn-create-complete.png" />
+</p>
+
 After ~30 secs, the Stack will reach a "Status" of "CREATE_COMPLETE".
 You will now be able to continue with the exercises in this workshop.
 

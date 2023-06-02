@@ -92,6 +92,10 @@ The following steps will model your Certificate Request requirements in a Cloudf
 1. Scroll to the foot of the "Configure stack options" page, then click "Next"
 1. Scroll to the foot of the "Review" page and finally click "Submit"
 
+<p align="center">
+  <img src="../images/cfn-create-complete.png" />
+</p>
+
 After ~30 secs, the stack will reach a "Status" of "CREATE_COMPLETE".
 
 ## Reviewing your results (TLSPC)
@@ -141,6 +145,10 @@ The following CloudFormation steps will cause a **manual** Certificate renewal i
 1. Click "Next"
 1. Scroll to the foot of the "Configure stack options" page, then click "Next"
 1. Scroll to the foot of the "Review" page and finally click "Submit"
+
+<p align="center">
+  <img src="../images/cfn-update-complete.png" />
+</p>
 
 After ~30 secs, the Stack will reach a "Status" of "UPDATE_COMPLETE".
 
