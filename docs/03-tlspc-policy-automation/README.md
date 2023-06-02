@@ -199,4 +199,15 @@ After ~30 secs, the stack will reach a "Status" of "UPDATE_COMPLETE".
 
 Now, when you locate your CIT at https://ui.venafi.cloud/certificate-issuance/issuing-templates, it will display its new updated domain configuration.
 
+## What you learned
+
+- In the context of TLSPC:
+  - A "Policy" can be viewed as the combination of a single **CIT** linked to a single **Application**
+  - The terms "Policy" and "Zone" are somewhat interchangeable
+- The functionality of VCert is not confined to a CLI
+- Resources in CFN can be both AWS Native and Custom
+- Custom Resources are CloudFormation's primary extensibility tool
+- Templates are used to Create, Update and Delete Stacks
+- Templates are generalized via Parameters, which aid re-use
+
 Next: [Main Menu](../README.md) | [04. TLSPC Certificate Automation](../04-tlspc-certificate-automation/README.md)

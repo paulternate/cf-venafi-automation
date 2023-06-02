@@ -231,4 +231,11 @@ Workloads in these architectures are often deployed as Lambda Functions, so thes
 With a couple more resources in place, your renewed Certificates in S3 could easily be forwarded to wherever you, the AWS customer, need them to be.
 See this [blog article](https://aws.amazon.com/blogs/architecture/get-started-with-amazon-s3-event-driven-design-patterns/) for more info.
 
+## What you learned
+
+- The relationship between CITs, Applications, Certificate Requests and a Certificates
+- How TLSPC Certificate renewals can be automated from within an AWS Account
+- How a Versioned S3 Bucket can be used to track TLSPC Certificate issuance
+- You're not limited to EC2 instances or Kubernetes clusters for running short-lived workloads on AWS
+
 Next: [Main Menu](../README.md)

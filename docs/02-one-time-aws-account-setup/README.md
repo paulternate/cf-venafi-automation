@@ -60,4 +60,10 @@ If the Stacks you create in the exercise use the default Bucket created by this 
 
 <!-- if we need to regionalize these buckets (and setup replication) then we should do so with another template (or use CDK) in a manner similar to the "venafi-ecosystem" buckets -->
 
+## What you learned
+
+- [Security is "Job Zero"](https://aws.amazon.com/blogs/enterprise-strategy/security-at-aws/)
+- Some complexity is caused by AWS users not all having the same privileges
+- CloudFormation can help you contain complexity
+
 Next: [Main Menu](../README.md) | [03. TLSPC Policy Automation](../03-tlspc-policy-automation/README.md)
