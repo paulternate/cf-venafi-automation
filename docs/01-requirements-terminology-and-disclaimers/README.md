@@ -8,12 +8,20 @@ To successfully complete this workshop you will need:
   - **Option 1:** Access to the "AWS Single Sign-on" (SSO) tile via https://venafi.okta.com/ with a minimum of "Basic" access to one of the following AWS Accounts via SSO:
     - "venafi-se" (aka "Venafi SE")
     - "venafi-ps" (aka "AWS-PS")
+
+<p align="center">
+  <img src="../images/okta-aws-tile.png" />
+</p>
+<p align="center">
+  <img src="../images/aws-sso-landing.png" />
+</p>
+
   - **Option 2:** Access to the Jetstack AWS Account with a minimum of "Basic" access
     - https://jetstack-dev.signin.aws.amazon.com/console
   - **Option 3:** Any other AWS Account including personal Accounts
 - To use the **"us-east-1"** [AWS region](https://aws.amazon.com/about-aws/global-infrastructure/regions_az/), simply because it's tried and tested there
 - Access, via either your own domain or the company shared one, to TLSPC at https://ui.venafi.cloud/
-- At least one VSatellite instance should as active at https://ui.venafi.cloud/vsatellites
+- At least one VSatellite instance supporting the "Keypair generation service" should be shown as active at https://ui.venafi.cloud/vsatellites.
 - The ability to distinguish between buses, stairs, bicycles and traffic lights! 😊
 
 ## Terminology
