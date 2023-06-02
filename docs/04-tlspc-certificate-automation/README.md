@@ -238,4 +238,4 @@ See this [blog article](https://aws.amazon.com/blogs/architecture/get-started-wi
 - How a Versioned S3 Bucket can be used to track TLSPC Certificate issuance
 - You're not limited to EC2 instances or Kubernetes clusters for running short-lived workloads on AWS
 
-Next: [Main Menu](../README.md)
+Next: [Main Menu](../README.md) | [05. Teardown](../05-teardown/README.md)
