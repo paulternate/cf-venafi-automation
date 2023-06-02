@@ -72,3 +72,17 @@ Resources:
             Resource: '*'
       Roles:
         - !Ref VenafiLambdaBasicExecutionRole
+
+  VenafiLambdaEventBridgeSchedulerPolicy:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyName: VenafiLambdaEventBridgeSchedulerPolicy
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Action:
+              - scheduler:GetSchedule
+            Resource: '*'
+      Roles:
+        - !Ref VenafiLambdaBasicExecutionRole
