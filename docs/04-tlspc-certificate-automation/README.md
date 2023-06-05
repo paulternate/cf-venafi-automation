@@ -236,7 +236,8 @@ See this [blog article](https://aws.amazon.com/blogs/architecture/get-started-wi
 - The relationship between CITs, Applications, Certificate Requests and a Certificates
 - How TLSPC Certificate renewals can be automated from within an AWS Account
 - How a Versioned S3 Bucket can be used to track TLSPC Certificate issuance
-- You're not limited to EC2 instances or Kubernetes clusters for running short-lived workloads on AWS
+- When running short-lived workloads on AWS you're not limited to EC2 instances or Kubernetes clusters
+- Serverless technologies can provide reliable, repeatable and low-impact solutions to the "last-mile" problem
 
 ## Recap Diagram
 

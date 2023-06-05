@@ -205,7 +205,7 @@ Now, when you locate your CIT at https://ui.venafi.cloud/certificate-issuance/is
   - A "Policy" can be viewed as the combination of a single **CIT** linked to a single **Application**
   - The terms "Policy" and "Zone" are somewhat interchangeable
 - The functionality of VCert is not confined to a CLI
-- Resources in CFN can be both AWS Native and Custom
+- Resources in CloudFormation can be both AWS Native and Custom
 - Custom Resources are CloudFormation's primary extensibility tool
 - Templates are used to Create, Update and Delete Stacks
 - Templates are generalized via Parameters, which aid re-use
