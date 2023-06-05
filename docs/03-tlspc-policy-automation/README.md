@@ -210,4 +210,10 @@ Now, when you locate your CIT at https://ui.venafi.cloud/certificate-issuance/is
 - Templates are used to Create, Update and Delete Stacks
 - Templates are generalized via Parameters, which aid re-use
 
+## Recap Diagram
+
+<p align="center">
+  <img src="../images/tlspc-policy-flow.png" />
+</p>
+
 Next: [Main Menu](../README.md) | [04. TLSPC Certificate Automation](../04-tlspc-certificate-automation/README.md)
