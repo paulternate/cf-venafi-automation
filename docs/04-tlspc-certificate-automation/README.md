@@ -182,7 +182,7 @@ The following CloudFormation steps will cause a **manual** Certificate renewal i
 After ~30 secs, the Stack will reach a "Status" of "UPDATE_COMPLETE".
 
 NOTE: Your intent for this Update operation was simply to renew the Certificate so, technically, no parameter changes are required.
-However CloudFormation will reject the Update unless at least parameter is changed.
+However CloudFormation will reject the Update unless at least one parameter is changed.
 The parameter named **"UpdateTrigger"**, which serves no other functional purpose, exists to solve this problem.
 
 ## Reviewing your post-renewal results (TLSPC)
