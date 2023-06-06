@@ -21,7 +21,7 @@ To successfully complete this workshop you will need:
   - **Option 3:** Any other AWS Account including personal Accounts
 - To use the **"us-east-1"** [AWS region](https://aws.amazon.com/about-aws/global-infrastructure/regions_az/), simply because it's tried and tested there
 - Access, via either your own domain or the company shared one, to TLSPC at https://ui.venafi.cloud/.
-  You will need to ensure your user has the permissions necessary to create Application and Certificate Issuing Templates, so navigate to the following URLs and confirm you can see the "New" button in the upper-left portion of **both** pages:
+  You will need to ensure your user has the permissions necessary to create Applications and Certificate Issuing Templates, so navigate to the following URLs and confirm you can see the "New" button in the upper-left portion of **both** pages:
   - https://ui.venafi.cloud/applications
   - https://ui.venafi.cloud/certificate-issuance/issuing-templates
 <p align="center">
