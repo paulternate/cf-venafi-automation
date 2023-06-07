@@ -1,2 +1,2 @@
-cfnresponse
-vcert
+cfnresponse==1.1.2
+vcert==0.16.0
