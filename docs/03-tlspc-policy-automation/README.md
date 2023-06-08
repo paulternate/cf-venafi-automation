@@ -81,7 +81,7 @@ The resulting Application and CIT in TLSPC will be used later to create certific
    - Set **"TLSPCAPIKey"** to whatever API Key value is provided to you at https://ui.venafi.cloud/platform-settings/user-preferences?key=api-keys
    - Click "Next"
 1. **Double-check** for any mistakes in the above before moving on.
-1. Scroll to the foot of the "Configure stack options" page, then click "Next"
+1. On the "Configure stack options" page, under "Stack failure options", select **"Preserve successfully provisioned resources"**
 1. Scroll to the foot of the "Review" page and finally click "Submit"
 
 <p align="center">
