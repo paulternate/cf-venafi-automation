@@ -106,7 +106,7 @@ The following steps will model your Certificate Request requirements in a Cloudf
      ```
      ```
    - Click "Next"
-1. Scroll to the foot of the "Configure stack options" page, then click "Next"
+1. On the "Configure stack options" page, under "Stack failure options", select **"Preserve successfully provisioned resources"**
 1. Scroll to the foot of the "Review" page and finally click "Submit"
 
 <p align="center">
