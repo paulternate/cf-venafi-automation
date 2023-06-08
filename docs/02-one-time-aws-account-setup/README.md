@@ -42,7 +42,8 @@ The following steps will enable Lambda Functions in the exercises to be successf
    venafi-one-time-setup
    ```
    - Click "Next"
-1. Scroll to the foot of the "Configure stack options" page, then click "Next"
+1. On the "Configure stack options" page, under "Stack failure options", select **"Preserve successfully provisioned resources"**
+   then click "Next"
 1. Scroll to the foot of the "Review" page, check ✅ the "Capabilities" checkbox and finally click "Submit"
 
 <p align="center">
