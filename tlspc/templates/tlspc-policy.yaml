@@ -24,10 +24,10 @@ Parameters:
     NoEcho: true
   CertificateAuthority:
     Type: String
-    Description: As shown at https://ui.venafi.cloud/certificate-issuance/certificate-authorities
-    ConstraintDescription: Currently restricted to Built-In CA
-    AllowedPattern: "Built-In CA"
-    Default: Built-In CA
+    Description: As derived from https://ui.venafi.cloud/certificate-issuance/certificate-authorities, in the format of <CA_PROVIDER>\<CA_TLSPC_NAME>\<CA_PRODUCT_OPTION>
+    ConstraintDescription: In the format of <CA_PROVIDER>\<CA_TLSPC_NAME>\<CA_PRODUCT_OPTION>
+    AllowedPattern: ".*\\\\.*\\\\.*"
+    Default: "BUILTIN\\Built-In CA\\Default Product"
   Zone:
     Type: String
     Description: Zones are logical organizational units used for managing digital certificates. Typical form is <AppName>\<CertificateIssuingTemplateAlias>.
