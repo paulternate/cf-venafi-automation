@@ -7,7 +7,7 @@ Metadata:
           default: Policy Properties
         Parameters:
           - Zone
-          - CertificateAuthority
+          - CertificateAuthorityProduct
           - MaxValidDays
           - Domains
       - Label:
