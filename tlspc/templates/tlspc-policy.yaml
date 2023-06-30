@@ -22,9 +22,9 @@ Parameters:
     ConstraintDescription: TLSPCAPIKey must be structured as xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx and contain only lowercase hex-letters and numbers
     AllowedPattern: "[a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12}"
     NoEcho: true
-  CertificateAuthority:
+  CertificateAuthorityProduct:
     Type: String
-    Description: As derived from https://ui.venafi.cloud/certificate-issuance/certificate-authorities, in the format of <CA_PROVIDER>\<CA_TLSPC_NAME>\<CA_PRODUCT_OPTION>
+    Description: As derived when building https://ui.venafi.cloud/certificate-issuance/issuing-templates, in the format of <CA_PROVIDER>\<CA_TLSPC_NAME>\<CA_PRODUCT_OPTION>. Refer to documentation for further details.
     ConstraintDescription: In the format of <CA_PROVIDER>\<CA_TLSPC_NAME>\<CA_PRODUCT_OPTION>
     AllowedPattern: ".*\\\\.*\\\\.*"
     Default: "BUILTIN\\Built-In CA\\Default Product"
@@ -62,7 +62,7 @@ Resources:
     Type: Custom::TLSPCPolicy
     Properties:
       ServiceToken: !GetAtt TLSPCPolicyFunction.Arn
-      CertificateAuthority: !Ref CertificateAuthority
+      CertificateAuthorityProduct: !Ref CertificateAuthorityProduct
       Zone: !Ref Zone
       MaxValidDays: !Ref MaxValidDays
       Domains: !Ref Domains
