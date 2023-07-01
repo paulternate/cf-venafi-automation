@@ -1,8 +1,8 @@
 {
-  "RequestType": "Create",
+  "RequestType": "Update",
   "ServiceToken": "arn:aws:cloudformation:us-east-1:999999999999:stack/MyStack/guid",
   "ResponseURL": "https://httpbin.org/put",
-  "StackId": "arn:aws:cloudformation:us-east-1:427380916706:stack/amcginlay-pol/7ba93df0-f347-11ed-902d-0a92aa53567d",
+  "StackId": "arn:aws:cloudformation:us-east-1:999999999999:stack/amcginlay-pol/deaddead-dead-dead-dead-deaddeaddead",
   "RequestId": "dead",
   "LogicalResourceId": "TLSPCPolicyResource",
   "PhysicalResourceId": "deaddead-dead-dead-dead-deaddeaddead",
@@ -10,16 +10,14 @@
   "ResourceProperties":
     {
       "ServiceToken": "arn:aws:lambda:us-east-1:999999999999:function:func",
-
-      "xTLSPCAPIKey": "deaddead-dead-dead-dead-deaddeaddead",
-      "TLSPCAPIKey": "9512bfec-aca8-4b0e-abf9-3b5ee42452a0",
-
-      "CertificateAuthority": "Built-In CA",
+      "TLSPCAPIKey": "deaddead-dead-dead-dead-deaddeaddead",
+      "CertificateAuthorityTriplet": "BUILTIN\\Built-In CA\\Default Product",
       "MaxValidDays": "90",
-      "Zone": "amcginlay101-app\\amcginlay101-cit",
+      "Zone": "amcginlay999-app\\amcginlay999-cit",
       "Domains": [
         "example.com",
-        "elements.com"
+        "elements.com",
+        "venafidemo.com"
       ]
     }
 }
