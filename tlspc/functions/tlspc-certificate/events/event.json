@@ -10,8 +10,8 @@
   "ResourceProperties":
     {
       "ServiceToken": "arn:aws:lambda:us-east-1:999999999999:function:func",
-      "TLSPCAPIKey": "7dafe180-0c6c-4a2a-9ac6-aa9aaef4f2bd",
-      "PrivateKeyPassphrase": "Password123!",
+      "TLSPCAPIKey": "deaddead-dead-dead-dead-deaddeaddead",
+      "PrivateKeyPassphrase": "deaddead",
       "Zone": "amcginlay444-app\\amcginlay444-cit",
       "CommonName": "amcginlay444.venafidemo.com",
       "ValidityHours": "0",
