@@ -19,6 +19,7 @@ Metadata:
           default: Certificate Storage
         Parameters:
           - TargetS3Bucket
+          - PublishToACM
       - Label:
           default: System
         Parameters:
@@ -66,6 +67,13 @@ Parameters:
     Description: The name of a versioned S3 Bucket where your TLSPC Certificates will be deposited. Defaults to venafi-tlspc-certificates-${AWS::AccountId} when left blank. Check Lambda Function permissions before changing.
     ConstraintDescription: Needs to remain blank or follow the S3 bucket naming convention
     AllowedPattern: ^(|[a-z0-9][a-z0-9\-]{1,61}[a-z0-9])$
+  PublishToACM:
+    Type: String
+    Description: This setting determines whether the certificate will be published to Amazon Certificate Manager
+    AllowedValues:
+      - true
+      - false
+    Default: true
   UpdateTrigger:
     Type: String
     Description: PLEASE IGNORE - parameter is reserved for internal use
@@ -91,6 +99,7 @@ Resources:
       ValidityHours: !Ref ValidityHours
       PrivateKeyPassphrase: !Ref PrivateKeyPassphrase
       TargetS3Bucket: !Ref TargetS3Bucket
+      PublishToACM: !Ref PublishToACM
       UpdateTrigger: !Ref UpdateTrigger # reference required for update/change assessment
   VenafiStackUpdater:
     Type: AWS::Lambda::Function
@@ -126,3 +135,7 @@ Outputs:
     Value: !GetAtt TLSPCCertificateResource.TargetS3Bucket
   S3URL:
     Value: !GetAtt TLSPCCertificateResource.S3URL
+  ACMURL:
+    Value: !GetAtt TLSPCCertificateResource.ACMURL
+  ACMARN:
+    Value: !GetAtt TLSPCCertificateResource.ACMARN

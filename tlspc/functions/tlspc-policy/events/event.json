@@ -12,7 +12,7 @@
       "ServiceToken": "arn:aws:lambda:us-east-1:999999999999:function:func",
       "TLSPCAPIKey": "deaddead-dead-dead-dead-deaddeaddead",
       "CertificateAuthorityProduct": "BUILTIN\\Built-In CA\\Default Product",
-      "xCertificateAuthorityProduct": "DIGICERT\\Digicert Test Account\\ssl_cloud_wildcard",
+      "xCertificateAuthorityProduct": "DIGICERT\\Digicert Test Account APM\\ssl_cloud_wildcard",
       "MaxValidDays": "90",
       "Zone": "amcginlay999-app\\amcginlay999-cit",
       "Domains": [

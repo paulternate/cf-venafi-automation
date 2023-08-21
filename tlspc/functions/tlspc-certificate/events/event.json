@@ -15,6 +15,7 @@
       "Zone": "amcginlay444-app\\amcginlay444-cit",
       "CommonName": "amcginlay444.venafidemo.com",
       "ValidityHours": "0",
-      "TargetS3Bucket": ""
+      "TargetS3Bucket": "",
+      "PublishToACM": "true"
     }
 }
