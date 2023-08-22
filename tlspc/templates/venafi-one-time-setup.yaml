@@ -72,3 +72,17 @@ Resources:
             Resource: '*'
       Roles:
         - !Ref VenafiLambdaBasicExecutionRole
+
+  VenafiLambdaACMPolicy:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyName: VenafiLambdaACMPolicy
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Action:
+              - acm:ImportCertificate
+            Resource: '*'
+      Roles:
+        - !Ref VenafiLambdaBasicExecutionRole
