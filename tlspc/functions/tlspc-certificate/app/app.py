@@ -208,7 +208,7 @@ def import_cert_into_acm(cert, private_key_passphrase, reimport_arn=None):
         response = acm.import_certificate(
             CertificateChain=cert.full_chain,
             Certificate=cert.cert,
-            PrivateKey=cert.key,
+            PrivateKey=cert.key, # not encrypted!
             CertificateArn=reimport_arn
         )
     arn = response['CertificateArn']
@@ -229,11 +229,7 @@ def create_handler(event, context):
     request.validity_hours = validity_hours
     request.csr_origin = CSR_ORIGIN_SERVICE
     request.key_password = private_key_passphrase
-    # ---------------------------------------------
-    # TODO Digicert sometimes fails with the following error so perhaps we need some retry logic here like we do in retrieve_cert_with_retry
-    # File \"/var/task/vcert/connection_cloud.py\", line 406, in request_cert\n    request.cert_guid = data['certificateRequests'][0]['certificateIds'][0]\nIndexError: list index out of range\n"}}
     conn.request_cert(request, zone)
-    # ---------------------------------------------
     set_latest_cert_request_id_s3(target_s3_bucket, event, request.id) # important to record this in case next steps fail/timeout
     cert = retrieve_cert_with_retry(conn, request)
     cert_expiry = get_cert_expiry(api_key, request.cert_guid)
