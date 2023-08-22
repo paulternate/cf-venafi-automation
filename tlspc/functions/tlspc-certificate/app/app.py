@@ -208,7 +208,7 @@ def import_cert_into_acm(cert, private_key_passphrase, reimport_arn=None):
         response = acm.import_certificate(
             CertificateChain=cert.full_chain,
             Certificate=cert.cert,
-            PrivateKey=decrypt_private_key(cert.key, private_key_passphrase),
+            PrivateKey=cert.key,
             CertificateArn=reimport_arn
         )
     arn = response['CertificateArn']
