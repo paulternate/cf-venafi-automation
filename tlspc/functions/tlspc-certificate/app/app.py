@@ -215,7 +215,7 @@ def import_cert_into_acm(cert, private_key_passphrase, reimport_arn=None):
     logger.info(f'successfully imported key material into ACM: ARN={arn}')
     aws_region = get_aws_region()
     cert_uid = arn[arn.rfind('/') + 1:]
-    return f'https://{aws_region}.console.aws.amazon.com/acm/home?#/certificates/{cert_uid}'
+    return f'https://{aws_region}.console.aws.amazon.com/acm/home?#/certificates/{cert_uid}', arn
 
 def create_handler(event, context):
     responseData = {}
