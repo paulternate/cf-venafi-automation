@@ -46,7 +46,7 @@ Parameters:
     Default: www.example.com
   ValidityHours:
     Type: Number
-    Description: The number of hours for which any created/renewed certificate is considered valid. Zero indicates that the underlying CIT's Validity will be adopted and unit-converted.
+    Description: The number of hours for which any created/renewed certificate is considered valid. Zero indicates that the underlying CIT's Validity will be adopted and unit-converted. (2160hrs=90days)
     ConstraintDescription: A positive number not exceeding the CIT's Validity
     MinValue: 0
     Default: 0
