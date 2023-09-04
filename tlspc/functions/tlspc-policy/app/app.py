@@ -115,7 +115,7 @@ def create_or_update(event):
     cit_id = get_cit_id(api_key, cit_alias)
     app_id = get_app_id(api_key, app_name)
     response = connector.get_policy(zone)
-    policy_spec_data = parse_policy_spec(response)
+    policy_spec_data = json.dumps(parse_policy_spec(response), indent=2)
     logger.info(f'Created/Updated Issuing Template: cit_id={cit_id} policy_spec_data:\n{policy_spec_data}')
     return cit_id,app_id,policy_spec_data
 
