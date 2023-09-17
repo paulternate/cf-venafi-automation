@@ -82,6 +82,7 @@ class URLS:
 
     POLICIES_BY_ID = API_BASE_PATH + "certificatepolicies/{}"
     CERTIFICATE_REQUESTS = API_BASE_PATH + "certificaterequests"
+    CERTIFICATE_REQUEST = CERTIFICATE_REQUESTS + "/{}"
     CERTIFICATE_STATUS = CERTIFICATE_REQUESTS + "/{}"
     CERTIFICATE_RETRIEVE = API_BASE_PATH + "certificates/{}/contents"
     CERTIFICATE_SEARCH = API_BASE_PATH + "certificatesearch"
@@ -403,7 +404,21 @@ class CloudConnection(CommonConnection):
         status, data = self._post(URLS.CERTIFICATE_REQUESTS, data=request_data)
         if status == HTTPStatus.CREATED:
             request.id = data['certificateRequests'][0]['id']
-            request.cert_guid = data['certificateRequests'][0]['certificateIds'][0]
+
+            # APM 20230917 if POST response has a status of REQUESTED it means certificate issuance has been momentarily delayed so go back with a GET
+            request.status = data['certificateRequests'][0]['status']
+            if request.status == 'REQUESTED':
+                log.info(f"certificate not ready in POST - attempting GET request to complete task")
+                status, data = self._get(URLS.CERTIFICATE_REQUEST.format(request.id))
+                if status == HTTPStatus.OK:
+                    request.status = data['status']
+                    request.cert_guid = data['certificateIds'][0]
+                else:
+                    log.error(f"unexpected server response {status}: {data}")
+                    raise CertificateRequestError
+            else: # assume POST worked (ISSUED)
+                request.cert_guid = data['certificateRequests'][0]['certificateIds'][0]            
+            
             return True
         else:
             log.error(f"unexpected server response {status}: {data}")
